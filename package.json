@@ -22,6 +22,9 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.0.13",
+    "@malolebrin/pinia-entity-store": "^0.2.2",
+    "@pinia/nuxt": "^0.4.6",
+    "pinia": "^2.0.28",
     "rollup-plugin-visualizer": "^5.8.3",
     "vue-toastification": "2.0.0-rc.5"
   }
