@@ -8,12 +8,20 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Bars3IconOutline: typeof import('@heroicons/vue/24/outline/esm/Bars3Icon.js')['default']
+    CheckCircleIconOutline: typeof import('@heroicons/vue/24/outline/esm/CheckCircleIcon.js')['default']
+    CheckCircleIconSolid: typeof import('@heroicons/vue/24/solid/esm/CheckCircleIcon.js')['default']
     ChevronDownIconOutline: typeof import('@heroicons/vue/24/outline/esm/ChevronDownIcon.js')['default']
+    ExclamationTriangleIconOutline: typeof import('@heroicons/vue/24/outline/esm/ExclamationTriangleIcon.js')['default']
+    EyeIconOutline: typeof import('@heroicons/vue/24/outline/esm/EyeIcon.js')['default']
+    EyeSlashIconOutline: typeof import('@heroicons/vue/24/outline/esm/EyeSlashIcon.js')['default']
+    InformationCircleIconOutline: typeof import('@heroicons/vue/24/outline/esm/InformationCircleIcon.js')['default']
     Menu: typeof import('@headlessui/vue')['Menu']
     MenuButton: typeof import('@headlessui/vue')['MenuButton']
     MenuItem: typeof import('@headlessui/vue')['MenuItem']
     MenuItems: typeof import('@headlessui/vue')['MenuItems']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    XCircleIconOutline: typeof import('@heroicons/vue/24/outline/esm/XCircleIcon.js')['default']
+    XCircleIconSolid: typeof import('@heroicons/vue/24/solid/esm/XCircleIcon.js')['default']
   }
 }

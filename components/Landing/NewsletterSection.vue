@@ -9,7 +9,7 @@
   <h4 class="text-gray-500">
     Vous serez prévenu de la sortie de Be Right
   </h4>
-  <!-- <Form
+  <Form
     v-if="!isSuccess"
     v-slot="{ meta, isSubmitting }"
     :validation-schema="schema"
@@ -25,24 +25,25 @@
     />
     <BaseButton
       :disabled="!meta.valid || !meta.dirty || isSubmitting"
-      :is-loading="uiStore.getUIIsLoading || isSubmitting"
       type="submit"
-    >
+      >
+      <!-- :is-loading="uiStore.getUIIsLoading || isSubmitting" -->
       Prévenez-moi
     </BaseButton>
-  </Form> -->
-  <!-- <BaseMessage
+  </Form>
+  <BaseMessage
     v-else
     type="success"
   >
     Merci pour votre inscription!
-  </BaseMessage> -->
+  </BaseMessage>
 </section>
 </template>
 
 <script setup lang="ts">
 import { object, string } from 'yup'
-// import type { VeeValidateValues } from '@/types'
+import { Form } from 'vee-validate'
+
 // const { newsletterSignup } = newsletterHook()
 // const uiStore = useUiStore()
 // const { IncLoading, DecLoading } = uiStore
@@ -54,7 +55,7 @@ const schema = object({
   email: string().email('vous devez entrer in email valide').required('L\'adresse email est requise'),
 })
 
-// async function submit(form: VeeValidateValues) {
+async function submit(form: any) {
 //   IncLoading()
 //   await newsletterSignup({
 //     email: form.email,
@@ -65,5 +66,5 @@ const schema = object({
 //   isSuccess.value = true
 //   toast.success('Merci pour votre inscription!')
 //   DecLoading()
-// }
+}
 </script>

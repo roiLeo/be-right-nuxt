@@ -27,19 +27,19 @@
                 Tarifs
               </NuxtLink>
 
-              <!-- <BaseButton
+              <BaseButton
                 :href="getButtonPath"
               >
                 {{ userLogged ? 'Mon compte' : 'Commencer' }}
-              </BaseButton> -->
+              </BaseButton>
 
-              <!-- <NuxtLink
+              <NuxtLink
                 v-if="!userLogged"
                 :to="{ name: 'login' }"
                 class="px-3 py-2 text-sm font-medium rounded-md text-blue dark:text-white dark:hover:text-red-light hover:text-red-light"
               >
                 Se connecter
-              </NuxtLink> -->
+              </NuxtLink>
             </div>
           </div>
         </div>
@@ -108,13 +108,13 @@
                 as="li"
                 class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
               >
-                <!-- <BaseButton
+                <BaseButton
                   :href="getButtonPath"
                 >
                   {{ userLogged ? 'Mon compte' : 'Commencer' }}
-                </BaseButton> -->
+                </BaseButton>
               </MenuItem>
-              <!-- <MenuItem
+              <MenuItem
                 v-if="!userLogged"
                 as="li"
                 class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
@@ -125,7 +125,7 @@
                 >
                   Se connecter
                 </NuxtLink>
-              </MenuItem> -->
+              </MenuItem>
             </div>
           </MenuItems>
         </transition>
@@ -137,11 +137,11 @@
 
 <script setup lang="ts">
 // const { getRouteName, userLogged } = authHook()
-
-// const getButtonPath = computed(() => {
-//   if (!userLogged.value) {
-//     return { name: 'register' }
-//   }
-//   return getRouteName('events')
-// })
+const userLogged = ref(false)
+const getButtonPath = computed(() => {
+  if (!userLogged.value) {
+    return { name: 'register' }
+  }
+  // return getRouteName('events')
+})
 </script>
