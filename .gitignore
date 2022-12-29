@@ -1,0 +1,15 @@
+node_modules
+*.log*
+.nuxt
+.yarn
+.nitro
+.cache
+.output
+.env
+dist
+.DS_Store
+node_modules
+cypress/videos
+cypress/screenshots
+cypress/downloads
+stats.html
