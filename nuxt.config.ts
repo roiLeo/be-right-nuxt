@@ -12,6 +12,12 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
   ],
 
+  build: {
+    transpile: [
+      'vue-toastification',
+    ],
+  },
+
   vite: {
     plugins: [
       Components({

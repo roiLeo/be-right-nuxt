@@ -14,10 +14,12 @@ specifiers:
   tailwindcss: ^3.2.4
   typescript: ^4.9.4
   unplugin-vue-components: ^0.22.12
+  vue-toastification: 2.0.0-rc.5
 
 dependencies:
   '@heroicons/vue': 2.0.13
   rollup-plugin-visualizer: 5.8.3
+  vue-toastification: 2.0.0-rc.5
 
 devDependencies:
   '@antfu/eslint-config': 0.34.0_lzzuuodtsqwxnvqeq4g4likcqa
@@ -6853,6 +6855,12 @@ packages:
       '@vue/devtools-api': 6.4.5
       vue: 3.2.45
     dev: true
+
+  /vue-toastification/2.0.0-rc.5:
+    resolution: {integrity: sha512-q73e5jy6gucEO/U+P48hqX+/qyXDozAGmaGgLFm5tXX4wJBcVsnGp4e/iJqlm9xzHETYOilUuwOUje2Qg1JdwA==}
+    peerDependencies:
+      vue: ^3.0.2
+    dev: false
 
   /vue/3.2.45:
     resolution: {integrity: sha512-9Nx/Mg2b2xWlXykmCwiTUCWHbWIj53bnkizBxKai1g61f2Xit700A1ljowpTIM11e3uipOeiPcSqnmBg6gyiaA==}
