@@ -3,6 +3,7 @@
     <NuxtWelcome />
   </div>
   <h1 class="text-red-500">test</h1>
+  <ArrowDownIconOutline />
 </template>
 
 <style>
