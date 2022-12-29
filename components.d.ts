@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Bars3IconOutline: typeof import('@heroicons/vue/24/outline/esm/Bars3Icon.js')['default']
     ChevronDownIconOutline: typeof import('@heroicons/vue/24/outline/esm/ChevronDownIcon.js')['default']
     Menu: typeof import('@headlessui/vue')['Menu']
     MenuButton: typeof import('@headlessui/vue')['MenuButton']
