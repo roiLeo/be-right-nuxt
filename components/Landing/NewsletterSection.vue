@@ -26,8 +26,8 @@
     <BaseButton
       :disabled="!meta.valid || !meta.dirty || isSubmitting"
       type="submit"
+      :is-loading="uiStore.getUIIsLoading || isSubmitting"
       >
-      <!-- :is-loading="uiStore.getUIIsLoading || isSubmitting" -->
       Prévenez-moi
     </BaseButton>
   </Form>
@@ -43,11 +43,11 @@
 <script setup lang="ts">
 import { object, string } from 'yup'
 import { Form } from 'vee-validate'
+import { useUiStore } from '~~/store'
 
 const { newsletterSignup } = newsletterHook()
-// const uiStore = useUiStore()
-// const { IncLoading, DecLoading } = uiStore
-// const toast = useToast()
+const uiStore = useUiStore()
+const { IncLoading, DecLoading } = uiStore
 
 const isSuccess = ref(false)
 
@@ -57,7 +57,7 @@ const schema = object({
 
 async function submit(form: any) {
   const { $toast } = useNuxtApp()
-//   IncLoading()
+  IncLoading()
   await newsletterSignup({
     email: form.email,
     firstName: null,
@@ -66,6 +66,6 @@ async function submit(form: any) {
   })
   isSuccess.value = true
   $toast.success('Merci pour votre inscription!')
-//   DecLoading()
+  DecLoading()
 }
 </script>

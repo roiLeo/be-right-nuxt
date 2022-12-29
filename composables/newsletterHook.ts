@@ -2,9 +2,11 @@
 // import type { PaginatedResponse } from '@/helpers/api'
 // import type { NewsletterType } from '@/types'
 
+import { useUiStore } from '~~/store'
+
 export default function newsletterHook() {
   const { $toast, $api } = useNuxtApp()
-  // const { IncLoading, DecLoading } = useUiStore()
+  const { IncLoading, DecLoading } = useUiStore()
 
   // const newsletterStore = useNewsletterStore()
   // const { createMany, deleteOne: deleteOneStore } = newsletterStore
@@ -21,19 +23,19 @@ export default function newsletterHook() {
       lastName: string | null
       companyName: string | null
     }) {
-    // IncLoading()
+    IncLoading()
     try {
       const res = await $api().post('newsletter/', { email, firstName, lastName, companyName })
 
       if (res.status === 200) {
-        // DecLoading()
+        DecLoading()
         return res.status
       }
     } catch (error) {
       $toast.error('Une erreur est survenue')
       console.error(error)
     }
-    // DecLoading()
+    DecLoading()
   }
 
   // async function fetchAll(url?: string) {
