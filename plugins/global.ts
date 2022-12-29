@@ -1,6 +1,6 @@
 import { useToast } from 'vue-toastification'
 // import useDate from '~~/composables/useDate'
-// import { FetchWrapper } from '~/helper/api'
+import { FetchWrapper } from '~/helpers/api'
 
 export default defineNuxtPlugin(() => {
   function isProductionMode() {
@@ -15,13 +15,13 @@ export default defineNuxtPlugin(() => {
       getApiUrl: isProductionMode() ? import.meta.env.VITE_API_URL?.toString() : import.meta.env.VITE_DEV_API_URL?.toString(),
       toast: useToast(),
       // toFormat: (date: Date | string, format: string) => toFormat(date, format),
-      // api: () => {
-      //   const api = new FetchWrapper({
-      //     baseUrl: isProductionMode() ? import.meta.env.VITE_API_URL as string : import.meta.env.VITE_DEV_API_URL as string,
-      //     token: import.meta.env.VITE_API_TOKEN as string,
-      //   })
-      //   return api
-      // },
+      api: () => {
+        const api = new FetchWrapper({
+          baseUrl: isProductionMode() ? import.meta.env.VITE_API_URL as string : import.meta.env.VITE_DEV_API_URL as string,
+          token: import.meta.env.VITE_API_TOKEN as string,
+        })
+        return api
+      },
     },
   }
 })

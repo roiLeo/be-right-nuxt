@@ -44,7 +44,7 @@
 import { object, string } from 'yup'
 import { Form } from 'vee-validate'
 
-// const { newsletterSignup } = newsletterHook()
+const { newsletterSignup } = newsletterHook()
 // const uiStore = useUiStore()
 // const { IncLoading, DecLoading } = uiStore
 // const toast = useToast()
@@ -56,15 +56,16 @@ const schema = object({
 })
 
 async function submit(form: any) {
+  const { $toast } = useNuxtApp()
 //   IncLoading()
-//   await newsletterSignup({
-//     email: form.email,
-//     firstName: null,
-//     lastName: null,
-//     companyName: null,
-//   })
-//   isSuccess.value = true
-//   toast.success('Merci pour votre inscription!')
+  await newsletterSignup({
+    email: form.email,
+    firstName: null,
+    lastName: null,
+    companyName: null,
+  })
+  isSuccess.value = true
+  $toast.success('Merci pour votre inscription!')
 //   DecLoading()
 }
 </script>
