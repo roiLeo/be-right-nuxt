@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@antfu/eslint-config': ^0.34.0
+  '@headlessui/vue': ^1.7.7
   '@heroicons/vue': ^2.0.13
   '@nuxtjs/tailwindcss': ^6.2.0
   autoprefixer: ^10.4.13
@@ -18,6 +19,7 @@ dependencies:
 
 devDependencies:
   '@antfu/eslint-config': 0.34.0_lzzuuodtsqwxnvqeq4g4likcqa
+  '@headlessui/vue': 1.7.7
   '@nuxtjs/tailwindcss': 6.2.0
   autoprefixer: 10.4.13_postcss@8.4.20
   eslint: 8.30.0
@@ -482,6 +484,13 @@ packages:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@headlessui/vue/1.7.7:
+    resolution: {integrity: sha512-dkdNhJkxyT9rXW5fHx/MkKaM3U13P3duYuwoGTRmDGjE7xAsvcWOSJRJpw1AmCQTvjZF44bh2wSlySLaHW+WuQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      vue: ^3.2.0
     dev: true
 
   /@heroicons/vue/2.0.13:

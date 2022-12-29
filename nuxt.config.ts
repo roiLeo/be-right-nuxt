@@ -1,4 +1,5 @@
 import Components from 'unplugin-vue-components/vite'
+import { HeadlessUiResolver } from 'unplugin-vue-components/resolvers'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -13,7 +14,7 @@ export default defineNuxtConfig({
     plugins: [
       Components({
         resolvers: [
-          // HeadlessUiResolver({}),
+          HeadlessUiResolver({}),
           name => {
             if (name.includes('IconSolid')) {
               const realName = name.split('Solid')[0]
