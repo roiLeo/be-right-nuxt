@@ -3,6 +3,8 @@ describe('empty spec', () => {
     cy.visit('http://localhost:3000/')
     cy.get('h1').should('exist')
     cy.get('h1').contains('comment ça marche')
+    cy.get('header').should('exist')
+    cy.get('footer').should('exist')
   })
 
   it('button to submit form newsletter is disabled by default', () => {
