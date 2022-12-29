@@ -21,6 +21,7 @@
     "unplugin-vue-components": "^0.22.12"
   },
   "dependencies": {
-    "@heroicons/vue": "^2.0.13"
+    "@heroicons/vue": "^2.0.13",
+    "rollup-plugin-visualizer": "^5.8.3"
   }
 }
