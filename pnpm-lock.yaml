@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@antfu/eslint-config': ^0.34.0
+  '@antfu/utils': ^0.7.2
   '@headlessui/vue': ^1.7.7
   '@heroicons/vue': ^2.0.13
   '@malolebrin/pinia-entity-store': ^0.2.2
@@ -35,6 +36,7 @@ dependencies:
 
 devDependencies:
   '@antfu/eslint-config': 0.34.0_lzzuuodtsqwxnvqeq4g4likcqa
+  '@antfu/utils': 0.7.2
   '@headlessui/vue': 1.7.7
   '@nuxtjs/tailwindcss': 6.2.0
   autoprefixer: 10.4.13_postcss@8.4.20
