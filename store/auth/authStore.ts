@@ -21,7 +21,7 @@ export const useAuthStore = defineStore('auth', {
   },
   actions: {
     setJWTasUser(payload: JWTDecodedType) {
-      state.user = payload
+      this.user = payload
     },
   },
 })

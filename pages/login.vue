@@ -70,7 +70,7 @@ import { Form } from 'vee-validate'
 import type { UserType, VeeValidateValues, WithoutId } from '@/types'
 import { useAuthStore, useUiStore } from '~~/store'
 
-const { storeUsersEntities, getUserfullName, isUserAdmin, isUserType } = userHook()
+const { storeUsersEntities, getUserfullName, isUserType } = userHook()
 const { jwtDecode, setUserLogged } = authHook()
 const { IncLoading, DecLoading } = useUiStore()
 const { setJWTasUser } = useAuthStore()
@@ -93,8 +93,9 @@ const initialValues = {
   password: '',
 }
 
+const { $toast, $api, $router, $pinia } = useNuxtApp()
+console.log($pinia.state.value, '<==== $pinia')
 async function submitLogin(form: VeeValidateValues) {
-  const { $toast, $api } = useNuxtApp()
   try {
     IncLoading()
     const { data: user } = await $api().post<UserType>('user/login', form as WithoutId<UserType>)

@@ -2,33 +2,12 @@ import { defineStore } from 'pinia'
 import { createActions, createGetters } from '@malolebrin/pinia-entity-store'
 import type { PhotographerCreatePayload, UserType } from './types'
 import { basePhotographerForm, defaultUserState, userState } from './state'
-import { EntitiesEnum } from '@/types/globals'
 import { RoleEnum } from '@/types/Roles'
 
-export const useUserStore = defineStore(EntitiesEnum.USERS, {
+export const useUserStore = defineStore('user', {
   state: () => ({
     ...userState,
   }),
-  actions: {
-    ...createActions<UserType>(userState),
-
-    setPhotographerForm(payload: PhotographerCreatePayload) {
-      this.photographerForm = payload
-    },
-    resetPhotographerForm() {
-      this.photographerForm = basePhotographerForm
-    },
-
-    resetState() {
-      this.$state = defaultUserState()
-    },
-
-    // async getUserWithTokenFromAPI(token: string) {
-    //   const { loginWithToken } = authHook()
-    //   await loginWithToken(token)
-    // },
-    // TODO resolve when hooks are implemented
-  },
 
   getters: {
     ...createGetters<UserType>(userState),
@@ -48,6 +27,27 @@ export const useUserStore = defineStore(EntitiesEnum.USERS, {
       }
       return 'user'
     },
+  },
+
+  actions: {
+    ...createActions<UserType>(userState),
+
+    setPhotographerForm(payload: PhotographerCreatePayload) {
+      this.photographerForm = payload
+    },
+    resetPhotographerForm() {
+      this.photographerForm = basePhotographerForm
+    },
+
+    resetState() {
+      this.$state = defaultUserState()
+    },
+
+    // async getUserWithTokenFromAPI(token: string) {
+    //   const { loginWithToken } = authHook()
+    //   await loginWithToken(token)
+    // },
+    // TODO resolve when hooks are implemented
   },
 
 })
