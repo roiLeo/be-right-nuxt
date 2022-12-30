@@ -10,7 +10,7 @@ type WithoutId<T> = Omit<T, 'id'>
 
 interface ApiMethods {
   get: <T>(path: string) => Promise<FetchWrapperResponse<T>>
-  post: <T extends WithoutId<T>>(path: string, data?: T) => Promise<FetchWrapperResponse<T>>
+  post: <T>(path: string, data?: T) => Promise<FetchWrapperResponse<T>>
   patch: <T>(path: string, data: Partial<T>) => Promise<FetchWrapperResponse<T>>
   put: <T>(path: string, data: Partial<T>) => Promise<FetchWrapperResponse<T>>
   delete: <T>(path: string, data?: T) => Promise<FetchWrapperResponse<T>>

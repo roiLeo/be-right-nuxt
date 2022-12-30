@@ -1,5 +1,4 @@
 import type { NewsletterType, PaginatedResponse } from '@/types'
-
 import { useNewsletterStore, useUiStore } from '~~/store'
 
 export default function newsletterHook() {
