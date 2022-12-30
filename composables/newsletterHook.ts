@@ -1,15 +1,13 @@
-// import APi from '@/helpers/api'
-// import type { PaginatedResponse } from '@/helpers/api'
-// import type { NewsletterType } from '@/types'
+import type { NewsletterType, PaginatedResponse } from '@/types'
 
-import { useUiStore } from '~~/store'
+import { useNewsletterStore, useUiStore } from '~~/store'
 
 export default function newsletterHook() {
   const { $toast, $api } = useNuxtApp()
   const { IncLoading, DecLoading } = useUiStore()
 
-  // const newsletterStore = useNewsletterStore()
-  // const { createMany, deleteOne: deleteOneStore } = newsletterStore
+  const newsletterStore = useNewsletterStore()
+  const { createMany, deleteOne: deleteOneStore } = newsletterStore
 
   async function newsletterSignup({
     email,
@@ -38,43 +36,45 @@ export default function newsletterHook() {
     DecLoading()
   }
 
-  // async function fetchAll(url?: string) {
-  //   IncLoading()
-  //   try {
-  //     let finalUrl = 'newsletter'
-  //     if (url) {
-  //       finalUrl += `${url}`
-  //     }
+  async function fetchAll(url?: string) {
+    IncLoading()
+    try {
+      let finalUrl = 'newsletter'
+      if (url) {
+        finalUrl += `${url}`
+      }
 
-  //     const res = await api.get(finalUrl)
-  //     const { data }: PaginatedResponse<NewsletterType> = res
-  //     const missingNewsletters = newsletterStore.getMissingEntities(data)
-  //     if (missingNewsletters.length > 0) {
-  //       createMany(missingNewsletters)
-  //     }
-  //   } catch (error) {
-  //     console.error(error)
-  //     toast.error('Une erreur est survenue')
-  //   }
-  //   DecLoading()
-  // }
+      const { data: res } = await $api().get<PaginatedResponse<NewsletterType>>(finalUrl)
+      if (res) {
+        const { data }: PaginatedResponse<NewsletterType> = res
+        const missingNewsletters = newsletterStore.getMissingEntities(data)
+        if (missingNewsletters.length > 0) {
+          createMany(missingNewsletters)
+        }
+      }
+    } catch (error) {
+      console.error(error)
+      $toast.error('Une erreur est survenue')
+    }
+    DecLoading()
+  }
 
-  // async function deleteOne(id: number) {
-  //   IncLoading()
-  //   try {
-  //     await api.delete(`newsletter/${id}`)
-  //     deleteOneStore(id)
-  //     toast.success('Newsletter item supprimé avec succès')
-  //   } catch (error) {
-  //     console.error(error)
-  //     toast.error('Une erreur est survenue')
-  //   }
-  //   DecLoading()
-  // }
+  async function deleteOne(id: number) {
+    IncLoading()
+    try {
+      await $api().delete(`newsletter/${id}`)
+      deleteOneStore(id)
+      $toast.success('Newsletter item supprimé avec succès')
+    } catch (error) {
+      console.error(error)
+      $toast.error('Une erreur est survenue')
+    }
+    DecLoading()
+  }
 
   return {
-    // deleteOne,
-    // fetchAll,
+    deleteOne,
+    fetchAll,
     newsletterSignup,
   }
 }
