@@ -31,3 +31,12 @@ export interface ValidationRequest {
   success: boolean
   message: string
 }
+
+export interface PaginatedResponse<T> {
+  currentPage: number | null
+  data: T[]
+  limit: number | null
+  total: number | null
+}
+
+export type WithoutId<T> = Omit<T, 'id'>
