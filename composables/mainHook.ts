@@ -1,4 +1,4 @@
-import { storeToRefs } from '@pinia/nuxt/dist/runtime/composables'
+import { storeToRefs } from 'pinia'
 import { ThemeEnum } from '@/types/globals'
 import { useMainStore } from '~~/store'
 

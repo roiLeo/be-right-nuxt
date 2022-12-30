@@ -35,6 +35,7 @@
 
               <NuxtLink
                 v-if="!userLogged"
+                id="login-link"
                 :to="{ name: 'login' }"
                 class="px-3 py-2 text-sm font-medium rounded-md text-blue dark:text-white dark:hover:text-red-light hover:text-red-light"
               >
