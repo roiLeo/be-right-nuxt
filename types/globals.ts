@@ -38,3 +38,5 @@ export interface PaginatedResponse<T> {
   limit: number | null
   total: number | null
 }
+
+export type WithoutId<T> = Omit<T, 'id'>
