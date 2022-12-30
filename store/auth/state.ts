@@ -1,8 +1,8 @@
 import type { State } from './types'
 
-export function defaultState(): State {
+export function defaultAuthState(): State {
   return {
     user: null,
   }
 }
-export const state = defaultState()
+export const state = defaultAuthState()
