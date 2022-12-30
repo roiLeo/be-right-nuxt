@@ -1,9 +1,8 @@
 <template>
-  <div>
-    Events
+<div>
+  Events
 </div>
 </template>
 
 <script setup lang="ts">
 </script>
-  

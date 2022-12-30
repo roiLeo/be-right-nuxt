@@ -66,9 +66,9 @@
 <script setup lang="ts">
 import { object, string } from 'yup'
 // import { useCookies } from 'vue3-cookies'
+import { Form } from 'vee-validate'
 import type { UserType, VeeValidateValues, WithoutId } from '@/types'
-import { useAuthStore, useUiStore } from '~~/store';
-import { Form } from 'vee-validate';
+import { useAuthStore, useUiStore } from '~~/store'
 
 const { storeUsersEntities, getUserfullName, isUserAdmin, isUserType } = userHook()
 const { jwtDecode, setUserLogged } = authHook()
@@ -98,9 +98,9 @@ async function submitLogin(form: VeeValidateValues) {
   try {
     IncLoading()
     const { data: user } = await $api().post<UserType>('user/login', form as WithoutId<UserType>)
-      
+
     if (user && isUserType(user)) {
-        console.log(user, '<==== user')
+      console.log(user, '<==== user')
       storeUsersEntities(user, true)
       // cookies.set('userToken', user.token)
       const decode = jwtDecode(user.token)
