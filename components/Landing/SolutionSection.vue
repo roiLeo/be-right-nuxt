@@ -5,7 +5,7 @@
 >
   <img
     class="absolute right-0 hidden duration-500 ease-in-out transform md:inline hover:-translate-y-2 animate-fade-in-down"
-    src="/img/mokup-phone.webp"
+    src="/static/mokup-phone.webp"
     alt="mokup"
   >
   <div class="flex flex-wrap pt-4 pb-12 mx-auto md:container">

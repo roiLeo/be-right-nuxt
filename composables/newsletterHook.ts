@@ -17,12 +17,12 @@ export default function newsletterHook() {
     lastName,
     companyName,
   }:
-    {
-      email: string
-      firstName: string | null
-      lastName: string | null
-      companyName: string | null
-    }) {
+  {
+    email: string
+    firstName: string | null
+    lastName: string | null
+    companyName: string | null
+  }) {
     IncLoading()
     try {
       const res = await $api().post('newsletter/', { email, firstName, lastName, companyName })

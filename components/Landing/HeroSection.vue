@@ -25,7 +25,7 @@
     <div class="absolute inset-0 z-0 bg-transparent shadow-xl sm:z-50 sm:rounded-lg md:static">
       <img
         class="z-0 w-full duration-300 ease-in-out transform opacity-40 sm:opacity-100 sm:rounded-lg sm:z-50 sm:hover:-translate-x-1"
-        src="/img/photographer.webp"
+        src="/static/photographer.webp"
         alt="photographer"
       >
     </div>

@@ -27,7 +27,7 @@
       :disabled="!meta.valid || !meta.dirty || isSubmitting"
       type="submit"
       :is-loading="uiStore.getUIIsLoading || isSubmitting"
-      >
+    >
       Prévenez-moi
     </BaseButton>
   </Form>

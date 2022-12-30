@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
 import type { FieldMeta } from 'vee-validate'
-import { Field, ErrorMessage } from 'vee-validate'
+import { ErrorMessage, Field } from 'vee-validate'
 
 interface Props {
   disabled?: boolean

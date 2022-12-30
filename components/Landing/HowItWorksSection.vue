@@ -15,7 +15,7 @@
         <div class="hidden md:block">
           <img
             class="w-24"
-            src="img/step1.svg"
+            src="/static/step1.svg"
             alt="step1"
             height="100px"
             width="100px"
@@ -41,7 +41,7 @@
         <div class="hidden md:block">
           <img
             class="w-28"
-            src="img/step2.svg"
+            src="/static/step2.svg"
             alt="step2"
           >
         </div>
@@ -65,7 +65,7 @@
         <div class="hidden md:block">
           <img
             class="w-28"
-            src="img/step3.svg"
+            src="/static/step3.svg"
             alt="step3"
           >
         </div>
