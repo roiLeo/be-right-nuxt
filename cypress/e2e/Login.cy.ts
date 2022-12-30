@@ -4,14 +4,7 @@ describe('Login spec', () => {
     cy.get('#login-link').click()
   })
 
-  it('load login page', () => {
-    cy.get('h1').should('exist')
-    cy.get('h1').contains('Connectez vous sur')
-    cy.get('header').should('exist')
-    cy.get('footer').should('exist')
-  })
-
-  it('button to submit form newsletter is disabled by default', () => {
+  it('button to submit form login is disabled by default', () => {
     cy.get('button[type=submit]').should('exist')
     cy.get('button[type=submit]').should('be.disabled')
   })
