@@ -1,6 +1,6 @@
 <template>
 <div>
-  Events
+  forgot-password
 </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
 <div>
-  Events
+  404
 </div>
 </template>
 

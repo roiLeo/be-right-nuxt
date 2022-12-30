@@ -1,4 +1,4 @@
-describe('empty spec', () => {
+describe('Home spec', () => {
   it('load landing page', () => {
     cy.visit('http://localhost:3000/')
     cy.get('h1').should('exist')
