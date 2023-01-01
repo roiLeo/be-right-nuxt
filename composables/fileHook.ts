@@ -1,6 +1,6 @@
 import { hasOwnProperty } from '@antfu/utils'
-import type { FileType, PaginatedResponse } from '@/types'
 import { FileTypeEnum } from '@/types'
+import type { FileType, PaginatedResponse, UserType } from '@/types'
 import { useFileStore, useUiStore, useUserStore } from '~~/store'
 
 export default function fileHook() {
@@ -34,7 +34,7 @@ export default function fileHook() {
       if (data && isFileType(data)) {
         if (data.createdByUser) {
           fileStore.createOne(data)
-          const user = await $api().get(`user/${data.createdByUser}`)
+          const { data: user } = await $api().get<UserType>(`user/${data.createdByUser}`)
           if (user && isUserType(user)) {
             updateOne(user.id, user)
             if (userStore.getCurrentUserId === user.id) {
