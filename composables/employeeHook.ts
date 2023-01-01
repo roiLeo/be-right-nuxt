@@ -1,9 +1,9 @@
 import { uniq } from '@antfu/utils'
-import type { AnswerType, EmployeeType, FileType, PaginatedResponse } from '@/types'
+import type { EmployeeType, FileType, PaginatedResponse } from '@/types'
 import { isArrayOfNumbers } from '~~/utils'
 import {
   useAddressStore,
-  useAnswerStore,
+  // useAnswerStore,
   useEmployeeStore,
   useFileStore,
   useUiStore,
@@ -15,14 +15,14 @@ export default function employeeHook() {
 
   const employeeStore = useEmployeeStore()
   const userStore = useUserStore()
-  const { createMany: createManyAnswers } = useAnswerStore()
+  // const { createMany: createManyAnswers } = useAnswerStore()
   const { createMany: createManyFiles } = useFileStore()
   const { IncLoading, DecLoading } = useUiStore()
   const addressStore = useAddressStore()
   const { createOne: createOneAddress } = addressStore
   const { filteringFilesNotInStore } = fileHook()
-  const { filteringAnswersNotInStore } = answerHook()
-  const { isAddressType } = addressHook()
+  // const { filteringAnswersNotInStore } = answerHook()
+  // const { isAddressType } = addressHook()
 
   function getEmployeeStatusSignature(employee: EmployeeType): string {
     if (employee.hasSigned) {
@@ -52,7 +52,7 @@ export default function employeeHook() {
       if (missingIds.length > 0) {
         // TODO : optimize this with reduce
         const employeesToStore = employees.filter(employee => missingIds.includes(employee.id)).map(employee => {
-          let employeeAnswers: AnswerType[] = []
+          // let employeeAnswers: AnswerType[] = []
           let employeeFiles: FileType[] = []
 
           if (employee.files && employee.files.length > 0 && !isArrayOfNumbers(employee.files)) {
@@ -62,22 +62,23 @@ export default function employeeHook() {
             }
           }
 
-          if (employee.answers && employee.answers.length > 0 && !isArrayOfNumbers(employee.answers)) {
-            employeeAnswers = filteringAnswersNotInStore(employee.answers as AnswerType[])
-            if (employeeAnswers.length > 0) {
-              createManyAnswers(employeeAnswers)
-            }
-          }
-          if (employee.address && isAddressType(employee.address)) {
-            if (!addressStore.isAlreadyInStore(employee.address.id)) {
-              createOneAddress(employee.address)
-            }
-            employee.address = employee.address.id
-          }
+          // if (employee.answers && employee.answers.length > 0 && !isArrayOfNumbers(employee.answers)) {
+          //   employeeAnswers = filteringAnswersNotInStore(employee.answers as AnswerType[])
+          //   if (employeeAnswers.length > 0) {
+          //     createManyAnswers(employeeAnswers)
+          //   }
+          // }
+
+          // if (employee.address && isAddressType(employee.address)) {
+          //   if (!addressStore.isAlreadyInStore(employee.address.id)) {
+          //     createOneAddress(employee.address)
+          //   }
+          //   employee.address = employee.address.id
+          // }
 
           return {
             ...employee,
-            answers: employeeAnswers.map(answer => answer.id),
+            // answers: employeeAnswers.map(answer => answer.id),
             files: employeeFiles.map(file => file.id),
           }
         })

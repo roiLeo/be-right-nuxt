@@ -1,12 +1,12 @@
 // import { useCookies } from 'vue3-cookies'
 import type { JWTDecodedType, UserType, ValidationRequest } from '@/types'
 import {
-  useAnswerStore,
+  // useAnswerStore,
   useBugStore,
   useEmployeeStore,
   useEventStore,
   useFileStore,
-  useMainStore,
+  // useMainStore,
   useTableStore,
   useUiStore,
   useUserStore,
@@ -16,8 +16,8 @@ export default function authHook() {
   const { $toast, $api } = useNuxtApp()
 
   const userStore = useUserStore()
-  const mainStore = useMainStore()
-  const answerStore = useAnswerStore()
+  // const mainStore = useMainStore()
+  // const answerStore = useAnswerStore()
   const bugStore = useBugStore()
   const employeeStore = useEmployeeStore()
   const eventStore = useEventStore()
@@ -36,12 +36,12 @@ export default function authHook() {
     // TODO add deletecredentials functions
     userStore.removeCurrent()
     // cookies.remove('userToken')
-    answerStore.resetState()
+    // answerStore.resetState()
     bugStore.resetState()
     employeeStore.resetState()
     eventStore.resetState()
     fileStore.resetState()
-    mainStore.resetAllState()
+    // mainStore.resetAllState()
     tableStore.resetTableState()
     uiStore.resetUIState()
     userStore.resetState()
@@ -69,13 +69,13 @@ export default function authHook() {
     return data
   }
 
-  function getRouteName(routeName: string) {
-    const roleRoutePrefix = userStore.getRoutePrefixBasedOnRole
-    if (roleRoutePrefix) {
-      return `${roleRoutePrefix}.${routeName}`
-    }
-    return ''
-  }
+  // function getRouteName(routeName: string) {
+  //   const roleRoutePrefix = userStore.getRoutePrefixBasedOnRole
+  //   if (roleRoutePrefix) {
+  //     return `${roleRoutePrefix}.${routeName}`
+  //   }
+  //   return ''
+  // }
 
   function jwtDecode(jwt: any): JWTDecodedType | null {
     if (typeof jwt !== 'string' && !(jwt instanceof String))
@@ -90,24 +90,11 @@ export default function authHook() {
     return Object.assign({}, obj1, obj2)
   }
 
-  const userLogged = ref<JWTDecodedType | null>(null)
-
-  function setUserLogged(payload: JWTDecodedType) {
-    userLogged.value = payload
-  }
-
-  function resetUserLogged() {
-    userLogged.value = null
-  }
-
   return {
     checkMailIsAlreadyExist,
-    getRouteName,
+    // getRouteName,
     jwtDecode,
     loginWithToken,
     logout,
-    resetUserLogged,
-    setUserLogged,
-    userLogged,
   }
 }

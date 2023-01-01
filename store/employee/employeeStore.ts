@@ -11,12 +11,12 @@ export const useEmployeeStore = defineStore('employees', {
     ...createGetters<EmployeeType>(employeState),
 
     // bellow getters in this specific store,
-    getAllByEventId: state => (eventId: number) => {
-      return Object.values(state.entities.byId).filter(employee => employee.event === eventId)
-    },
-    getEmployeesByUserId: state => {
-      return (userId: number) => Object.values(state.entities.byId).filter(employee => employee.createdByUser === userId)
-    },
+    // getAllByEventId: state => (eventId: number) => {
+    //   return Object.values(state.entities.byId).filter(employee => employee.event === eventId)
+    // },
+    // getEmployeesByUserId: state => {
+    //   return (userId: number) => Object.values(state.entities.byId).filter(employee => employee.createdByUser === userId)
+    // },
 
   },
   actions: {

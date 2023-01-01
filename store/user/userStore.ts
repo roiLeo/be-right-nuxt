@@ -12,32 +12,32 @@ export const useUserStore = defineStore('user', {
   getters: {
     ...createGetters<UserType>(userState),
 
-    getUserFullName: state => {
-      const user = state.entities.current
-      return `${user?.firstName} ${user?.lastName}`
-    },
-    isCurrentUserAdmin: state => state.entities.current?.roles === RoleEnum.ADMIN,
-    isLoggedIn: state => state.entities.current !== undefined && state.entities.current !== null,
-    getCurrentUserId: state => state.entities.current?.id,
-    getCurrentUser: state => state.entities.current,
-    getFirst: state => Object.values(state.entities.byId)?.length > 0 ? Object.values(state.entities.byId)[0] : null,
-    getRoutePrefixBasedOnRole: state => {
-      if (state.entities.current?.roles === RoleEnum.ADMIN) {
-        return 'admin'
-      }
-      return 'user'
-    },
+    // getUserFullName: state => {
+    //   const user = state.entities.current
+    //   return `${user?.firstName} ${user?.lastName}`
+    // },
+    // isCurrentUserAdmin: state => state.entities.current?.roles === RoleEnum.ADMIN,
+    // isLoggedIn: state => state.entities.current !== undefined && state.entities.current !== null,
+    // getCurrentUserId: state => state.entities.current?.id,
+    // getCurrentUser: state => state.entities.current,
+    // getFirst: state => Object.values(state.entities.byId)?.length > 0 ? Object.values(state.entities.byId)[0] : null,
+    // getRoutePrefixBasedOnRole: state => {
+    //   if (state.entities.current?.roles === RoleEnum.ADMIN) {
+    //     return 'admin'
+    //   }
+    //   return 'user'
+    // },
   },
 
   actions: {
     ...createActions<UserType>(userState),
 
-    setPhotographerForm(payload: PhotographerCreatePayload) {
-      this.photographerForm = payload
-    },
-    resetPhotographerForm() {
-      this.photographerForm = basePhotographerForm
-    },
+    // setPhotographerForm(payload: PhotographerCreatePayload) {
+    //   this.photographerForm = payload
+    // },
+    // resetPhotographerForm() {
+    //   this.photographerForm = basePhotographerForm
+    // },
 
     resetState() {
       this.$state = defaultUserState()

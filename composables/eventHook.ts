@@ -9,7 +9,7 @@ export default function eventHook() {
 
   const eventStore = useEventStore()
   const { isUserType } = userHook()
-  const { isAddressType } = addressHook()
+  // const { isAddressType } = addressHook()
   const { DecLoading, IncLoading } = useUiStore()
   const addressStore = useAddressStore()
   const { createOne: createOneAddress } = addressStore
@@ -36,13 +36,13 @@ export default function eventHook() {
   function storeEventRelationEntities(events: EventType[]) {
     if (events?.length > 0) {
       const eventsToStore = events.map(event => {
-        const address = event.address
-        if (address && isAddressType(address)) {
-          if (!addressStore.isAlreadyInStore(address?.id)) {
-            createOneAddress(address)
-            delete event.address
-          }
-        }
+        // const address = event.address
+        // if (address && isAddressType(address)) {
+        //   if (!addressStore.isAlreadyInStore(address?.id)) {
+        //     createOneAddress(address)
+        //     delete event.address
+        //   }
+        // }
         return {
           ...event,
         }
@@ -170,9 +170,9 @@ export default function eventHook() {
       try {
         delete event.address
         delete event.partnerId
-        const res = await $api().patch(`event/${event.id}`, { event })
-        if (isEventType(res)) {
-          eventStore.updateOne(res.id, res)
+        const { data } = await $api().patch<EventType>(`event/${event.id}`, event)
+        if (data && isEventType(data)) {
+          eventStore.updateOne(data.id, data)
           $toast.success('L\'événement a été mis à jour avec succès')
         }
       } catch (error) {
