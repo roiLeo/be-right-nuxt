@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { noNull, notUndefined } from '@antfu/utils'
-import { state } from './state'
+import { defaultAuthState, state } from './state'
 import type { JWTDecodedType } from '@/types'
 import { RoleEnum } from '@/types'
 
@@ -26,6 +26,10 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     setJWTasUser(payload: JWTDecodedType) {
       this.user = payload
+    },
+
+    resetAuthState() {
+      this.$state = defaultAuthState()
     },
   },
 })

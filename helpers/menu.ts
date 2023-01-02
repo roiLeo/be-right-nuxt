@@ -13,7 +13,7 @@ export const MENU_ITEMS = [
   {
     label: 'Événements',
     icon: HomeIcon,
-    linkName: 'event',
+    linkName: 'evenement',
     isAdmin: true,
   },
   {
