@@ -71,7 +71,7 @@ import type { UserType, VeeValidateValues, WithoutId } from '@/types'
 import { useAuthStore, useUiStore } from '~~/store'
 
 const { storeUsersEntities, getUserfullName, isUserType } = userHook()
-const { jwtDecode, setUserLogged } = authHook()
+const { jwtDecode } = authHook()
 const { IncLoading, DecLoading } = useUiStore()
 const { setJWTasUser } = useAuthStore()
 const uiStore = useUiStore()
@@ -94,7 +94,7 @@ const initialValues = {
 }
 
 const { $toast, $api, $router, $pinia } = useNuxtApp()
-console.log($pinia.state.value, '<==== $pinia')
+
 async function submitLogin(form: VeeValidateValues) {
   try {
     IncLoading()
@@ -106,7 +106,7 @@ async function submitLogin(form: VeeValidateValues) {
       // cookies.set('userToken', user.token)
       const decode = jwtDecode(user.token)
       if (decode) {
-        setUserLogged(decode)
+        // setUserLogged(decode)
         setJWTasUser(decode)
       }
       $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
@@ -120,4 +120,6 @@ async function submitLogin(form: VeeValidateValues) {
   }
   DecLoading()
 }
+
+definePageMeta({ layout: 'default' })
 </script>
