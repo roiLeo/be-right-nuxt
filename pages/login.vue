@@ -65,7 +65,6 @@
 
 <script setup lang="ts">
 import { object, string } from 'yup'
-// import { useCookies } from 'vue3-cookies'
 import { Form } from 'vee-validate'
 import type { UserType, VeeValidateValues, WithoutId } from '@/types'
 import { useAuthStore, useUiStore } from '~~/store'
@@ -76,7 +75,6 @@ const { IncLoading, DecLoading } = useUiStore()
 const { setJWTasUser } = useAuthStore()
 const uiStore = useUiStore()
 const router = useRouter()
-// const { cookies } = useCookies()
 
 interface IForm extends VeeValidateValues {
   email: string
@@ -96,16 +94,17 @@ const initialValues = {
 const { $toast, $api } = useNuxtApp()
 
 async function submitLogin(form: VeeValidateValues) {
+  const cookieToken = useCookie('userToken')
   try {
     IncLoading()
     const { data: user } = await $api().post<UserType>('user/login', form as WithoutId<UserType>)
 
     if (user) {
       storeUsersEntities(user, false)
-      // cookies.set('userToken', user.token)
+      cookieToken.value = user.token
       const decode = jwtDecode(user.token)
+
       if (decode) {
-        // setUserLogged(decode)
         setJWTasUser(decode)
       }
       $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
