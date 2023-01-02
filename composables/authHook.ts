@@ -2,7 +2,7 @@
 import type { JWTDecodedType, UserType, ValidationRequest } from '@/types'
 import {
   // useAnswerStore,
-  useBugStore,
+  // useBugStore,
   useEmployeeStore,
   useEventStore,
   useFileStore,
@@ -18,13 +18,13 @@ export default function authHook() {
   const userStore = useUserStore()
   // const mainStore = useMainStore()
   // const answerStore = useAnswerStore()
-  const bugStore = useBugStore()
+  // const bugStore = useBugStore()
   const employeeStore = useEmployeeStore()
   const eventStore = useEventStore()
   const fileStore = useFileStore()
   const tableStore = useTableStore()
   const uiStore = useUiStore()
-  const { setThemeClass } = mainHook()
+  // const { setThemeClass } = mainHook()
   const { storeUsersEntities } = userHook()
   const { IncLoading, DecLoading } = useUiStore()
   const router = useRouter()
@@ -37,7 +37,7 @@ export default function authHook() {
     userStore.removeCurrent()
     // cookies.remove('userToken')
     // answerStore.resetState()
-    bugStore.resetState()
+    // bugStore.resetState()
     employeeStore.resetState()
     eventStore.resetState()
     fileStore.resetState()
@@ -55,7 +55,7 @@ export default function authHook() {
     try {
       const { data: user } = await $api().post<UserType>('user/token', { token })
       if (user) {
-        setThemeClass(user.theme)
+        // setThemeClass(user.theme)
         storeUsersEntities(user, true)
       }
     } catch (error) {
