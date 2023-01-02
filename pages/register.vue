@@ -109,13 +109,15 @@
 <script setup lang="ts">
 import { Form } from 'vee-validate'
 import { object, string } from 'yup'
-import { useToast } from 'vue-toastification'
-import type { RegisterPayload, VeeValidateValues } from '@/types'
+import type { UserType, VeeValidateValues } from '@/types'
 import { RoleEnum } from '@/types'
-import { useUiStore } from '~~/store'
+import { useAuthStore, useUiStore } from '~~/store'
 
-const { register } = userHook()
-const { checkMailIsAlreadyExist } = authHook()
+const { $toast, $api } = useNuxtApp()
+const router = useRouter()
+const { checkMailIsAlreadyExist, jwtDecode } = authHook()
+const { storeUsersEntities, getUserfullName } = userHook()
+const { setJWTasUser } = useAuthStore()
 const uiStore = useUiStore()
 const { IncLoading, DecLoading } = uiStore
 
@@ -139,12 +141,33 @@ const initialValues = {
 
 async function submitregister(form: VeeValidateValues) {
   IncLoading()
+  const cookieToken = useCookie('userToken')
+
   const isEmailExist = await checkMailIsAlreadyExist(form.email)
+
   if (isEmailExist && !isEmailExist.success) {
-    const toast = useToast()
-    toast.error(isEmailExist.message)
+    $toast.error(isEmailExist.message)
   } else {
-    await register(form as RegisterPayload)
+    try {
+      const { data: user } = await $api().post<UserType>('user', form)
+
+      if (user) {
+        storeUsersEntities(user, false)
+        cookieToken.value = user.token
+        const decode = jwtDecode(user.token)
+
+        if (decode) {
+          setJWTasUser(decode)
+        }
+        $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
+        router.replace({
+          name: 'event',
+        })
+      }
+    } catch (error) {
+      console.error(error)
+      $toast.error('Une erreur est survenue')
+    }
   }
   DecLoading()
 }
