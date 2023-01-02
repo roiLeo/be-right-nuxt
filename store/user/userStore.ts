@@ -11,6 +11,13 @@ export const useUserStore = defineStore('user', {
 
   getters: {
     ...createGetters<UserType>(userState),
+    // getUserById: (state) => {
+    //   return (userId) => state.users.find((user) => user.id === userId)
+    // },
+
+    getOneByEmail: state => {
+      return (email: string) => Object.values(state.entities.byId).find(user => user.email === email)
+    },
 
     // getUserFullName: state => {
     //   const user = state.entities.current

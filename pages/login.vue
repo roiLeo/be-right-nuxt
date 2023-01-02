@@ -70,7 +70,7 @@ import { Form } from 'vee-validate'
 import type { UserType, VeeValidateValues, WithoutId } from '@/types'
 import { useAuthStore, useUiStore } from '~~/store'
 
-const { storeUsersEntities, getUserfullName, isUserType } = userHook()
+const { storeUsersEntities, getUserfullName } = userHook()
 const { jwtDecode } = authHook()
 const { IncLoading, DecLoading } = useUiStore()
 const { setJWTasUser } = useAuthStore()
@@ -93,16 +93,15 @@ const initialValues = {
   password: '',
 }
 
-const { $toast, $api, $router, $pinia } = useNuxtApp()
+const { $toast, $api } = useNuxtApp()
 
 async function submitLogin(form: VeeValidateValues) {
   try {
     IncLoading()
     const { data: user } = await $api().post<UserType>('user/login', form as WithoutId<UserType>)
 
-    if (user && isUserType(user)) {
-      console.log(user, '<==== user')
-      storeUsersEntities(user, true)
+    if (user) {
+      storeUsersEntities(user, false)
       // cookies.set('userToken', user.token)
       const decode = jwtDecode(user.token)
       if (decode) {
