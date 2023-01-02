@@ -1,13 +1,13 @@
 // import { useCookies } from 'vue3-cookies'
 import type { JWTDecodedType, ValidationRequest } from '@/types'
-import { RoleEnum, UserType } from '@/types'
+import { RoleEnum } from '@/types'
 import {
+  useAuthStore,
   // useAnswerStore,
   // useBugStore,
   useEmployeeStore,
   useEventStore,
   useFileStore,
-  // useMainStore,
   useTableStore,
   useUiStore,
   useUserStore,
@@ -17,7 +17,6 @@ export default function authHook() {
   const { $toast, $api } = useNuxtApp()
 
   const userStore = useUserStore()
-  // const mainStore = useMainStore()
   // const answerStore = useAnswerStore()
   // const bugStore = useBugStore()
   const employeeStore = useEmployeeStore()
@@ -25,48 +24,33 @@ export default function authHook() {
   const fileStore = useFileStore()
   const tableStore = useTableStore()
   const uiStore = useUiStore()
-  // const { setThemeClass } = mainHook()
-  const { storeUsersEntities } = userHook()
-  const { IncLoading, DecLoading } = useUiStore()
   const router = useRouter()
-  // const { cookies } = useCookies()
-  // TODO use cookies to see if user is logged in
+  const { resetAuthState } = useAuthStore()
 
   function logout() {
     // api.deleteCredentials()
     // TODO add deletecredentials functions
-    userStore.removeCurrent()
-    // cookies.remove('userToken')
+
     // answerStore.resetState()
     // bugStore.resetState()
     employeeStore.resetState()
     eventStore.resetState()
     fileStore.resetState()
-    // mainStore.resetAllState()
     tableStore.resetTableState()
     uiStore.resetUIState()
     userStore.resetState()
 
-    router.replace({ name: 'home' })
+    resetAuthState()
+
+    const cookieToken = useCookie('userToken')
+    cookieToken.value = null
+
+    router.replace({ name: 'index' })
     $toast.success('Vous êtes déconnecté')
   }
 
-  // async function loginWithToken(token: string) {
-  //   IncLoading()
-  //   try {
-  //     const { data: user } = await $api().post<UserType>('user/token', { token })
-  //     if (user) {
-  //       // setThemeClass(user.theme)
-  //       storeUsersEntities(user, true)
-  //     }
-  //   } catch (error) {
-  //     console.error(error)
-  //   }
-  //   DecLoading()
-  // }
-
   async function checkMailIsAlreadyExist(email: string) {
-    const { data } = await $api().post<ValidationRequest>('user/isMailAlreadyExist', { email })
+    const { data } = await $api().post<ValidationRequest>('user/isMailAlreadyExist', email)
     return data
   }
 
