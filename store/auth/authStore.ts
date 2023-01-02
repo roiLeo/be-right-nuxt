@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { noNull, notUndefined } from '@antfu/utils'
-import { useUserStore } from '../user/userStore'
 import { state } from './state'
 import type { JWTDecodedType } from '@/types'
 import { RoleEnum } from '@/types'
@@ -22,14 +21,8 @@ export const useAuthStore = defineStore('auth', {
         return str
       }
     },
-    getUserLoggedIn: state => {
-      const userStore = useUserStore()
-      if (state.user) {
-        return userStore.getOneByEmail(state.user.email)
-      }
-      return null
-    },
   },
+
   actions: {
     setJWTasUser(payload: JWTDecodedType) {
       this.user = payload

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { createActions, createGetters } from '@malolebrin/pinia-entity-store'
+import { useAuthStore } from '../auth/authStore'
 import type { PhotographerCreatePayload, UserType } from './types'
 import { basePhotographerForm, defaultUserState, userState } from './state'
 import { RoleEnum } from '@/types/Roles'
@@ -17,6 +18,11 @@ export const useUserStore = defineStore('user', {
 
     getOneByEmail: state => {
       return (email: string) => Object.values(state.entities.byId).find(user => user.email === email)
+    },
+
+    getAuthUser: state => {
+      const authStore = useAuthStore()
+      return Object.values(state.entities.byId).find(user => user.email === authStore.user?.email)
     },
 
     // getUserFullName: state => {
