@@ -11,13 +11,16 @@ export const useAuthStore = defineStore('auth', {
   getters: {
     isAuthUserAdmin: state => state.user?.roles.includes(RoleEnum.ADMIN),
     getIsLoggedIn: state => noNull(state.user) && notUndefined(state.user),
-    // getLoggedUserFullName: state => {
-    //   if (state.user) {
-    //     const { getUserfullName } = userHook()
-    //     return getUserfullName(state.user)
-    //   }
-    // },
-    // TODO fix when userHook is created
+    getLoggedUserFullName: state => {
+      if (state.user) {
+        let str = ''
+        if (state.user?.firstName)
+          str += state.user.firstName
+        if (state.user?.lastName)
+          str += ` ${state.user.lastName}`
+        return str
+      }
+    },
   },
   actions: {
     setJWTasUser(payload: JWTDecodedType) {
