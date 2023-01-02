@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
+    'nuxt-headlessui',
   ],
 
   build: {
