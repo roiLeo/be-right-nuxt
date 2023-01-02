@@ -1,5 +1,4 @@
 import { hasOwnProperty } from '@antfu/utils'
-// import { useCookies } from 'vue3-cookies'
 import { RoleEnum } from '@/types'
 import type {
   EmployeeType,
@@ -34,45 +33,8 @@ export default function userHook() {
 
   const { IncLoading, DecLoading } = useUiStore()
   const { storeEmployeeRelationsEntities } = employeeHook()
-  // const { cookies } = useCookies()
-  // TODO use cookies to see if user is logged in
 
   const router = useRouter()
-
-  // async function login(payload: Loginpayload) {
-  //   try {
-  //     IncLoading()
-  //     const { data: user } = await $api().post<UserType>('user/login', payload)
-
-  //     if (user) {
-  //       storeUsersEntities(user, true)
-  //       // cookies.set('userToken', user.token)
-  //       $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
-  //     }
-  //   } catch (error) {
-  //     console.error(error)
-  //     $toast.error('Une erreur est survenue')
-  //   }
-  //   DecLoading()
-  // }
-
-  // async function register(payload: RegisterPayload) {
-  //   try {
-  //     IncLoading()
-  //     const { data: user } = await $api().post<UserType>('user', payload)
-
-  //     if (user) {
-  //       storeUsersEntities(user)
-  //       // cookies.set('userToken', user.token)
-  //       redirectBaseOneCurrentUserRole(user)
-  //       $toast.success('Vous êtes inscrit avec succès')
-  //     }
-  //   } catch (error) {
-  //     console.error(error)
-  //     $toast.error('Une erreur est survenue')
-  //   }
-  //   DecLoading()
-  // }
 
   async function fetchOne(userId: number) {
     try {
