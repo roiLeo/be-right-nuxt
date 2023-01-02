@@ -19,6 +19,10 @@ export default defineNuxtConfig({
     ],
   },
 
+  plugins: [
+    { src: '~/plugins/serverInit.server.ts', ssr: true, mode: 'server' },
+  ],
+
   vite: {
     plugins: [
       Components({

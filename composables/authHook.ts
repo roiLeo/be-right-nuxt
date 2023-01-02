@@ -1,5 +1,6 @@
 // import { useCookies } from 'vue3-cookies'
-import type { JWTDecodedType, UserType, ValidationRequest } from '@/types'
+import type { JWTDecodedType, ValidationRequest } from '@/types'
+import { RoleEnum, UserType } from '@/types'
 import {
   // useAnswerStore,
   // useBugStore,
@@ -50,19 +51,19 @@ export default function authHook() {
     $toast.success('Vous êtes déconnecté')
   }
 
-  async function loginWithToken(token: string) {
-    IncLoading()
-    try {
-      const { data: user } = await $api().post<UserType>('user/token', { token })
-      if (user) {
-        // setThemeClass(user.theme)
-        storeUsersEntities(user, true)
-      }
-    } catch (error) {
-      console.error(error)
-    }
-    DecLoading()
-  }
+  // async function loginWithToken(token: string) {
+  //   IncLoading()
+  //   try {
+  //     const { data: user } = await $api().post<UserType>('user/token', { token })
+  //     if (user) {
+  //       // setThemeClass(user.theme)
+  //       storeUsersEntities(user, true)
+  //     }
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  //   DecLoading()
+  // }
 
   async function checkMailIsAlreadyExist(email: string) {
     const { data } = await $api().post<ValidationRequest>('user/isMailAlreadyExist', { email })
@@ -90,11 +91,16 @@ export default function authHook() {
     return Object.assign({}, obj1, obj2)
   }
 
+  function isJWTUserAdmin(user: JWTDecodedType) {
+    return user?.roles.includes(RoleEnum.ADMIN)
+  }
+
   return {
     checkMailIsAlreadyExist,
+    isJWTUserAdmin,
     // getRouteName,
     jwtDecode,
-    loginWithToken,
+    // loginWithToken,
     logout,
   }
 }
