@@ -14,13 +14,13 @@ import type {
 } from '@/types'
 import { isArrayOfNumbers } from '@/utils'
 import {
-  useAnswerStore,
-  useBugStore,
-  useEmployeeStore,
+  // useAnswerStore,
+  // useBugStore,
+  // useEmployeeStore,
   useEventStore,
   useFileStore,
-  useMainStore,
-  useTableStore,
+  // useMainStore,
+  // useTableStore,
   useUiStore,
   useUserStore,
 } from '~~/store'
@@ -39,40 +39,40 @@ export default function userHook() {
 
   const router = useRouter()
 
-  async function login(payload: Loginpayload) {
-    try {
-      IncLoading()
-      const { data: user } = await $api().post<UserType>('user/login', payload)
+  // async function login(payload: Loginpayload) {
+  //   try {
+  //     IncLoading()
+  //     const { data: user } = await $api().post<UserType>('user/login', payload)
 
-      if (user) {
-        storeUsersEntities(user, true)
-        // cookies.set('userToken', user.token)
-        $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.error('Une erreur est survenue')
-    }
-    DecLoading()
-  }
+  //     if (user) {
+  //       storeUsersEntities(user, true)
+  //       // cookies.set('userToken', user.token)
+  //       $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
+  //     }
+  //   } catch (error) {
+  //     console.error(error)
+  //     $toast.error('Une erreur est survenue')
+  //   }
+  //   DecLoading()
+  // }
 
-  async function register(payload: RegisterPayload) {
-    try {
-      IncLoading()
-      const { data: user } = await $api().post<UserType>('user', payload)
+  // async function register(payload: RegisterPayload) {
+  //   try {
+  //     IncLoading()
+  //     const { data: user } = await $api().post<UserType>('user', payload)
 
-      if (user) {
-        storeUsersEntities(user)
-        // cookies.set('userToken', user.token)
-        redirectBaseOneCurrentUserRole(user)
-        $toast.success('Vous êtes inscrit avec succès')
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.error('Une erreur est survenue')
-    }
-    DecLoading()
-  }
+  //     if (user) {
+  //       storeUsersEntities(user)
+  //       // cookies.set('userToken', user.token)
+  //       redirectBaseOneCurrentUserRole(user)
+  //       $toast.success('Vous êtes inscrit avec succès')
+  //     }
+  //   } catch (error) {
+  //     console.error(error)
+  //     $toast.error('Une erreur est survenue')
+  //   }
+  //   DecLoading()
+  // }
 
   async function fetchOne(userId: number) {
     try {
@@ -336,11 +336,9 @@ export default function userHook() {
     isArrayUserType,
     isUserAdmin,
     isUserType,
-    login,
     patchOne,
     postPhotographer,
     redirectBaseOneCurrentUserRole,
-    register,
     storeUsersEntities,
     userToggleTheme,
   }
