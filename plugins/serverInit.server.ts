@@ -36,11 +36,11 @@ export default defineNuxtPlugin(async () => {
         setJWTasUser(decoded)
         const router = useRouter()
         router.push({
-          name: 'event',
+          name: 'evenement',
         })
 
         // if (isJWTUserAdmin(decoded)) {
-        //   // navigateTo('/event')
+        //   // navigateTo('/evenement')
         // }
       }
     }

@@ -161,7 +161,7 @@ async function submitregister(form: VeeValidateValues) {
         }
         $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
         router.replace({
-          name: 'event',
+          name: 'evenement',
         })
       }
     } catch (error) {
