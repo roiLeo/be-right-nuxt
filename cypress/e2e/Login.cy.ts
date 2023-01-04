@@ -9,6 +9,18 @@ describe('Login spec', () => {
     cy.get('button[type=submit]').should('be.disabled')
   })
 
+  it('links redirect on register page', () => {
+    cy.get('#register-link').contains('S\'inscrire')
+    cy.get('#register-link').click()
+    cy.url().should('include', '/register')
+  })
+
+  it('links redirect on forgot-password page', () => {
+    cy.get('#forgot-password-link').contains('Mot de passe oublié')
+    cy.get('#forgot-password-link').click()
+    cy.url().should('include', '/forgot-password')
+  })
+
   it('form login render correct data', () => {
     cy.get('button[type=submit]').should('exist')
     cy.get('button[type=submit]').should('be.disabled')
@@ -22,19 +34,19 @@ describe('Login spec', () => {
     cy.get('#password').should('have.value', 'password')
 
     cy.get('button[type=submit]').should('be.enabled')
-  })
+    cy.get('button[type=submit]').click()
 
-  it('links redirect on register page', () => {
-    cy.get('#register-link').contains('S\'inscrire')
-    cy.get('#register-link').click()
-    cy.url().should('include', '/register')
-  })
+    cy.url().contains('/evenement')
 
-  it('links redirect on forgot-password page', () => {
-    cy.get('#forgot-password-link').contains('Mot de passe oublié')
-    cy.get('#forgot-password-link').click()
-    cy.url().should('include', '/forgot-password')
-  })
+    cy.visit('http://localhost:3000')
 
-  // TODO test submission
+    cy.get('header').within(() => {
+      cy.get('button').contains('Mon compte')
+    })
+
+    cy.get('footer').within(() => {
+      cy.get('a').contains('Mon compte')
+      cy.get('p').contains('Se déconnecter')
+    })
+  })
 })
