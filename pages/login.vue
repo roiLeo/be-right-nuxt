@@ -93,15 +93,14 @@ const initialValues = {
   password: '',
 }
 
-const { $toast, $api, $router, $pinia } = useNuxtApp()
-console.log($pinia.state.value, '<==== $pinia')
+const { $toast, $api } = useNuxtApp()
+
 async function submitLogin(form: VeeValidateValues) {
   try {
     IncLoading()
     const { data: user } = await $api().post<UserType>('user/login', form as WithoutId<UserType>)
 
     if (user && isUserType(user)) {
-      console.log(user, '<==== user')
       storeUsersEntities(user, true)
       // cookies.set('userToken', user.token)
       const decode = jwtDecode(user.token)
