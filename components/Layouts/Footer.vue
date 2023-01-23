@@ -15,20 +15,27 @@
       <ul class="mb-6 list-reset">
         <li class="inline-block mt-2 mr-2 md:block md:mr-0">
           <NuxtLink
-            :to="{ name: 'login' }"
+            :to="getLinkPath"
             class="text-white no-underline hover:underline hover:text-red-light"
           >
-            Se
-            connecter
+            {{ authStore.getIsLoggedIn ? 'Mon compte' : 'Se connecter' }}
           </NuxtLink>
         </li>
         <li class="inline-block mt-2 mr-2 md:block md:mr-0">
           <NuxtLink
+            v-if="!authStore.getIsLoggedIn"
             :to="{ name: 'register' }"
             class="text-white no-underline hover:underline hover:text-red-light"
           >
             s'inscrire
           </NuxtLink>
+          <p
+            v-else
+            class="text-white no-underline cursor-pointer hover:underline hover:text-red-light"
+            @click="logout"
+          >
+            Se déconnecter
+          </p>
         </li>
         <li class="inline-block mt-2 mr-2 md:block md:mr-0">
           <NuxtLink
@@ -46,3 +53,17 @@
   </div>
 </footer>
 </template>
+
+<script setup lang="ts">
+import { useAuthStore } from '~~/store'
+
+const authStore = useAuthStore()
+const { logout } = authHook()
+
+const getLinkPath = computed(() => {
+  if (!authStore.getIsLoggedIn) {
+    return { name: 'login' }
+  }
+  return { name: 'evenement' }
+})
+</script>

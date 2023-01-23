@@ -1,7 +1,6 @@
 import { hasOwnProperty } from '@antfu/utils'
-import { isArrayOfNumbers, noNull } from '@/utils'
-import { useAddressStore, useEventStore, useUiStore } from '~~/store'
-import type { EmployeeType, EventCreatePayload, EventType, EventTypeWithRelations, PaginatedResponse } from '~~/types'
+import { useAddressStore, useEventStore, useFileStore, useUiStore, useUserStore } from '~~/store'
+import type { EventCreatePayload, EventType, PaginatedResponse } from '~~/types'
 import { EventStatusEnum, getEventStatusTranslationEnum } from '~~/types'
 
 export default function eventHook() {
@@ -9,9 +8,11 @@ export default function eventHook() {
 
   const eventStore = useEventStore()
   const { isUserType } = userHook()
-  const { isAddressType } = addressHook()
+  // const { isAddressType } = addressHook()
   const { DecLoading, IncLoading } = useUiStore()
   const addressStore = useAddressStore()
+  const userStore = useUserStore()
+  const fileStore = useFileStore()
   const { createOne: createOneAddress } = addressStore
 
   function getEventStatusTranslation(status: EventStatusEnum) {
@@ -37,12 +38,32 @@ export default function eventHook() {
     if (events?.length > 0) {
       const eventsToStore = events.map(event => {
         const address = event.address
-        if (address && isAddressType(address)) {
+        if (address) {
           if (!addressStore.isAlreadyInStore(address?.id)) {
             createOneAddress(address)
             delete event.address
           }
         }
+
+        const partner = event.partner
+        if (partner && !userStore.isAlreadyInStore(partner.id)) {
+          userStore.createOne(partner)
+          delete event.partner
+        }
+
+        const creator = event.createdByUser
+        if (creator && !userStore.isAlreadyInStore(creator.id)) {
+          userStore.createOne(creator)
+          delete event.createdByUser
+        }
+
+        const files = event.files
+        if (files && files.length > 0) {
+          const missingfiles = files.filter(file => !fileStore.isAlreadyInStore(file.id))
+          fileStore.createMany(missingfiles)
+          delete event.files
+        }
+
         return {
           ...event,
         }
@@ -51,13 +72,6 @@ export default function eventHook() {
       return eventsToStore
     }
     return []
-  }
-
-  function getSignatureCount(employees: EmployeeType[]) {
-    if (employees && employees.length) {
-      return employees.filter(employee => noNull(employee.signedAt)).length
-    }
-    return 0
   }
 
   function sortEventByDate(events: EventType[]) {
@@ -111,13 +125,10 @@ export default function eventHook() {
 
         if (data) {
           const missingIds = data.map((event: EventType) => event.id).filter(id => !eventStore.isAlreadyInStore(id))
+
           if (missingIds.length > 0) {
             const events = data.filter(event => missingIds.includes(event.id))
-            const eventToStore = events.map(event => ({
-              ...event,
-              createdByUser: userId,
-            }))
-            storeEventRelationEntities(eventToStore)
+            storeEventRelationEntities(events)
           }
         }
       }
@@ -151,7 +162,7 @@ export default function eventHook() {
       if (data) {
         const eventToStore = data
         if (isUserType(data.createdByUser)) {
-          eventToStore.createdByUser = data.createdByUser.id
+          eventToStore.createdByUserId = data.createdByUser.id
         }
         eventStore.createOne(eventToStore)
         $toast.success('L\'événement a été créé avec succès')
@@ -170,9 +181,9 @@ export default function eventHook() {
       try {
         delete event.address
         delete event.partnerId
-        const res = await $api().patch(`event/${event.id}`, { event })
-        if (isEventType(res)) {
-          eventStore.updateOne(res.id, res)
+        const { data } = await $api().patch<EventType>(`event/${event.id}`, event)
+        if (data && isEventType(data)) {
+          eventStore.updateOne(data.id, data)
           $toast.success('L\'événement a été mis à jour avec succès')
         }
       } catch (error) {
@@ -204,13 +215,6 @@ export default function eventHook() {
     return events.every(isEventType)
   }
 
-  function isEventWithRelations(event: any): event is EventTypeWithRelations {
-    if (isEventType(event) && event.employees?.length) {
-      return !isArrayOfNumbers(event.employees)
-    } else
-      return false
-  }
-
   return {
     deleteOne,
     fetchAllEvents,
@@ -219,10 +223,8 @@ export default function eventHook() {
     fetchOne,
     getEventStatusColor,
     getEventStatusTranslation,
-    getSignatureCount,
     isEventType,
     isEventTypeArray,
-    isEventWithRelations,
     patchOne,
     postOne,
     sortEventByDate,

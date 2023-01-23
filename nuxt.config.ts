@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
+    'nuxt-headlessui',
   ],
 
   build: {
@@ -17,6 +18,10 @@ export default defineNuxtConfig({
       'vue-toastification',
     ],
   },
+
+  plugins: [
+    { src: '~/plugins/serverInit.server.ts', ssr: true, mode: 'server' },
+  ],
 
   vite: {
     plugins: [

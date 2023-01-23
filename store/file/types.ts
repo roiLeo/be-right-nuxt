@@ -1,4 +1,7 @@
 import type { State } from '@malolebrin/pinia-entity-store'
+import type { UserType } from '../user'
+import type { EmployeeType } from '../employee'
+import type { EventType } from '../event'
 import type { BaseEntity } from '@/types/globals'
 
 export interface FileType extends BaseEntity {
@@ -16,9 +19,12 @@ export interface FileType extends BaseEntity {
   url: string
   secure_url: string
   original_filename: string
-  event: number
-  employee: number
-  createdByUser: number
+  events?: EventType
+  eventId: number
+  employee?: EmployeeType
+  employeeId: number
+  createdByUser?: UserType
+  createdByUserId: number
 }
 
 export type FileFormType = Omit<FileType, 'id' | 'createdAt' | 'updatedAt'>

@@ -6,8 +6,10 @@ export interface AnswerType extends BaseEntity {
   hasSigned: boolean
   signetAt: Date
   reason: string
-  employee: number | EmployeeType
-  event: number | EventType
+  employee?: null | EmployeeType
+  employeeId: number | null
+  event?: null | EventType
+  eventId: number | null
 }
 
 export type AnswerFormType = Omit<AnswerType, 'id' | 'createdAt' | 'updatedAt'>

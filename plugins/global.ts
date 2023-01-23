@@ -1,5 +1,6 @@
 import { useToast } from 'vue-toastification'
 import { FetchWrapper } from '~/helpers/api'
+import { useAuthStore } from '~~/store'
 
 export default defineNuxtPlugin(() => {
   function isProductionMode() {
@@ -7,17 +8,22 @@ export default defineNuxtPlugin(() => {
   }
 
   const { toFormat } = dateHook()
+  const authStore = useAuthStore()
 
   return {
     provide: {
       isProductionMode: isProductionMode(),
+
       getApiUrl: isProductionMode() ? import.meta.env.VITE_API_URL?.toString() : import.meta.env.VITE_DEV_API_URL?.toString(),
+
       toast: useToast(),
+
       toFormat: (date: Date | string, format: string) => toFormat(date, format),
+
       api: () => {
         const api = new FetchWrapper({
           baseUrl: isProductionMode() ? import.meta.env.VITE_API_URL as string : import.meta.env.VITE_DEV_API_URL as string,
-          token: import.meta.env.VITE_API_TOKEN as string,
+          token: authStore.getToken || undefined,
         })
         return api
       },

@@ -1,28 +1,29 @@
-import type { AnswerType } from '@/types'
+import type { AnswerType } from '~~/store'
 import { useAnswerStore, useUiStore } from '~~/store'
 
 export default function answerHook() {
   const { $toast, $api } = useNuxtApp()
   const answerStore = useAnswerStore()
+  const { createMany: createManyAnswers, addMany } = answerStore
   const { IncLoading, DecLoading } = useUiStore()
 
-  async function postMany(eventId: number, employeeIds: number[]) {
-    IncLoading()
-    if (eventId && employeeIds.length > 0) {
-      try {
-        const { data: answers } = await $api().post<AnswerType[]>('answer/many', { eventId, employeeIds })
-        if (answers && answers.length > 0) {
-          answerStore.createMany(answers)
-        }
-      } catch (error) {
-        console.error(error)
-        $toast.error('Une erreur est survenue')
-      }
-    } else {
-      $toast.error('Veuillez sélectionner au moins un participant et un événement')
-    }
-    DecLoading()
-  }
+  // async function postMany(eventId: number, employeeIds: number[]) {
+  //   IncLoading()
+  //   if (eventId && employeeIds.length > 0) {
+  //     try {
+  //       const { data: answers } = await $api().post<AnswerType[]>('answer/many', { eventId, employeeIds })
+  //       if (answers && answers.length > 0) {
+  //         createManyAnswers(answers)
+  //       }
+  //     } catch (error) {
+  //       console.error(error)
+  //       $toast.error('Une erreur est survenue')
+  //     }
+  //   } else {
+  //     $toast.error('Veuillez sélectionner au moins un participant et un événement')
+  //   }
+  //   DecLoading()
+  // }
 
   function filteringAnswersNotInStore(answers: AnswerType[]) {
     if (answers.length > 0) {
@@ -39,7 +40,28 @@ export default function answerHook() {
       if (answers && answers.length > 0) {
         const answersNotInStore = filteringAnswersNotInStore(answers)
         if (answersNotInStore.length > 0) {
-          answerStore.createMany(answersNotInStore)
+          addMany(answersNotInStore)
+        }
+      }
+    } catch (error) {
+      console.error(error)
+      $toast.error('Une erreur est survenue')
+    }
+    DecLoading()
+  }
+
+  async function fetchManyAnswerForManyEvent(eventIds: number[]) {
+    IncLoading()
+    try {
+      if (eventIds?.length > 0) {
+        const { data: answers } = await $api().get<AnswerType[]>(`answer/event/manyByIds/?ids=${eventIds.join(',')}`)
+
+        if (answers && answers.length > 0) {
+          const answersNotInStore = filteringAnswersNotInStore(answers)
+
+          if (answersNotInStore.length > 0) {
+            createManyAnswers(answersNotInStore)
+          }
         }
       }
     } catch (error) {
@@ -50,8 +72,9 @@ export default function answerHook() {
   }
 
   return {
-    postMany,
+    // postMany,
     filteringAnswersNotInStore,
     fetchManyAnswerForEvent,
+    fetchManyAnswerForManyEvent,
   }
 }

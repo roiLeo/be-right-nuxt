@@ -1,4 +1,4 @@
-import type { EmployeeType, EventType, FileType, SubscriptionEnum } from '@/types'
+import type { AddressType, EmployeeType, EventType, FileType, SubscriptionEnum, SubscriptionType } from '@/types'
 import type { BaseEntity } from '@/types/globals'
 import type { RoleEnum } from '@/types/Roles'
 
@@ -7,15 +7,22 @@ export interface UserType extends BaseEntity {
   token: string
   firstName: string
   lastName: string
-  companyName?: string | null
+  companyName: string | null
   siret: string
   apiKey: string
   roles: RoleEnum
-  subscription: SubscriptionEnum
-  events?: number[] | EventType[]
-  employee?: number[] | EmployeeType[]
-  files?: number[] | FileType[]
-  profilePicture?: string | null
+  subscriptionLabel: SubscriptionEnum | null
+  subscriptionId: number | null
+  subscription?: SubscriptionType | null
+  address?: AddressType | null
+  addressId: number | null
+  events?: EventType[]
+  eventIds: number[]
+  employee?: EmployeeType[]
+  employeeIds: number[]
+  files?: FileType[]
+  filesIds: number[]
+  profilePicture: string | null
 }
 
 export type UserTypeOmitRelations = Omit<UserType, 'profilePicture' | 'createdAt' | 'updatedAt' | 'events' | 'employee' | 'files'>

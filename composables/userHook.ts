@@ -1,5 +1,4 @@
 import { hasOwnProperty } from '@antfu/utils'
-// import { useCookies } from 'vue3-cookies'
 import { RoleEnum } from '@/types'
 import type {
   EmployeeType,
@@ -14,13 +13,14 @@ import type {
 } from '@/types'
 import { isArrayOfNumbers } from '@/utils'
 import {
-  useAnswerStore,
-  useBugStore,
-  useEmployeeStore,
+  // useAnswerStore,
+  // useBugStore,
+  // useEmployeeStore,
   useEventStore,
   useFileStore,
-  useMainStore,
-  useTableStore,
+  useSubscriptionStore,
+  // useMainStore,
+  // useTableStore,
   useUiStore,
   useUserStore,
 } from '~~/store'
@@ -31,48 +31,12 @@ export default function userHook() {
   const userStore = useUserStore()
   const eventStore = useEventStore()
   const fileStore = useFileStore()
+  const subscriptionStore = useSubscriptionStore()
 
   const { IncLoading, DecLoading } = useUiStore()
   const { storeEmployeeRelationsEntities } = employeeHook()
-  // const { cookies } = useCookies()
-  // TODO use cookies to see if user is logged in
 
   const router = useRouter()
-
-  async function login(payload: Loginpayload) {
-    try {
-      IncLoading()
-      const { data: user } = await $api().post<UserType>('user/login', payload)
-
-      if (user) {
-        storeUsersEntities(user, true)
-        // cookies.set('userToken', user.token)
-        $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.error('Une erreur est survenue')
-    }
-    DecLoading()
-  }
-
-  async function register(payload: RegisterPayload) {
-    try {
-      IncLoading()
-      const { data: user } = await $api().post<UserType>('user', payload)
-
-      if (user) {
-        storeUsersEntities(user)
-        // cookies.set('userToken', user.token)
-        redirectBaseOneCurrentUserRole(user)
-        $toast.success('Vous êtes inscrit avec succès')
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.error('Une erreur est survenue')
-    }
-    DecLoading()
-  }
 
   async function fetchOne(userId: number) {
     try {
@@ -98,24 +62,26 @@ export default function userHook() {
       const userEvents = user.events as EventType[]
       const eventsToStore = userEvents.filter(event => !eventStore.isAlreadyInStore(event.id))
       eventStore.createMany(eventsToStore)
-      user.events = eventsToStore.map(event => event.id)
     }
+
     if (user.employee && user.employee.length > 0 && !isArrayOfNumbers(user.employee)) {
-      const employeesToStore = storeEmployeeRelationsEntities(user.employee.map(e => ({
-        ...e as EmployeeType,
-        createdByUser: user.id,
-      })))
-      user.employee = employeesToStore.map(employee => employee.id)
+      storeEmployeeRelationsEntities(user.employee)
     }
+
     if (user.files && user.files.length > 0 && !isArrayOfNumbers(user.files)) {
-      const files = user.files as FileType[]
+      const files = user.files
       const filesToStore = files.filter(file => !fileStore.isAlreadyInStore(file.id))
       fileStore.createMany(filesToStore)
-      user.files = filesToStore.map(file => file.id)
     }
+
+    if (user.subscription && subscriptionStore.isAlreadyInStore(user.subscriptionId)) {
+      subscriptionStore.createOne(user.subscription)
+    }
+
     if (isUserToSetCurrent) {
       userStore.setCurrent(user)
     }
+
     if (userStore.isAlreadyInStore(user.id)) {
       userStore.updateOne(user.id, user)
     } else {
@@ -142,18 +108,7 @@ export default function userHook() {
 
       const missingsUsers = users.filter(user => !userStore.isAlreadyInStore(user.id))
       if (missingsUsers.length > 0) {
-        const usersToStore = missingsUsers.map(user => {
-          const userEvents = user.events as EventType[]
-          const userEmployees = user.employee as EmployeeType[]
-          const userFiles = user.files as FileType[]
-          return {
-            ...user,
-            events: userEvents.map(event => event.id),
-            employee: userEmployees.map(employee => employee.id),
-            files: userFiles.map(file => file.id),
-          }
-        })
-        userStore.createMany(usersToStore)
+        userStore.createMany(missingsUsers)
       }
     }
   }
@@ -336,11 +291,9 @@ export default function userHook() {
     isArrayUserType,
     isUserAdmin,
     isUserType,
-    login,
     patchOne,
     postPhotographer,
     redirectBaseOneCurrentUserRole,
-    register,
     storeUsersEntities,
     userToggleTheme,
   }

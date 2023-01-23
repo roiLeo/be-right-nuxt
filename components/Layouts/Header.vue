@@ -30,11 +30,11 @@
               <BaseButton
                 :href="getButtonPath"
               >
-                {{ userLogged ? 'Mon compte' : 'Commencer' }}
+                {{ authStore.getIsLoggedIn ? 'Mon compte' : 'Commencer' }}
               </BaseButton>
 
               <NuxtLink
-                v-if="!userLogged"
+                v-if="!authStore.getIsLoggedIn"
                 id="login-link"
                 :to="{ name: 'login' }"
                 class="px-3 py-2 text-sm font-medium rounded-md text-blue dark:text-white dark:hover:text-red-light hover:text-red-light"
@@ -112,11 +112,11 @@
                 <BaseButton
                   :href="getButtonPath"
                 >
-                  {{ userLogged ? 'Mon compte' : 'Commencer' }}
+                  {{ authStore.getIsLoggedIn ? 'Mon compte' : 'Commencer' }}
                 </BaseButton>
               </MenuItem>
               <MenuItem
-                v-if="!userLogged"
+                v-if="!authStore.getIsLoggedIn"
                 as="li"
                 class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
               >
@@ -137,12 +137,14 @@
 </template>
 
 <script setup lang="ts">
-// const { getRouteName, userLogged } = authHook()
-const userLogged = ref(false)
+import { useAuthStore } from '~~/store'
+
+const authStore = useAuthStore()
+
 const getButtonPath = computed(() => {
-  if (!userLogged.value) {
-    return { name: 'register' }
+  if (!authStore.getIsLoggedIn) {
+    return { name: 'login' }
   }
-  // return getRouteName('events')
+  return { name: 'evenement' }
 })
 </script>
