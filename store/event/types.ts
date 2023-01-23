@@ -9,17 +9,17 @@ export interface IEvent extends BaseEntity {
   status: EventStatusEnum
   signatureCount: number
   totalSignatureNeeded: number
-  createdByUser: UserType
+  createdByUser?: UserType
   createdByUserId: number
-  partner: UserType | null
+  partner?: UserType | null
   partnerId: number | null
 }
 
 export interface EventType extends IEvent {
-  files: FileType[]
+  files?: FileType[]
   filesIds: number[]
   addressId: number | null
-  address: AddressType | null
+  address?: AddressType | null
 }
 
 export type EventTypeCreate = Omit<IEvent, 'status' | 'id' | 'createdAt' | 'deletedAt' | 'updatedAt' | 'totalSignatureNeeded' | 'signatureCount' | 'files' | 'address'> & {

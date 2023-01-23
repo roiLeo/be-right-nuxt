@@ -13,14 +13,14 @@ export interface UserType extends BaseEntity {
   roles: RoleEnum
   subscriptionLabel: SubscriptionEnum | null
   subscriptionId: number | null
-  subscription: SubscriptionType | null
-  address: AddressType | null
+  subscription?: SubscriptionType | null
+  address?: AddressType | null
   addressId: number | null
-  events: EventType[]
+  events?: EventType[]
   eventIds: number[]
-  employee: EmployeeType[]
+  employee?: EmployeeType[]
   employeeIds: number[]
-  files: FileType[]
+  files?: FileType[]
   filesIds: number[]
   profilePicture: string | null
 }

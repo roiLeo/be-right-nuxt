@@ -1,5 +1,7 @@
 import type { State } from '@malolebrin/pinia-entity-store'
 import type { UserType } from '../user'
+import type { EmployeeType } from '../employee'
+import type { EventType } from '../event'
 import type { BaseEntity } from '@/types/globals'
 
 export interface FileType extends BaseEntity {
@@ -17,11 +19,11 @@ export interface FileType extends BaseEntity {
   url: string
   secure_url: string
   original_filename: string
-  events: FileType
+  events?: EventType
   eventId: number
-  employee: number
+  employee?: EmployeeType
   employeeId: number
-  createdByUser: UserType
+  createdByUser?: UserType
   createdByUserId: number
 }
 

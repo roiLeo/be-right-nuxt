@@ -18,6 +18,6 @@ export const subscriptionArray = Object.values(SubscriptionEnum)
 export interface SubscriptionType extends BaseEntity {
   type: SubscriptionEnum
   expireAt: Date | null
-  payment: PaymentType | null
+  payment?: PaymentType | null
   paymentId: number
 }

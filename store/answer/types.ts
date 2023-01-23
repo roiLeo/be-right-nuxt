@@ -6,9 +6,9 @@ export interface AnswerType extends BaseEntity {
   hasSigned: boolean
   signetAt: Date
   reason: string
-  employee: null | EmployeeType
+  employee?: null | EmployeeType
   employeeId: number | null
-  event: null | EventType
+  event?: null | EventType
   eventId: number | null
 }
 

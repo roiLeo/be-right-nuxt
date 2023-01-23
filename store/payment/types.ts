@@ -6,7 +6,7 @@ export interface PaymentType extends BaseEntity {
   currency: string
   submittedAt: Date | null
   executedAt: Date | null
-  subscription: SubscriptionType
+  subscription?: SubscriptionType
   subscriptionId: number
 }
 
