@@ -114,7 +114,7 @@
         </nav>
       </div>
       <!-- <DarkModeToggle /> -->
-      <!-- <UserMenu /> -->
+      <UserMenu />
     </div>
   </aside>
 </div>
