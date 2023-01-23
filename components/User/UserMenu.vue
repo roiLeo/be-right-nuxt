@@ -5,10 +5,10 @@
 >
   <div>
     <MenuButton
-      v-if="authStore.user"
+      v-if="userStore.getAuthUser"
       class="flex items-center flex-shrink-0 p-4"
     >
-      <UserAvatar :user="authStore.user" />
+      <UserAvatar :user="userStore.getAuthUser" />
       <div
         v-if="!isInHeader"
         class="ml-3"
