@@ -1,6 +1,15 @@
 <template>
 <main class="flex min-h-screen bg-white dark:bg-blue-dark">
   <MenuDrawer />
-  <slot />
+
+  <div class="w-full">
+    <HeaderDashboard />
+    <slot />
+  </div>
 </main>
 </template>
+
+<script setup lang="ts">
+const router = useRouter()
+console.log(router.getRoutes(), '<==== router.getRoutes()')
+</script>

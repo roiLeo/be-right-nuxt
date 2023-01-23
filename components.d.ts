@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
     Bars3IconOutline: typeof import('@heroicons/vue/24/outline/esm/Bars3Icon.js')['default']
     CheckCircleIconOutline: typeof import('@heroicons/vue/24/outline/esm/CheckCircleIcon.js')['default']
     CheckCircleIconSolid: typeof import('@heroicons/vue/24/solid/esm/CheckCircleIcon.js')['default']
+    ChevronLeftIconOutline: typeof import('@heroicons/vue/24/outline/esm/ChevronLeftIcon.js')['default']
     Dialog: typeof import('@headlessui/vue')['Dialog']
     DialogOverlay: typeof import('@headlessui/vue')['DialogOverlay']
     ExclamationCircleIconOutline: typeof import('@heroicons/vue/24/outline/esm/ExclamationCircleIcon.js')['default']

@@ -25,7 +25,7 @@ export const MENU_ITEMS = [
   {
     label: 'Destinataires',
     icon: UsersIcon,
-    // linkName: 'employees',
+    linkName: 'destinataire',
     isAdmin: true,
   },
   {
@@ -55,7 +55,7 @@ export const MENU_ITEMS = [
   {
     label: 'Créer un destinataire',
     icon: PlusIcon,
-    // linkName: 'employees.create',
+    linkName: 'destinataire-create',
     isAdmin: true,
   },
   {
@@ -69,13 +69,13 @@ export const MENU_ITEMS = [
   {
     label: 'Événements',
     icon: HomeIcon,
-    // linkName: 'user.events',
+    linkName: 'evenement',
     isAdmin: false,
   },
   {
     label: 'Destinataires',
     icon: UsersIcon,
-    // linkName: 'user.employees',
+    linkName: 'destinataire',
     isAdmin: false,
   },
   // {
@@ -87,7 +87,7 @@ export const MENU_ITEMS = [
   {
     label: 'Créer un événement',
     icon: PlusIcon,
-    // linkName: 'user.events.create',
+    linkName: 'destinataire-create',
     isAdmin: false,
   },
   {
