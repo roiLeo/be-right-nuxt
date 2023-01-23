@@ -78,8 +78,6 @@ export default function employeeHook() {
 
           return {
             ...employee,
-            // answers: employeeAnswers.map(answer => answer.id),
-            files: employeeFiles.map(file => file.id),
           }
         })
         employeeStore.createMany(employeesToStore)
@@ -89,7 +87,7 @@ export default function employeeHook() {
     return []
   }
 
-  async function getEmployeesByEventId(eventId: number) {
+  async function fetchEmployeesByEventId(eventId: number) {
     try {
       const { data } = await $api().get<EmployeeType[]>(`employee/event/${eventId}`)
 
@@ -174,7 +172,7 @@ export default function employeeHook() {
 
       if (data) {
         const user = userStore.getOne(userId)
-        const userEmployee = user.employee as number[]
+        const userEmployee = user.employee
         userStore.updateOne(userId, {
           ...user,
           employee: [...userEmployee, data.id],
@@ -196,12 +194,9 @@ export default function employeeHook() {
       const { data } = await $api().post<EmployeeType[]>(`employee/manyonevent/${eventId}/${userId}`, employees)
 
       if (data) {
-        const employeeIds = data.map(employee => employee.id)
         const user = userStore.getOne(userId)
-        const userEmployee = user.employee as number[]
         userStore.updateOne(userId, {
           ...user,
-          employee: uniq([...userEmployee, ...employeeIds]),
         })
         employeeStore.createMany(data)
         $toast.success('Destinataires créés avec succès')
@@ -227,7 +222,7 @@ export default function employeeHook() {
     fetchAll,
     fetchAllByUserId,
     getEmployeeFullname,
-    getEmployeesByEventId,
+    fetchEmployeesByEventId,
     getEmployeeStatusColor,
     getEmployeeStatusSignature,
     patchOne,

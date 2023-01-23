@@ -25,6 +25,13 @@ export const useAnswerStore = defineStore('answers', {
 
     ...createActions<AnswerType>(answerState),
 
+    addMany(answers: AnswerType[]) {
+      answers.forEach(answer => {
+        this.entities.byId[answer.id] = { ...answer, $isDirty: false }
+        this.entities.allIds.push(answer.id)
+      })
+    },
+
     resetState() {
       this.$state = defaultAnswerState()
     },

@@ -1,6 +1,16 @@
 <template>
 <div>
   Events
+  <NuxtLink
+    :to="{
+      name: 'evenement-show-id',
+      params: {
+        id: 1,
+      },
+    }"
+  >
+    Voir event 1
+  </NuxtLink>
 </div>
 </template>
 

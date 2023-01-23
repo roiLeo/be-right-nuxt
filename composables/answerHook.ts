@@ -4,6 +4,7 @@ import { useAnswerStore, useUiStore } from '~~/store'
 export default function answerHook() {
   const { $toast, $api } = useNuxtApp()
   const answerStore = useAnswerStore()
+  const { createMany: createManyAnswers, addMany } = answerStore
   const { IncLoading, DecLoading } = useUiStore()
 
   // async function postMany(eventId: number, employeeIds: number[]) {
@@ -12,7 +13,7 @@ export default function answerHook() {
   //     try {
   //       const { data: answers } = await $api().post<AnswerType[]>('answer/many', { eventId, employeeIds })
   //       if (answers && answers.length > 0) {
-  //         answerStore.createMany(answers)
+  //         createManyAnswers(answers)
   //       }
   //     } catch (error) {
   //       console.error(error)
@@ -39,7 +40,7 @@ export default function answerHook() {
       if (answers && answers.length > 0) {
         const answersNotInStore = filteringAnswersNotInStore(answers)
         if (answersNotInStore.length > 0) {
-          answerStore.createMany(answersNotInStore)
+          addMany(answersNotInStore)
         }
       }
     } catch (error) {
@@ -57,8 +58,9 @@ export default function answerHook() {
 
         if (answers && answers.length > 0) {
           const answersNotInStore = filteringAnswersNotInStore(answers)
+
           if (answersNotInStore.length > 0) {
-            answerStore.createMany(answersNotInStore)
+            createManyAnswers(answersNotInStore)
           }
         }
       }
