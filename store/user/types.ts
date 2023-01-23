@@ -7,22 +7,22 @@ export interface UserType extends BaseEntity {
   token: string
   firstName: string
   lastName: string
-  companyName?: string | null
+  companyName: string | null
   siret: string
   apiKey: string
   roles: RoleEnum
-  subscriptionLabel: SubscriptionEnum
-  subscriptionId: number
+  subscriptionLabel: SubscriptionEnum | null
+  subscriptionId: number | null
   subscription: SubscriptionType | null
-  address: AddressType
-  addressId: number
-  events?: EventType[]
+  address: AddressType | null
+  addressId: number | null
+  events: EventType[]
   eventIds: number[]
-  employee?: EmployeeType[]
+  employee: EmployeeType[]
   employeeIds: number[]
-  files?: FileType[]
+  files: FileType[]
   filesIds: number[]
-  profilePicture?: string | null
+  profilePicture: string | null
 }
 
 export type UserTypeOmitRelations = Omit<UserType, 'profilePicture' | 'createdAt' | 'updatedAt' | 'events' | 'employee' | 'files'>

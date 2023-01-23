@@ -10,9 +10,6 @@ export interface AddressType extends BaseEntity {
   country: string
   lat?: number
   lng?: number
-  userId?: UserType | number
-  eventId?: EventType | number
-  employeeId?: EmployeeType | number
 }
 
 export interface AddressPostPayload {

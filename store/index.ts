@@ -1,5 +1,5 @@
 export * from './address'
-// export * from './answer'
+export * from './answer'
 export * from './auth'
 // export * from './bug'
 export * from './employee'

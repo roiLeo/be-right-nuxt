@@ -18,6 +18,7 @@ import {
   // useEmployeeStore,
   useEventStore,
   useFileStore,
+  useSubscriptionStore,
   // useMainStore,
   // useTableStore,
   useUiStore,
@@ -30,6 +31,7 @@ export default function userHook() {
   const userStore = useUserStore()
   const eventStore = useEventStore()
   const fileStore = useFileStore()
+  const subscriptionStore = useSubscriptionStore()
 
   const { IncLoading, DecLoading } = useUiStore()
   const { storeEmployeeRelationsEntities } = employeeHook()
@@ -60,24 +62,26 @@ export default function userHook() {
       const userEvents = user.events as EventType[]
       const eventsToStore = userEvents.filter(event => !eventStore.isAlreadyInStore(event.id))
       eventStore.createMany(eventsToStore)
-      user.events = eventsToStore.map(event => event.id)
     }
+
     if (user.employee && user.employee.length > 0 && !isArrayOfNumbers(user.employee)) {
-      const employeesToStore = storeEmployeeRelationsEntities(user.employee.map(e => ({
-        ...e as EmployeeType,
-        createdByUser: user.id,
-      })))
-      user.employee = employeesToStore.map(employee => employee.id)
+      storeEmployeeRelationsEntities(user.employee)
     }
+
     if (user.files && user.files.length > 0 && !isArrayOfNumbers(user.files)) {
-      const files = user.files as FileType[]
+      const files = user.files
       const filesToStore = files.filter(file => !fileStore.isAlreadyInStore(file.id))
       fileStore.createMany(filesToStore)
-      user.files = filesToStore.map(file => file.id)
     }
+
+    if (user.subscription && subscriptionStore.isAlreadyInStore(user.subscriptionId)) {
+      subscriptionStore.createOne(user.subscription)
+    }
+
     if (isUserToSetCurrent) {
       userStore.setCurrent(user)
     }
+
     if (userStore.isAlreadyInStore(user.id)) {
       userStore.updateOne(user.id, user)
     } else {
@@ -104,18 +108,7 @@ export default function userHook() {
 
       const missingsUsers = users.filter(user => !userStore.isAlreadyInStore(user.id))
       if (missingsUsers.length > 0) {
-        const usersToStore = missingsUsers.map(user => {
-          const userEvents = user.events as EventType[]
-          const userEmployees = user.employee as EmployeeType[]
-          const userFiles = user.files as FileType[]
-          return {
-            ...user,
-            events: userEvents.map(event => event.id),
-            employee: userEmployees.map(employee => employee.id),
-            files: userFiles.map(file => file.id),
-          }
-        })
-        userStore.createMany(usersToStore)
+        userStore.createMany(missingsUsers)
       }
     }
   }

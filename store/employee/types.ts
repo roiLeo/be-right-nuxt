@@ -10,11 +10,13 @@ export interface EmployeeType extends BaseEntity {
   lastName: string
   hasSigned: boolean
   signedAt: Date
-  createdByUser: null | number | UserType
-  event?: number
-  files?: FileType[] | number[]
-  answers?: AnswerType[] | number[]
-  address?: AddressType | number
+  createdByUser: null | UserType
+  createdByUserId: number
+  files: FileType[]
+  filesIds: number[]
+  answers: AnswerType[]
+  answersIds: number[]
+  address: AddressType | null
 }
 
 export type EmployeeFormType = Omit<EmployeeType, 'id' | 'createdAt' | 'updatedAt' | 'files' | 'answers'>
