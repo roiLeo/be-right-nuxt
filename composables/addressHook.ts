@@ -6,21 +6,21 @@ export default function addressHook() {
   const { $toast, $api } = useNuxtApp()
 
   const { IncLoading, DecLoading } = useUiStore()
-  const { createOne, updateOne } = useAddressStore()
+  const { createOne, updateOne, addOne } = useAddressStore()
 
-  // async function fetchOne(id: number) {
-  //   IncLoading()
-  //   try {
-  //     const { data: address } = await $api().get<AddressType>(`address/${id}`)
-  //     if (address) {
-  //       createOne(address)
-  //     }
-  //   } catch (error) {
-  //     console.error(error)
-  //     $toast.error('Une erreur est survenue')
-  //   }
-  //   DecLoading()
-  // }
+  async function fetchOne(id: number) {
+    IncLoading()
+    try {
+      const { data: address } = await $api().get<AddressType>(`address/${id}`)
+      if (address) {
+        addOne(address)
+      }
+    } catch (error) {
+      console.error(error)
+      $toast.error('Une erreur est survenue')
+    }
+    DecLoading()
+  }
 
   // async function postOne(payload: AddressPostPayload) {
   //   IncLoading()
@@ -58,7 +58,7 @@ export default function addressHook() {
   // }
 
   return {
-    // fetchOne,
+    fetchOne,
     // isAddressType,
     // patchOne,
     // postOne,

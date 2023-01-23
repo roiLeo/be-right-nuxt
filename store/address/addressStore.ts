@@ -16,6 +16,11 @@ export const useAddressStore = defineStore(EntitiesEnum.ADDRESS, {
   },
   actions: {
     ...createActions<AddressType>(addressState),
+
+    addOne(address: AddressType) {
+      this.entities.byId[address.id] = { ...address, $isDirty: false }
+      this.entities.allIds.push(address.id)
+    },
     // setCreationForm(payload: BaseCreationForm) {
     //   this.creationForm = payload
     // },

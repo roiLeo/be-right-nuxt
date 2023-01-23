@@ -4,6 +4,7 @@ show event
 
 <script setup lang="ts">
 import {
+  useAddressStore,
   useAnswerStore,
   useEmployeeStore,
   useEventStore,
@@ -16,11 +17,13 @@ const eventStore = useEventStore()
 const answerStore = useAnswerStore()
 const employeeStore = useEmployeeStore()
 const userStore = useUserStore()
+const addressStore = useAddressStore()
 
 const { fetchOne } = eventHook()
 const { fetchManyAnswerForEvent } = answerHook()
 const { fetchEmployeesByEventId } = employeeHook()
 const { fetchMany: fetchManyUsers } = userHook()
+const { fetchOne: fetchOneAddress } = addressHook()
 
 const route = useRoute()
 
@@ -36,6 +39,8 @@ const event = computed(() => {
 onMounted(async () => {
   if (eventId) {
     IncLoading()
+
+    // TODO create a specific endpoint
 
     if (!eventStore.isAlreadyInStore(eventId)) {
       await fetchOne(eventId)
@@ -61,6 +66,10 @@ onMounted(async () => {
 
       if (ids && ids.length > 0) {
         await fetchManyUsers(ids)
+      }
+
+      if (event.value.addressId && !addressStore.isAlreadyInStore(event.value.addressId)) {
+        await fetchOneAddress(event.value.addressId)
       }
     }
 
