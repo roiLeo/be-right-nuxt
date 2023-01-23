@@ -1,3 +1,6 @@
+import type { PaymentType } from '../payment'
+import type { BaseEntity } from '~~/types'
+
 export enum SubscriptionEnum {
   PREMIUM = 'PREMIUM',
   MEDIUM = 'MEDIUM',
@@ -11,3 +14,10 @@ export enum SubscriptionTranslationEnum {
 }
 
 export const subscriptionArray = Object.values(SubscriptionEnum)
+
+export interface SubscriptionType extends BaseEntity {
+  type: SubscriptionEnum
+  expireAt: Date | null
+  payment: PaymentType | null
+  paymentId: number
+}

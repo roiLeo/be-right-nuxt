@@ -1,4 +1,4 @@
-import type { EmployeeType, EventType, FileType, SubscriptionEnum } from '@/types'
+import type { AddressType, EmployeeType, EventType, FileType, SubscriptionEnum, SubscriptionType } from '@/types'
 import type { BaseEntity } from '@/types/globals'
 import type { RoleEnum } from '@/types/Roles'
 
@@ -11,10 +11,17 @@ export interface UserType extends BaseEntity {
   siret: string
   apiKey: string
   roles: RoleEnum
-  subscription: SubscriptionEnum
-  events?: number[] | EventType[]
-  employee?: number[] | EmployeeType[]
-  files?: number[] | FileType[]
+  subscriptionLabel: SubscriptionEnum
+  subscriptionId: number
+  subscription: SubscriptionType | null
+  address: AddressType
+  addressId: number
+  events?: EventType[]
+  eventIds: number[]
+  employee?: EmployeeType[]
+  employeeIds: number[]
+  files?: FileType[]
+  filesIds: number[]
   profilePicture?: string | null
 }
 
