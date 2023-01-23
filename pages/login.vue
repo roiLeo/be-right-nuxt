@@ -72,7 +72,7 @@ import { useAuthStore, useUiStore } from '~~/store'
 const { storeUsersEntities, getUserfullName } = userHook()
 const { jwtDecode } = authHook()
 const { IncLoading, DecLoading } = useUiStore()
-const { setJWTasUser } = useAuthStore()
+const { setJWTasUser, setToken } = useAuthStore()
 const uiStore = useUiStore()
 const router = useRouter()
 
@@ -103,6 +103,7 @@ async function submitLogin(form: VeeValidateValues) {
       storeUsersEntities(user, false)
       cookieToken.value = user.token
       const decode = jwtDecode(user.token)
+      setToken(user.token)
 
       if (decode) {
         setJWTasUser(decode)

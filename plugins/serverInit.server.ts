@@ -6,7 +6,7 @@ export default defineNuxtPlugin(async () => {
   let apiUrl: string | null = null
   const { storeUsersEntities } = userHook()
   // const { isJWTUserAdmin } = authHook()
-  const { setJWTasUser } = useAuthStore()
+  const { setJWTasUser, setToken } = useAuthStore()
 
   if (process.env.NODE_ENV === 'development' && process.env.VITE_DEV_API_URL) {
     apiUrl = process.env.VITE_DEV_API_URL
@@ -29,6 +29,7 @@ export default defineNuxtPlugin(async () => {
     const user = await response.json()
 
     if (user && process.env.JWT_SECRET) {
+      setToken(user.token)
       storeUsersEntities(user, false)
 
       const decoded = verify(user.token, process.env.JWT_SECRET) as JWTDecodedType

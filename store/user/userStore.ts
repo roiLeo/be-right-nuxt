@@ -25,6 +25,11 @@ export const useUserStore = defineStore('user', {
       return Object.values(state.entities.byId).find(user => user.email === authStore.user?.email)
     },
 
+    getAuthUserId: state => {
+      const authStore = useAuthStore()
+      return Object.values(state.entities.byId).find(user => user.email === authStore.user?.email)?.id
+    },
+
     // getUserFullName: state => {
     //   const user = state.entities.current
     //   return `${user?.firstName} ${user?.lastName}`

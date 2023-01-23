@@ -10,7 +10,9 @@ export const useAuthStore = defineStore('auth', {
   }),
   getters: {
     isAuthUserAdmin: state => state.user?.roles.includes(RoleEnum.ADMIN),
+
     getIsLoggedIn: state => noNull(state.user) && notUndefined(state.user),
+
     getLoggedUserFullName: state => {
       if (state.user) {
         let str = ''
@@ -21,11 +23,17 @@ export const useAuthStore = defineStore('auth', {
         return str
       }
     },
+
+    getToken: state => state.token,
   },
 
   actions: {
     setJWTasUser(payload: JWTDecodedType) {
       this.user = payload
+    },
+
+    setToken(token: string) {
+      this.token = token
     },
 
     resetAuthState() {
