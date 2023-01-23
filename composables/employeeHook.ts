@@ -112,10 +112,7 @@ export default function employeeHook() {
       const { data } = await $api().get<EmployeeType[]>(`employee/user/${userId}`)
 
       if (data) {
-        storeEmployeeRelationsEntities(data.map(employee => ({
-          ...employee,
-          createdByUser: userId,
-        })))
+        storeEmployeeRelationsEntities(data)
       }
     } catch (error) {
       console.error(error)

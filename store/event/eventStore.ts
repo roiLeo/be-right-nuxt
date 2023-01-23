@@ -11,7 +11,7 @@ export const useEventStore = defineStore('events', {
     ...createGetters<EventType>(eventState),
 
     // bellow getters in this specific store
-    // getEventsByUserId: state => (userId: number) => Object.values(state.entities.byId).filter(event => event.createdByUser === userId),
+    getEventsByUserId: state => (userId: number) => Object.values(state.entities.byId).filter(event => event.createdByUserId === userId),
     // getCreationForm: state => state.creationForm,
   },
   actions: {
