@@ -1,16 +1,10 @@
 <template>
-<div>
-  Events
-  <NuxtLink
-    :to="{
-      name: 'evenement-show-id',
-      params: {
-        id: 1,
-      },
-    }"
-  >
-    Voir event 1
-  </NuxtLink>
+<div
+  class="relative min-h-screen py-6 text-left transition-all duration-500 ease-in-out transform"
+>
+  <EventList
+    :events="events"
+  />
 </div>
 </template>
 
