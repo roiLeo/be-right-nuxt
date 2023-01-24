@@ -5,11 +5,11 @@
 >
   <div>
     <MenuButton
-      class="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-purple-500 bg-purple-300 border border-purple-500 rounded-md bg-opacity-20 hover:bg-opacity-40 hover:text-purple-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+      class="inline-flex justify-center w-full px-2 py-1 text-sm font-medium text-purple-500 bg-purple-300 border border-purple-500 rounded-md bg-opacity-20 hover:bg-opacity-40 hover:text-purple-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
     >
       Options
       <ChevronDownIconSolid
-        class="w-5 h-5 ml-2 -mr-1 text-purple-500 hover:text-purple-800"
+        class="w-5 h-5 ml-1 -mr-1 text-purple-500 hover:text-purple-800"
         aria-hidden="true"
       />
     </MenuButton>
@@ -90,7 +90,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import type { EventType } from '@/types'
 import { ModalModeEnum, ModalNameEnum } from '@/types'
-import { useUiStore, useUserStore } from '~~/store'
+import { useUiStore } from '~~/store'
 
 interface Props {
   event: EventType
@@ -100,8 +100,6 @@ const props = defineProps<Props>()
 
 const uiStore = useUiStore()
 const { setUiModal } = uiStore
-const userStore = useUserStore()
-const router = useRouter()
 
 // function addEmployeeToEvent() {
 //   setUiModal({

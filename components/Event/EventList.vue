@@ -1,7 +1,7 @@
 <template>
 <div class="h-full min-h-screen px-4 sm:px-6 lg:px-8">
-  <div class="sm:flex sm:items-center">
-    <div class="sm:flex-auto">
+  <div class=" sm:flex-col lg:flex-row lg:items-center">
+    <div class="w-full mb-4 sm:flex-auto">
       <BaseInput
         v-model="state.search"
         name="events"
@@ -48,8 +48,7 @@
 
 <script setup lang="ts">
 import type { EventType } from '@/types'
-import { EventStatusEnum } from '@/types'
-import { useTableStore, useUserStore } from '~~/store'
+import { useTableStore } from '~~/store'
 
 interface Props {
   noEventMessage?: string
