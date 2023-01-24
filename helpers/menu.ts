@@ -87,13 +87,13 @@ export const MENU_ITEMS = [
   {
     label: 'Créer un événement',
     icon: PlusIcon,
-    linkName: 'destinataire-create',
+    linkName: 'evenement-create',
     isAdmin: false,
   },
   {
     label: 'Créer un destinataire',
     icon: PlusIcon,
-    // linkName: 'user.employees.create',
+    linkName: 'destinataire-create',
     isAdmin: false,
   },
   // {

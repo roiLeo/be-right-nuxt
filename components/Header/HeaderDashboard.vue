@@ -18,6 +18,7 @@
     </div>
 
     <a
+      data-cy="go-back-button"
       class="flex items-center space-x-2 text-gray-500 cursor-pointer dark:text-white-break hover:underline"
       @click="goBack"
     >
@@ -44,6 +45,7 @@
   <UserMenu
     is-in-header
     class="lg:hidden"
+    data-cy="user-menu-in-header"
   />
 </div>
 </template>

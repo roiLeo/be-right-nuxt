@@ -27,6 +27,10 @@ export default defineNuxtPlugin(() => {
         })
         return api
       },
+
+      authUser: authStore.user,
+
+      isAuthUserAdmin: authStore.isAuthUserAdmin,
     },
   }
 })
