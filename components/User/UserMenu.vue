@@ -58,15 +58,13 @@
         </div>
       </MenuItem>
       <MenuItem>
-        <div
+        <NuxtLink
           class="flex items-center justify-start w-full space-x-2 text-sm text-gray-700 cursor-pointer"
           @click="onToggleLogout"
         >
           <ArrowLeftOnRectangleIconOutline class="h-6 text-gray-500" />
-          <NuxtLink to="/">
-            Se déconnecter
-          </NuxtLink>
-        </div>
+          Se déconnecter
+        </NuxtLink>
       </MenuItem>
     </MenuItems>
   </transition>
@@ -82,6 +80,7 @@ withDefaults(defineProps<Props>(), {
 const userStore = useUserStore()
 const authStore = useAuthStore()
 const { logout } = authHook()
+const router = useRouter()
 
 interface Props {
   isInHeader?: boolean
@@ -89,5 +88,6 @@ interface Props {
 
 function onToggleLogout() {
   logout()
+  router.replace('/')
 }
 </script>
