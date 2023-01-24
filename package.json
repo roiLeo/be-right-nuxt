@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.0.13",
-    "@malolebrin/pinia-entity-store": "^0.2.2",
+    "@malolebrin/pinia-entity-store": "^0.2.4",
     "@pinia/nuxt": "^0.4.6",
     "jsonwebtoken": "^9.0.0",
     "pinia": "^2.0.28",
