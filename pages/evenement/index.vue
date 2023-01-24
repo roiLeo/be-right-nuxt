@@ -9,18 +9,22 @@
 </template>
 
 <script setup lang="ts">
-import { useEventStore, useTableStore, useUiStore, useUserStore } from '~~/store'
+import { useAuthStore, useEventStore, useTableStore, useUiStore, useUserStore } from '~~/store'
 
 const eventStore = useEventStore()
 const { IncLoading, DecLoading } = useUiStore()
 const userStore = useUserStore()
 const tableStore = useTableStore()
+const authStore = useAuthStore()
 const { setFilters } = tableStore
 
 const { fetchEventsByUser, fetchAllEvents } = eventHook()
 const { fetchManyAnswerForManyEvent } = answerHook()
 
 const events = computed(() => {
+  if (authStore.isAuthUserAdmin) {
+    return eventStore.getAllArray
+  }
   const userId = userStore.getAuthUserId
   if (userId) {
     return eventStore.getEventsByUserId(userId)
@@ -41,9 +45,13 @@ watch(() => tableStore.getFinalUrl, async newValue => {
 
 onMounted(async () => {
   const userId = userStore.getAuthUserId
+  const isAdmin = authStore.isAuthUserAdmin
 
-  if (userId) {
-    IncLoading()
+  IncLoading()
+  if (isAdmin) {
+    await fetchAllEvents()
+  }
+  else if (userId) {
     const eventIds = userStore.getAuthUser?.eventIds
 
     if (eventIds && eventIds.length > 0) {
@@ -54,9 +62,8 @@ onMounted(async () => {
 
       await fetchManyAnswerForManyEvent(eventIds)
     }
-
-    DecLoading()
   }
+  DecLoading()
 })
 
 definePageMeta({
