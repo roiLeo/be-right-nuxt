@@ -68,7 +68,7 @@ export default function eventHook() {
           ...event,
         }
       })
-      eventStore.createMany(eventsToStore)
+      eventStore.addMany(eventsToStore)
       return eventsToStore
     }
     return []

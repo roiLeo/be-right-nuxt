@@ -17,6 +17,13 @@ export const useEventStore = defineStore('events', {
   actions: {
     ...createActions<EventType>(eventState),
 
+    addMany(events: EventType[]) {
+      events.forEach(event => {
+        this.entities.byId[event.id] = { ...event, $isDirty: false }
+        this.entities.allIds.push(event.id)
+      })
+    },
+
     // setCreationFormField<K extends keyof BaseCreationFormType>(field: K, value: BaseCreationFormType[K]) {
     //   this.creationForm[field] = value
     // },
