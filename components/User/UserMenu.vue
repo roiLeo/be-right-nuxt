@@ -7,6 +7,7 @@
     <MenuButton
       v-if="userStore.getAuthUser"
       class="flex items-center flex-shrink-0 p-4"
+      data-cy="user-menu-button"
     >
       <UserAvatar :user="userStore.getAuthUser" />
       <div
@@ -59,6 +60,7 @@
       </MenuItem>
       <MenuItem>
         <NuxtLink
+          data-cy="user-menu-logout-link"
           class="flex items-center justify-start w-full space-x-2 text-sm text-gray-700 cursor-pointer"
           @click="onToggleLogout"
         >

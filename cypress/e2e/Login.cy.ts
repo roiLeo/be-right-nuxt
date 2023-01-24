@@ -36,17 +36,11 @@ describe('Login spec', () => {
     cy.get('button[type=submit]').should('be.enabled')
     cy.get('button[type=submit]').click()
 
-    cy.url().contains('/evenement')
+    cy.get('h3>span').contains('Événements')
 
-    cy.visit('http://localhost:3000')
-
-    cy.get('header').within(() => {
-      cy.get('button').contains('Mon compte')
-    })
-
-    cy.get('footer').within(() => {
-      cy.get('a').contains('Mon compte')
-      cy.get('p').contains('Se déconnecter')
+    cy.get('[data-cy=user-menu-in-header]').within(() => {
+      cy.get('[data-cy=user-menu-button]').click()
+      cy.get('[data-cy=user-menu-logout-link]').click()
     })
   })
 })

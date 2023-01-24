@@ -59,7 +59,7 @@ export default function userHook() {
    */
   function storeUsersEntities(user: UserType, isUserToSetCurrent = true) {
     if (user.events && user.events.length > 0 && !isArrayOfNumbers(user.events)) {
-      const userEvents = user.events as EventType[]
+      const userEvents = user.events
       const eventsToStore = userEvents.filter(event => !eventStore.isAlreadyInStore(event.id))
       eventStore.createMany(eventsToStore)
     }
