@@ -80,7 +80,7 @@ export default function employeeHook() {
             ...employee,
           }
         })
-        employeeStore.createMany(employeesToStore)
+        employeeStore.addMany(employeesToStore)
         return employeesToStore
       }
     }
@@ -96,7 +96,7 @@ export default function employeeHook() {
           ...employe,
           event: eventId,
         }))
-        employeeStore.createMany(employees)
+        employeeStore.addMany(employees)
       }
     } catch (error) {
       console.error(error)
@@ -198,7 +198,7 @@ export default function employeeHook() {
         userStore.updateOne(userId, {
           ...user,
         })
-        employeeStore.createMany(data)
+        employeeStore.addMany(data)
         $toast.success('Destinataires créés avec succès')
       }
     } catch (error) {
