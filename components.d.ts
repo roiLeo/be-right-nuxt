@@ -7,11 +7,14 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ArrowDownOnSquareIconOutline: typeof import('@heroicons/vue/24/outline/esm/ArrowDownOnSquareIcon.js')['default']
     ArrowLeftOnRectangleIconOutline: typeof import('@heroicons/vue/24/outline/esm/ArrowLeftOnRectangleIcon.js')['default']
+    ArrowsUpDownIconOutline: typeof import('@heroicons/vue/24/outline/esm/ArrowsUpDownIcon.js')['default']
     Bars3IconOutline: typeof import('@heroicons/vue/24/outline/esm/Bars3Icon.js')['default']
     CalendarDaysIconOutline: typeof import('@heroicons/vue/24/outline/esm/CalendarDaysIcon.js')['default']
     CheckCircleIconOutline: typeof import('@heroicons/vue/24/outline/esm/CheckCircleIcon.js')['default']
     CheckCircleIconSolid: typeof import('@heroicons/vue/24/solid/esm/CheckCircleIcon.js')['default']
+    CheckIconOutline: typeof import('@heroicons/vue/24/outline/esm/CheckIcon.js')['default']
     ChevronDownIconSolid: typeof import('@heroicons/vue/24/solid/esm/ChevronDownIcon.js')['default']
     ChevronLeftIconOutline: typeof import('@heroicons/vue/24/outline/esm/ChevronLeftIcon.js')['default']
     ChevronRightIconOutline: typeof import('@heroicons/vue/24/outline/esm/ChevronRightIcon.js')['default']
@@ -23,6 +26,11 @@ declare module '@vue/runtime-core' {
     EyeIconOutline: typeof import('@heroicons/vue/24/outline/esm/EyeIcon.js')['default']
     EyeSlashIconOutline: typeof import('@heroicons/vue/24/outline/esm/EyeSlashIcon.js')['default']
     InformationCircleIconOutline: typeof import('@heroicons/vue/24/outline/esm/InformationCircleIcon.js')['default']
+    Listbox: typeof import('@headlessui/vue')['Listbox']
+    ListboxButton: typeof import('@headlessui/vue')['ListboxButton']
+    ListboxLabel: typeof import('@headlessui/vue')['ListboxLabel']
+    ListboxOption: typeof import('@headlessui/vue')['ListboxOption']
+    ListboxOptions: typeof import('@headlessui/vue')['ListboxOptions']
     MapPinIconOutline: typeof import('@heroicons/vue/24/outline/esm/MapPinIcon.js')['default']
     Menu: typeof import('@headlessui/vue')['Menu']
     MenuButton: typeof import('@headlessui/vue')['MenuButton']
