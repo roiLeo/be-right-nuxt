@@ -3,8 +3,8 @@ describe('Event detail spec', () => {
     cy.visit('http://localhost:3000')
     cy.get('#login-link').click()
 
-    cy.get('#email').type('albus@poudlard.com')
     cy.get('#password').type('password')
+    cy.get('#email').type('albus@poudlard.com')
     cy.get('button[type=submit]').click()
   })
 
