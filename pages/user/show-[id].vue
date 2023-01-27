@@ -1,5 +1,7 @@
 <template>
-show user
+<PageAuthWrapper>
+  show user
+</PageAuthWrapper>
 </template>
 
 <script setup lang="ts">

@@ -1,5 +1,7 @@
 <template>
-Edit User
+<PageAuthWrapper>
+  Edit User
+</PageAuthWrapper>
 </template>
 
 <script setup lang="ts">

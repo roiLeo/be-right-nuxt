@@ -1,7 +1,7 @@
 <template>
-<div>
+<PageAuthWrapper>
   Users
-</div>
+</PageAuthWrapper>
 </template>
 
 <script setup lang="ts">

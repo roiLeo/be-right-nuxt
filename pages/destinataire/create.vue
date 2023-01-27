@@ -1,5 +1,7 @@
 <template>
-create destinaire
+<PageAuthWrapper>
+  create destinaire
+</PageAuthWrapper>
 </template>
 
 <script setup lang="ts">

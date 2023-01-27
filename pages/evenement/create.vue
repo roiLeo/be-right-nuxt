@@ -1,5 +1,7 @@
 <template>
-create event
+<PageAuthWrapper>
+  create event
+</PageAuthWrapper>
 </template>
 
 <script setup lang="ts">

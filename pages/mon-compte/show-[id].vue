@@ -1,5 +1,7 @@
 <template>
-mon compte show
+<PageAuthWrapper>
+  mon compte show
+</PageAuthWrapper>
 </template>
 
 <script setup lang="ts">

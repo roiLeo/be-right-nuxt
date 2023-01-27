@@ -1,5 +1,7 @@
 <template>
-Edit destinataire
+<PageAuthWrapper>
+  Edit destinataire
+</PageAuthWrapper>
 </template>
 
 <script setup lang="ts">

@@ -1,11 +1,11 @@
 <template>
-<div>
+<PageAuthWrapper>
   <EventDetails
     v-if="!uiStore.isLoading"
     :event-id="eventId"
   />
   <BaseLoader v-else />
-</div>
+</PageAuthWrapper>
 </template>
 
 <script setup lang="ts">

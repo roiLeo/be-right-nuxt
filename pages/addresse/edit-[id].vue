@@ -1,5 +1,7 @@
 <template>
-address edit
+<PageAuthWrapper>
+  address edit
+</PageAuthWrapper>
 </template>
 
 <script setup lang="ts">

@@ -1,5 +1,7 @@
 <template>
-address show
+<PageAuthWrapper>
+  address show
+</PageAuthWrapper>
 </template>
 
 <script setup lang="ts">

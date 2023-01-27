@@ -1,5 +1,7 @@
 <template>
-show destinataire
+<PageAuthWrapper>
+  show destinataire
+</PageAuthWrapper>
 </template>
 
 <script setup lang="ts">

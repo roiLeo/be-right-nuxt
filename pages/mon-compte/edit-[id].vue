@@ -1,5 +1,7 @@
 <template>
-mon compte edit
+<PageAuthWrapper>
+  mon compte edit
+</PageAuthWrapper>
 </template>
 
 <script setup lang="ts">
