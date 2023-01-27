@@ -23,6 +23,13 @@ export const useEmployeeStore = defineStore('employees', {
     // actions common to all entities
     ...createActions<EmployeeType>(employeState),
 
+    addMany(employees: EmployeeType[]) {
+      employees.forEach(emp => {
+        this.entities.byId[emp.id] = { ...emp, $isDirty: false }
+        this.entities.allIds.push(emp.id)
+      })
+    },
+
     resetState() {
       this.$state = defaultEmployeeState()
     },

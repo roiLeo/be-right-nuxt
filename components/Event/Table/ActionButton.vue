@@ -5,6 +5,7 @@
 >
   <div>
     <MenuButton
+      :data-cy="`event-${props.event.id}-options-links`"
       class="inline-flex justify-center w-full px-2 py-1 text-sm font-medium text-purple-500 bg-purple-300 border border-purple-500 rounded-md bg-opacity-20 hover:bg-opacity-40 hover:text-purple-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
     >
       Options
@@ -34,6 +35,7 @@
               active ? 'bg-purple-300 text-purple-800' : 'text-gray-900',
             ]"
             :to="{ name: 'evenement-show-id', params: { id: props.event.id } }"
+            :data-cy="`event-${props.event.id}-show-link`"
           >
             <PencilSquareIconOutline
               :active="active"

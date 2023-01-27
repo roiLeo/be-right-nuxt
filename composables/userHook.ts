@@ -85,7 +85,7 @@ export default function userHook() {
     if (userStore.isAlreadyInStore(user.id)) {
       userStore.updateOne(user.id, user)
     } else {
-      userStore.createOne(user)
+      userStore.addOne(user)
     }
   }
 
@@ -254,7 +254,7 @@ export default function userHook() {
     try {
       const { data } = await $api().post<UserType>('user/photographer', photographer)
       if (data && isUserType(data)) {
-        userStore.createOne(data)
+        userStore.addOne(data)
         return data
       }
     } catch (error) {

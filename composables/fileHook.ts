@@ -32,12 +32,12 @@ export default function fileHook() {
     try {
       const { data } = await $api().post<FileType>('file/profile', fileForm)
       if (data && isFileType(data)) {
-        if (data.createdByUser) {
+        if (data.createdByUserId) {
           fileStore.createOne(data)
-          const { data: user } = await $api().get<UserType>(`user/${data.createdByUser}`)
+          const { data: user } = await $api().get<UserType>(`user/${data.createdByUserId}`)
           if (user && isUserType(user)) {
             updateOne(user.id, user)
-            if (userStore.getCurrentUserId === user.id) {
+            if (userStore.getAuthUserId === user.id) {
               setCurrent(user)
             }
           }
@@ -55,7 +55,7 @@ export default function fileHook() {
     IncLoading()
     try {
       const { data } = await $api().post<FileType>('file/logo', fileForm)
-      if (data && data.createdByUser && isFileType(data)) {
+      if (data && data.createdByUserId && isFileType(data)) {
         fileStore.createOne(data)
         $toast.success('Logo créé avec succès')
       }
@@ -145,42 +145,6 @@ export default function fileHook() {
     DecLoading()
   }
 
-  async function fetchAllByUserId(userId: number) {
-    IncLoading()
-    try {
-      const { data: files } = await $api().get<FileType[]>(`file/user/${userId}`)
-
-      if (files && files.length > 0) {
-        const filesNotInStore = filteringFilesNotInStore(files)
-        if (filesNotInStore.length > 0) {
-          fileStore.createMany(filesNotInStore)
-        }
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.error('Une erreur est survenue')
-    }
-    DecLoading()
-  }
-
-  async function fetchAllForEvent(eventId: number) {
-    IncLoading()
-    try {
-      const { data: files } = await $api().get<FileType[]>(`file/event/${eventId}`)
-
-      if (files && files.length > 0) {
-        const filesNotInStore = filteringFilesNotInStore(files)
-        if (filesNotInStore.length > 0) {
-          fileStore.createMany(filesNotInStore)
-        }
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.error('Une erreur est survenue')
-    }
-    DecLoading()
-  }
-
   async function fetchLogoByUserId(userId: number) {
     IncLoading()
     try {
@@ -207,19 +171,36 @@ export default function fileHook() {
     return hasOwnProperty(file, 'fileName')
   }
 
+  async function fetchManyFiles(ids: number[]) {
+    IncLoading()
+    try {
+      const { data } = await $api().get<PaginatedResponse<FileType>>(`file/many/?ids=${ids.join(',')}`)
+
+      if (data) {
+        const files = filteringFilesNotInStore(data.data)
+        if (files.length > 0) {
+          fileStore.createMany(files)
+        }
+      }
+    } catch (error) {
+      console.error(error)
+      $toast.error('Une erreur est survenue')
+    }
+    DecLoading()
+  }
+
   return {
     deleteOne,
     fetchAll,
-    fetchAllByUserId,
-    fetchAllForEvent,
     fetchLogoByUserId,
+    fetchManyFiles,
     filteringFilesNotInStore,
     getTranslationFileType,
     isFileType,
     isNotPersonnalFile,
     patchOne,
+    postLogo,
     postOne,
     postProfilePicture,
-    postLogo,
   }
 }

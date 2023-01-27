@@ -1,5 +1,11 @@
 <template>
-show event
+<div>
+  <EventDetails
+    v-if="!uiStore.isLoading"
+    :event-id="eventId"
+  />
+  <BaseLoader v-else />
+</div>
 </template>
 
 <script setup lang="ts">
@@ -8,22 +14,26 @@ import {
   useAnswerStore,
   useEmployeeStore,
   useEventStore,
+  useFileStore,
   useUiStore,
   useUserStore,
 } from '~~/store'
 
-const { IncLoading, DecLoading } = useUiStore()
+const uiStore = useUiStore()
+const { IncLoading, DecLoading } = uiStore
 const eventStore = useEventStore()
 const answerStore = useAnswerStore()
 const employeeStore = useEmployeeStore()
 const userStore = useUserStore()
 const addressStore = useAddressStore()
+const fileStore = useFileStore()
 
 const { fetchOne } = eventHook()
 const { fetchManyAnswerForEvent } = answerHook()
 const { fetchEmployeesByEventId } = employeeHook()
 const { fetchMany: fetchManyUsers } = userHook()
 const { fetchOne: fetchOneAddress } = addressHook()
+const { fetchManyFiles } = fileHook()
 
 const route = useRoute()
 
@@ -70,6 +80,14 @@ onMounted(async () => {
 
       if (event.value.addressId && !addressStore.isAlreadyInStore(event.value.addressId)) {
         await fetchOneAddress(event.value.addressId)
+      }
+
+      if (event.value.filesIds?.length > 0) {
+        const missingIds = fileStore.getMissingIds(event.value.filesIds)
+
+        if (missingIds.length > 0) {
+          await fetchManyFiles(missingIds)
+        }
       }
     }
 
