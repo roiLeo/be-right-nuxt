@@ -15,12 +15,16 @@
         },
       }"
       class="block group"
+      :data-cy="`event-details-employee-link-${employee.id}`"
     >
       <div class="flex items-center px-4 py-5 sm:py-6 sm:px-0">
         <div class="flex items-center flex-1 min-w-0">
           <div class="flex-1 min-w-0 px-4 md:grid md:grid-cols-2 md:gap-4">
             <div>
-              <p class="text-sm font-medium text-purple-600 truncate">
+              <p
+                :data-cy="`event-details-employee-name-${employee.id}`"
+                class="text-sm font-medium text-purple-600 truncate"
+              >
                 {{ employee.firstName }}
                 {{ employee.lastName }}
               </p>
