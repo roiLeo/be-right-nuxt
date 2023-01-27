@@ -216,7 +216,7 @@ export default function userHook() {
         if (users && users.length > 0 && isArrayUserType(users)) {
           const missingsUsers = users.filter(user => !userStore.isAlreadyInStore(user.id))
           if (missingsUsers.length > 0) {
-            userStore.createMany(missingsUsers)
+            userStore.addMany(missingsUsers)
           }
         }
       }

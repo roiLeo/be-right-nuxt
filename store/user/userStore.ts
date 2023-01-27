@@ -56,6 +56,10 @@ export const useUserStore = defineStore('user', {
       this.entities.allIds = uniq([...this.entities.allIds, user.id])
     },
 
+    addMany(users: UserType[]) {
+      users.forEach(user => this.addOne(user))
+    },
+
     // setPhotographerForm(payload: PhotographerCreatePayload) {
     //   this.photographerForm = payload
     // },

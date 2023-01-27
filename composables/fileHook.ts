@@ -145,24 +145,6 @@ export default function fileHook() {
     DecLoading()
   }
 
-  async function fetchLogoByUserId(userId: number) {
-    IncLoading()
-    try {
-      const { data } = await $api().get<PaginatedResponse<FileType>>(`file?filters[type]=${FileTypeEnum.LOGO}&filters[createdByUser]=${userId}`)
-
-      if (data) {
-        const files = filteringFilesNotInStore(data.data)
-        if (files.length > 0) {
-          fileStore.createMany(files)
-        }
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.error('Une erreur est survenue')
-    }
-    DecLoading()
-  }
-
   function isNotPersonnalFile(file: FileType) {
     return ![FileTypeEnum.BUG_REPORT, FileTypeEnum.PROFILE_PICTURE, FileTypeEnum.LOGO].includes(file.type)
   }
@@ -192,7 +174,6 @@ export default function fileHook() {
   return {
     deleteOne,
     fetchAll,
-    fetchLogoByUserId,
     fetchManyFiles,
     filteringFilesNotInStore,
     getTranslationFileType,

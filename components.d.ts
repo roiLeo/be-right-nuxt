@@ -28,6 +28,7 @@ declare module '@vue/runtime-core' {
     MenuButton: typeof import('@headlessui/vue')['MenuButton']
     MenuItem: typeof import('@headlessui/vue')['MenuItem']
     MenuItems: typeof import('@headlessui/vue')['MenuItems']
+    PencilIconOutline: typeof import('@heroicons/vue/24/outline/esm/PencilIcon.js')['default']
     PencilSquareIconOutline: typeof import('@heroicons/vue/24/outline/esm/PencilSquareIcon.js')['default']
     PhoneIconOutline: typeof import('@heroicons/vue/24/outline/esm/PhoneIcon.js')['default']
     RadioGroup: typeof import('@headlessui/vue')['RadioGroup']
@@ -44,6 +45,7 @@ declare module '@vue/runtime-core' {
     TransitionRoot: typeof import('@headlessui/vue')['TransitionRoot']
     TrashIconOutline: typeof import('@heroicons/vue/24/outline/esm/TrashIcon.js')['default']
     UserCircleIconOutline: typeof import('@heroicons/vue/24/outline/esm/UserCircleIcon.js')['default']
+    UserPlusIconOutline: typeof import('@heroicons/vue/24/outline/esm/UserPlusIcon.js')['default']
     XCircleIconOutline: typeof import('@heroicons/vue/24/outline/esm/XCircleIcon.js')['default']
     XCircleIconSolid: typeof import('@heroicons/vue/24/solid/esm/XCircleIcon.js')['default']
   }
