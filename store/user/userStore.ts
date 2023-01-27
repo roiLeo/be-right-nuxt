@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { createActions, createGetters } from '@malolebrin/pinia-entity-store'
+import { uniq } from '@antfu/utils'
 import { useAuthStore } from '../auth/authStore'
 import type { PhotographerCreatePayload, UserType } from './types'
 import { basePhotographerForm, defaultUserState, userState } from './state'
@@ -49,6 +50,11 @@ export const useUserStore = defineStore('user', {
 
   actions: {
     ...createActions<UserType>(userState),
+
+    addOne(user: UserType) {
+      this.entities.byId[user.id] = { ...user, $isDirty: false }
+      this.entities.allIds = uniq([...this.entities.allIds, user.id])
+    },
 
     // setPhotographerForm(payload: PhotographerCreatePayload) {
     //   this.photographerForm = payload
