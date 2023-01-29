@@ -22,7 +22,7 @@ specifiers:
   start-server-and-test: ^1.15.2
   tailwindcss: ^3.2.4
   typescript: ^4.9.4
-  unplugin-vue-components: ^0.22.12
+  unplugin-vue-components: ^0.23.0
   vee-validate: ^4.7.3
   vue-toastification: 2.0.0-rc.5
   yup: ^0.32.11
@@ -54,7 +54,7 @@ devDependencies:
   start-server-and-test: 1.15.2
   tailwindcss: 3.2.4_postcss@8.4.20
   typescript: 4.9.4
-  unplugin-vue-components: 0.22.12
+  unplugin-vue-components: 0.23.0
 
 packages:
 
@@ -118,7 +118,7 @@ packages:
       '@antfu/eslint-config-ts': 0.34.0_lzzuuodtsqwxnvqeq4g4likcqa
       eslint: 8.30.0
       eslint-plugin-vue: 9.8.0_eslint@8.30.0
-      local-pkg: 0.4.2
+      local-pkg: 0.4.3
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
       - eslint-import-resolver-typescript
@@ -5087,11 +5087,6 @@ packages:
       json5: 2.2.2
     dev: true
 
-  /local-pkg/0.4.2:
-    resolution: {integrity: sha512-mlERgSPrbxU3BP4qBqAvvwlgW4MTg78iwJdGGnv7kibKjWcJksrG3t6LB5lXI93wXRDvG4NpUgJFmTG4T6rdrg==}
-    engines: {node: '>=14'}
-    dev: true
-
   /local-pkg/0.4.3:
     resolution: {integrity: sha512-SFppqq5p42fe2qcZQqqEOiVRXl+WCP1MdT6k7BDEW1j++sp5fIY+/fdRQitvKgB5BrBcmrs5m/L0v2FrU5MY1g==}
     engines: {node: '>=14'}
@@ -5360,6 +5355,13 @@ packages:
 
   /minimatch/5.1.2:
     resolution: {integrity: sha512-bNH9mmM9qsJ2X4r2Nat1B//1dJVcn3+iBLa3IgqJ7EbGaDNepL9QSHOxN4ng33s52VMMhhIfgCYDk3C4ZmlDAg==}
+    engines: {node: '>=10'}
+    dependencies:
+      brace-expansion: 2.0.1
+    dev: true
+
+  /minimatch/6.1.6:
+    resolution: {integrity: sha512-6bR3UIeh/DF8+p6A9Spyuy67ShOq42rOkHWi7eUe3Ua99Zo5lZfGC6lJJWkeoK4k9jQFT3Pl7czhTXimG2XheA==}
     engines: {node: '>=10'}
     dependencies:
       brace-expansion: 2.0.1
@@ -7650,8 +7652,8 @@ packages:
     engines: {node: '>= 10.0.0'}
     dev: true
 
-  /unplugin-vue-components/0.22.12:
-    resolution: {integrity: sha512-FxyzsuBvMCYPIk+8cgscGBQ345tvwVu+qY5IhE++eorkyvA4Z1TiD/HCiim+Kbqozl10i4K+z+NCa2WO2jexRA==}
+  /unplugin-vue-components/0.23.0:
+    resolution: {integrity: sha512-JAJ+BGvjHvi9P7lICwOzDx2Av+OcI6ZTzvySmjXDNGCNVPrt2NQQmbcp7cW027CR1mRugIX5G//awm3doHyqkg==}
     engines: {node: '>=14'}
     peerDependencies:
       '@babel/parser': ^7.15.8
@@ -7661,13 +7663,14 @@ packages:
         optional: true
     dependencies:
       '@antfu/utils': 0.7.2
+      '@nuxt/kit': 3.1.1
       '@rollup/pluginutils': 5.0.2
       chokidar: 3.5.3
       debug: 4.3.4
       fast-glob: 3.2.12
-      local-pkg: 0.4.2
+      local-pkg: 0.4.3
       magic-string: 0.27.0
-      minimatch: 5.1.2
+      minimatch: 6.1.6
       resolve: 1.22.1
       unplugin: 1.0.1
     transitivePeerDependencies:
