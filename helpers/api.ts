@@ -2,7 +2,7 @@ enum FetchMethods {
   GET = 'get',
   POST = 'post',
   PUT = 'put',
-  PATCH = 'patch',
+  PATCH = 'PATCH',
   DELETE = 'delete',
 }
 
