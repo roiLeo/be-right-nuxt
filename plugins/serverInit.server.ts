@@ -26,6 +26,7 @@ export default defineNuxtPlugin(async () => {
       },
       body: JSON.stringify({ token: cookieToken.value }),
     })
+
     const user = await response.json()
 
     if (user && process.env.JWT_SECRET) {
@@ -37,8 +38,10 @@ export default defineNuxtPlugin(async () => {
         if (decoded) {
           setJWTasUser(decoded)
           const router = useRouter()
+          const route = useRoute()
+
           router.push({
-            name: 'evenement',
+            name: route.name || 'evenement',
           })
         }
 
