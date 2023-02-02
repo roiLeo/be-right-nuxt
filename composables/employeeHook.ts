@@ -22,7 +22,7 @@ export default function employeeHook() {
   const { createOne: createOneAddress } = addressStore
   const { filteringFilesNotInStore } = fileHook()
   // const { filteringAnswersNotInStore } = answerHook()
-  // const { isAddressType } = addressHook()
+  const { isAddressType } = addressHook()
 
   function getEmployeeStatusSignature(employee: EmployeeType): string {
     if (employee.hasSigned) {
@@ -48,10 +48,16 @@ export default function employeeHook() {
 
   function storeEmployeeRelationsEntities(employees: EmployeeType[]): EmployeeType[] {
     if (employees.length > 0) {
-      const missingIds = employees.map(employee => employee.id).filter(id => !employeeStore.isAlreadyInStore(id))
+      const missingIds = employees
+        .map(employee => employee.id)
+        .filter(id => !employeeStore.isAlreadyInStore(id))
+
       if (missingIds.length > 0) {
         // TODO : optimize this with reduce
-        const employeesToStore = employees.filter(employee => missingIds.includes(employee.id)).map(employee => {
+        const employeesToStore = employees
+          .filter(employee => missingIds.includes(employee.id))
+
+        employeesToStore.forEach(employee => {
           // let employeeAnswers: AnswerType[] = []
           let employeeFiles: FileType[] = []
 
@@ -69,15 +75,10 @@ export default function employeeHook() {
           //   }
           // }
 
-          // if (employee.address && isAddressType(employee.address)) {
-          //   if (!addressStore.isAlreadyInStore(employee.address.id)) {
-          //     createOneAddress(employee.address)
-          //   }
-          //   employee.address = employee.address.id
-          // }
-
-          return {
-            ...employee,
+          if (employee.address && isAddressType(employee.address)) {
+            if (!addressStore.isAlreadyInStore(employee.addressId)) {
+              createOneAddress(employee.address)
+            }
           }
         })
         employeeStore.addMany(employeesToStore)
@@ -87,7 +88,22 @@ export default function employeeHook() {
     return []
   }
 
+  async function fetchOne(id: number) {
+    IncLoading()
+    try {
+      const { data } = await $api().get<EmployeeType>(`employee/${id}`)
+      if (data) {
+        storeEmployeeRelationsEntities([data])
+      }
+    } catch (error) {
+      console.error(error)
+      $toast.error('Une erreur est survenue')
+    }
+    DecLoading()
+  }
+
   async function fetchEmployeesByEventId(eventId: number) {
+    IncLoading()
     try {
       const { data } = await $api().get<EmployeeType[]>(`employee/event/${eventId}`)
 
@@ -102,6 +118,7 @@ export default function employeeHook() {
       console.error(error)
       $toast.error('Une erreur est survenue')
     }
+    DecLoading()
   }
 
   async function fetchAllByUserId(userId: number) {
@@ -220,6 +237,7 @@ export default function employeeHook() {
     deleteOne,
     fetchAll,
     fetchAllByUserId,
+    fetchOne,
     getEmployeeFullname,
     fetchEmployeesByEventId,
     getEmployeeStatusColor,

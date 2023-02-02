@@ -19,7 +19,14 @@
               </h1>
             </div>
             <div class="flex flex-col mt-6 space-y-3 justify-stretch sm:flex-row sm:space-y-0 sm:space-x-4">
-              <BaseButton @click="updateOneEmployee">
+              <BaseButton
+                :href="{
+                  name: 'destinataire-edit-id',
+                  params: {
+                    id: employee.id,
+                  },
+                }"
+              >
                 <template #icon>
                   <PencilIconOutline
                     aria-hidden="true"
@@ -182,17 +189,6 @@ const employeeAddress = computed(() => addressStore.getOne(props.employee?.addre
 // const creatorLogo = computed(() => fileStore.getWhereArray(file => file.createdByUser === employeeCreator.value.id && file.type === FileTypeEnum.LOGO)[0])
 
 const { getEmployeeFullname } = employeeHook()
-
-function updateOneEmployee() {
-  setUiModal({
-    isActive: true,
-    modalName: ModalNameEnum.ADD_EMPLOYEE,
-    modalMode: ModalModeEnum.EDIT,
-    data: {
-      employee: props.employee,
-    },
-  })
-}
 
 function deleteOneEmployee() {
   setUiModal({

@@ -1,7 +1,7 @@
 <template>
 <div class="w-full h-full px-4 mt-4">
   <Form
-    v-slot="{ meta, isSubmitting, values }"
+    v-slot="{ meta, isSubmitting, values, errors }"
     :validation-schema="schema"
     :initial-values="initialValues"
     class="grid grid-cols-2 gap-4"
@@ -98,6 +98,20 @@
       </BaseSelect>
     </div>
 
+    <div
+      v-if="isDebug"
+      class="flex flex-col space-y-2 md:col-span-2"
+    >
+      <p>is Dirty = {{ meta.dirty }}</p>
+      <p>is valid = {{ meta.valid }}</p>
+      <p
+        v-for="error in errors"
+        :key="error"
+      >
+        {{ error }}
+      </p>
+    </div>
+
     <div class="flex items-center justify-center mt-6 md:col-span-2">
       <BaseButton
         :disabled="!meta.valid || !meta.dirty || isSubmitting"
@@ -117,15 +131,17 @@
 <script setup lang="ts">
 import { number, object, string } from 'yup'
 import { Form } from 'vee-validate'
-import type { EmployeeType, VeeValidateValues } from '@/types'
+import type { AddressType, EmployeeType, VeeValidateValues } from '@/types'
 import { ModalModeEnum } from '@/types'
-import { useAddressStore, useAuthStore, useEventStore, useUiStore, useUserStore } from '~~/store'
+import { useAuthStore, useEventStore, useUiStore, useUserStore } from '~~/store'
 
 interface Props {
   employee?: EmployeeType | null
+  address?: AddressType | null
   mode?: ModalModeEnum
   eventId?: number
   userId?: number
+  isDebug?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -141,24 +157,19 @@ const emit = defineEmits<{
 
 const userStore = useUserStore()
 const eventStore = useEventStore()
-const addressStore = useAddressStore()
 const authStore = useAuthStore()
 const uiStore = useUiStore()
 const { IncLoading, DecLoading } = uiStore
 
 const { patchOne, postOne: postOneEmployee, postManyForEvent } = employeeHook()
-const { postOne: postOneAddress, patchOne: patchOneAddress } = addressHook()
+const { patchOne: patchOneAddress } = addressHook()
 const { getUserfullName } = userHook()
 
 const router = useRouter()
-const employeeAddress = computed(() => props.employee ? addressStore.getOne(props.employee.addressId) : null)
 
 const userIdField = computed(() => {
-  if (props.employee) {
-    return props.employee.createdByUserId
-  }
   if (authStore.isAuthUserAdmin) {
-    return null
+    return props.employee?.createdByUserId || null
   }
   return userStore.getAuthUserId
 })
@@ -181,11 +192,11 @@ const initialValues = {
   firstName: props.employee?.firstName || '',
   lastName: props.employee?.lastName || '',
   phone: props.employee?.phone || '',
-  addressLine: employeeAddress.value?.addressLine || '',
-  addressLine2: employeeAddress.value?.addressLine2 || null,
-  postalCode: employeeAddress.value?.postalCode || '',
-  city: employeeAddress.value?.city || '',
-  country: employeeAddress.value?.country || 'France',
+  addressLine: props.address?.addressLine || '',
+  addressLine2: props.address?.addressLine2 || null,
+  postalCode: props.address?.postalCode || '',
+  city: props.address?.city || '',
+  country: props.address?.country || 'France',
   userId: userIdField.value,
 }
 
@@ -207,34 +218,23 @@ async function submit(form: VeeValidateValues) {
     } else {
       if (userStore.getAuthUserId) {
         const createdByUserId = authStore.isAuthUserAdmin ? form.userId! : userStore.getAuthUserId
-        const employee = await postOneEmployee(employeeToPost, {
+
+        const address = {
           addressLine: form.addressLine,
           addressLine2: form.addressLine2,
           postalCode: form.postalCode,
           city: form.city,
           country: form.country,
-        },
-        createdByUserId)
+        } as AddressType
 
-        // if (employee) {
-        //   await postOneAddress({
-        //     address: {
-        //       addressLine: form.addressLine,
-        //       addressLine2: form.addressLine2,
-        //       postalCode: form.postalCode,
-        //       city: form.city,
-        //       country: form.country,
-        //     },
-        //     employeeId: employee.id,
-        //   })
-        // }
+        await postOneEmployee(employeeToPost, address, createdByUserId)
       }
     }
   } else if (props.mode === ModalModeEnum.EDIT && props.employee) {
     await patchOne(props.employee.id, { ...employeeToPost, createdByUserId: props.employee.createdByUserId })
 
-    if (employeeAddress.value) {
-      await patchOneAddress(employeeAddress.value.id, {
+    if (props.address) {
+      await patchOneAddress(props.address.id, {
         addressLine: form.addressLine,
         addressLine2: form.addressLine2,
         postalCode: form.postalCode,
