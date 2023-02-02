@@ -32,13 +32,15 @@ export default defineNuxtPlugin(async () => {
       setToken(user.token)
       storeUsersEntities(user, false)
 
-      const decoded = verify(user.token, process.env.JWT_SECRET) as JWTDecodedType
-      if (decoded) {
-        setJWTasUser(decoded)
-        const router = useRouter()
-        router.push({
-          name: 'evenement',
-        })
+      if (user.token) {
+        const decoded = verify(user.token, process.env.JWT_SECRET) as JWTDecodedType
+        if (decoded) {
+          setJWTasUser(decoded)
+          const router = useRouter()
+          router.push({
+            name: 'evenement',
+          })
+        }
 
         // if (isJWTUserAdmin(decoded)) {
         //   // navigateTo('/evenement')

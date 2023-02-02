@@ -7,6 +7,7 @@
 <script setup lang="ts">
 import { uniq } from '@antfu/utils'
 import {
+  useAuthStore,
   useEmployeeStore,
   useTableStore,
   useUiStore,
@@ -19,6 +20,7 @@ const uiStore = useUiStore()
 const { IncLoading, DecLoading } = uiStore
 const userStore = useUserStore()
 const employeeStore = useEmployeeStore()
+const authStore = useAuthStore()
 
 const { fetchAll } = employeeHook()
 const { fetchMany } = userHook()
@@ -39,14 +41,14 @@ onMounted(async () => {
 
   await fetchAll(tableStore.getFinalUrl)
 
-  if (employeeStore.getAllArray.length > 0) {
+  if (employeeStore.getAllArray.length > 0 && authStore.isAuthUserAdmin) {
     const userIds = employeeStore.getAllArray.map(employee => employee.createdByUserId)
 
-    if (userIds.length > 0) {
+    if (userIds?.length > 0) {
       const uniqIds = uniq(userIds)
       const missingIds = uniqIds.filter(id => !userStore.isAlreadyInStore(id))
 
-      if (missingIds.length > 0) {
+      if (missingIds?.length > 0) {
         await fetchMany(missingIds)
       }
     }
