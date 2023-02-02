@@ -207,20 +207,27 @@ async function submit(form: VeeValidateValues) {
     } else {
       if (userStore.getAuthUserId) {
         const createdByUserId = authStore.isAuthUserAdmin ? form.userId! : userStore.getAuthUserId
-        const employee = await postOneEmployee(employeeToPost, createdByUserId)
+        const employee = await postOneEmployee(employeeToPost, {
+          addressLine: form.addressLine,
+          addressLine2: form.addressLine2,
+          postalCode: form.postalCode,
+          city: form.city,
+          country: form.country,
+        },
+        createdByUserId)
 
-        if (employee) {
-          await postOneAddress({
-            address: {
-              addressLine: form.addressLine,
-              addressLine2: form.addressLine2,
-              postalCode: form.postalCode,
-              city: form.city,
-              country: form.country,
-            },
-            employeeId: employee.id,
-          })
-        }
+        // if (employee) {
+        //   await postOneAddress({
+        //     address: {
+        //       addressLine: form.addressLine,
+        //       addressLine2: form.addressLine2,
+        //       postalCode: form.postalCode,
+        //       city: form.city,
+        //       country: form.country,
+        //     },
+        //     employeeId: employee.id,
+        //   })
+        // }
       }
     }
   } else if (props.mode === ModalModeEnum.EDIT && props.employee) {

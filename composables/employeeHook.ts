@@ -1,5 +1,5 @@
 import { uniq } from '@antfu/utils'
-import type { EmployeeType, FileType, PaginatedResponse } from '@/types'
+import type { AddressType, EmployeeType, FileType, PaginatedResponse } from '@/types'
 import { isArrayOfNumbers } from '~~/utils'
 import {
   useAddressStore,
@@ -166,16 +166,15 @@ export default function employeeHook() {
     DecLoading()
   }
 
-  async function postOne(employee: EmployeeType, userId: number) {
+  async function postOne(employee: EmployeeType, address: AddressType, userId: number) {
     try {
-      const { data } = await $api().post<EmployeeType>(`employee/${userId}`, employee)
+      const { data } = await $api().post<EmployeeType>(`employee/${userId}`, { employee, address })
 
       if (data) {
         const user = userStore.getOne(userId)
-        const userEmployee = user.employee
         userStore.updateOne(userId, {
           ...user,
-          employee: [...userEmployee, data.id],
+          employeeIds: [...user.employeeIds, data.id],
         })
         employeeStore.createOne(data)
         $toast.success('Destinataire créé avec succès')
