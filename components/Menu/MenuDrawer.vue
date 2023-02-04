@@ -29,7 +29,7 @@
         leave-from="translate-x-0"
         leave-to="-translate-x-full"
       >
-        <div class="relative flex flex-col flex-1 w-full max-w-xs bg-gray-800">
+        <div class="relative flex flex-col flex-1 w-full max-w-xs bg-white">
           <TransitionChild
             as="template"
             enter="ease-in-out duration-300"
@@ -39,7 +39,7 @@
             leave-from="opacity-100"
             leave-to="opacity-0"
           >
-            <div class="absolute top-0 right-0 pt-2 -mr-12">
+            <div class="absolute top-0 pt-2 -mr-12 right-12">
               <button
                 type="button"
                 data-cy="close-drawer-button"
@@ -48,7 +48,7 @@
               >
                 <span class="sr-only">Close sidebar</span>
                 <XCircleIconOutline
-                  class="w-6 h-6 text-white"
+                  class="w-6 h-6 text-black"
                   aria-hidden="true"
                 />
               </button>
