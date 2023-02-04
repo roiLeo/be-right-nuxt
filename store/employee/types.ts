@@ -17,6 +17,7 @@ export interface EmployeeType extends BaseEntity {
   answers?: AnswerType[]
   answersIds: number[]
   address?: AddressType | null
+  addressId: number
 }
 
 export type EmployeeFormType = Omit<EmployeeType, 'id' | 'createdAt' | 'updatedAt' | 'files' | 'answers'>

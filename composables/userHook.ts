@@ -108,7 +108,7 @@ export default function userHook() {
 
       const missingsUsers = users.filter(user => !userStore.isAlreadyInStore(user.id))
       if (missingsUsers.length > 0) {
-        userStore.createMany(missingsUsers)
+        userStore.addMany(missingsUsers)
       }
     }
   }
@@ -216,7 +216,7 @@ export default function userHook() {
         if (users && users.length > 0 && isArrayUserType(users)) {
           const missingsUsers = users.filter(user => !userStore.isAlreadyInStore(user.id))
           if (missingsUsers.length > 0) {
-            userStore.createMany(missingsUsers)
+            userStore.addMany(missingsUsers)
           }
         }
       }
@@ -267,7 +267,7 @@ export default function userHook() {
     try {
       const { data } = await $api().get<UserType[]>(`user/partners/${userId}`)
       if (data) {
-        userStore.createMany(data)
+        userStore.addMany(data)
         return data
       }
     } catch (error: any) {

@@ -50,7 +50,7 @@ export default function authHook() {
   }
 
   async function checkMailIsAlreadyExist(email: string) {
-    const { data } = await $api().post<ValidationRequest>('user/isMailAlreadyExist', email)
+    const { data } = await $api().post<ValidationRequest>('user/isMailAlreadyExist', { email })
     return data
   }
 
