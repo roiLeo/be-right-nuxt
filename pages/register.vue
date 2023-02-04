@@ -165,7 +165,6 @@ async function submitregister(form: VeeValidateValues) {
         })
       }
     } catch (error) {
-      console.error(error)
       $toast.error('Une erreur est survenue')
     }
   }

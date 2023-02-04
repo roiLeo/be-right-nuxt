@@ -42,6 +42,7 @@
             <div class="absolute top-0 right-0 pt-2 -mr-12">
               <button
                 type="button"
+                data-cy="close-drawer-button"
                 class="flex items-center justify-center w-10 h-10 ml-1 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                 @click="closeDrawer"
               >
@@ -63,6 +64,7 @@
                 :key="index"
                 :to="{ name: item.linkName }"
                 exact-active-class="active-nuxt-link"
+                :data-cy="`drawer-link-${item.linkName}`"
                 class="flex items-center px-2 py-2 text-sm font-medium text-gray-600 rounded-md group dark:text-gray-300 hover:bg-gray-700 hover:text-white"
               >
                 <component
