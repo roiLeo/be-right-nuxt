@@ -90,17 +90,35 @@ export default function userHook() {
   }
 
   function storeUsersEntitiesForManyUsers(users: UserType[]): void {
-    if (users.length > 0) {
-      const events = users.reduce((acc, user) => [...acc, ...user?.events as EventType[]], [] as EventType[])
+    if (users && users?.length > 0) {
+      const events = users.reduce((acc, user) => {
+        if (user.events && user.events.length > 0) {
+          return [...acc, ...user?.events as EventType[]]
+        }
+        return acc
+      }, [] as EventType[])
+
       const eventsToStore = events.filter(event => !eventStore.isAlreadyInStore(event.id))
+
       if (eventsToStore.length > 0) {
-        eventStore.createMany(eventsToStore)
+        eventStore.addMany(eventsToStore)
       }
 
-      const employees = users.reduce((acc, user) => [...acc, ...user.employee as EmployeeType[]], [] as EmployeeType[])
+      const employees = users.reduce((acc, user) => {
+        if (user.employee && user.employee.length > 0) {
+          return [...acc, ...user.employee as EmployeeType[]]
+        }
+        return acc
+      }, [] as EmployeeType[])
       storeEmployeeRelationsEntities(employees)
 
-      const files = users.reduce((acc, user) => [...acc, ...user.files as FileType[]], [] as FileType[])
+      const files = users.reduce((acc, user) => {
+        if (user.files && user.files.length > 0) {
+          return [...acc, ...user.files as FileType[]]
+        }
+        return acc
+      }, [] as FileType[])
+
       const filesToStore = files.filter(file => !fileStore.isAlreadyInStore(file.id))
       if (filesToStore.length > 0) {
         fileStore.createMany(filesToStore)
@@ -232,7 +250,7 @@ export default function userHook() {
   }
 
   function isArrayUserType(users: any[]): users is UserType[] {
-    return users.every(isUserType)
+    return users?.every(isUserType)
   }
 
   /**
