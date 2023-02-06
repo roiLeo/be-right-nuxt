@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { useUserStore } from '../user/userStore'
+import { useAuthStore } from '../auth'
 import { defaultTableState, tableState } from './state'
 import type { TableState } from './types'
 import { EntitiesEnum } from '@/types'
@@ -17,11 +18,12 @@ export const useTableStore = defineStore(EntitiesEnum.TABLE, {
     getSearch: state => state.search,
     getFinalUrl: state => {
       const userStore = useUserStore()
+      const authStore = useAuthStore()
 
       let url: string | null = null
 
-      if (!userStore.isCurrentUserAdmin && userStore.getCurrentUserId) {
-        url = `filters[createdByUser]=${userStore.getCurrentUserId}`
+      if (!authStore.isAuthUserAdmin && userStore.getAuthUserId) {
+        url = `filters[createdByUserId]=${userStore.getAuthUserId}`
       }
 
       if (state.search) {
