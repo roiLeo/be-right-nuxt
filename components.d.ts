@@ -21,6 +21,7 @@ declare module '@vue/runtime-core' {
     ChevronRightIconOutline: typeof import('@heroicons/vue/24/outline/esm/ChevronRightIcon.js')['default']
     Dialog: typeof import('@headlessui/vue')['Dialog']
     DialogOverlay: typeof import('@headlessui/vue')['DialogOverlay']
+    DialogTitle: typeof import('@headlessui/vue')['DialogTitle']
     EnvelopeIconOutline: typeof import('@heroicons/vue/24/outline/esm/EnvelopeIcon.js')['default']
     ExclamationCircleIconOutline: typeof import('@heroicons/vue/24/outline/esm/ExclamationCircleIcon.js')['default']
     ExclamationTriangleIconOutline: typeof import('@heroicons/vue/24/outline/esm/ExclamationTriangleIcon.js')['default']
