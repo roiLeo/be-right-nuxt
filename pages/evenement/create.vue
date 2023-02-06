@@ -31,7 +31,10 @@
     class="px-4 lg:px-8"
   />
 
-  <template v-if="isPhotographerCreation">
+  <div
+    v-if="isPhotographerCreation"
+    class="px-4 lg:px-8"
+  >
     <RadioGroup v-model="isPhotographerAlreadyCreated">
       <RadioGroupLabel class="text-base font-medium text-gray-900">
         Le photographe existe déjà ?
@@ -119,7 +122,7 @@
         @submitted="submit"
       />
     </transition>
-  </template>
+  </div>
 
   <div
     v-else-if="isEnd"
