@@ -47,7 +47,7 @@ export default function employeeHook() {
   }
 
   function storeEmployeeRelationsEntities(employees: EmployeeType[]): EmployeeType[] {
-    if (employees.length > 0) {
+    if (employees?.length > 0) {
       const missingIds = employees
         .map(employee => employee.id)
         .filter(id => !employeeStore.isAlreadyInStore(id))
