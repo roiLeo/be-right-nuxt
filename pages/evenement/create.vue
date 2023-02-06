@@ -4,7 +4,7 @@
 
   <div
     v-if="!haveUserEmployees"
-    class="flex items-center justify-center"
+    class="flex items-center justify-center my-4"
   >
     <BaseMessage type="warning">
       <div class="flex flex-col items-center">
@@ -217,6 +217,7 @@ const authStore = useAuthStore()
 const { postOne: postOneEvent } = eventHook()
 const { postMany: postManyAnswers } = answerHook()
 const { postPhotographer } = userHook()
+const { fetchMany } = employeeHook()
 
 const isEventCreation = computed(() => route.query.step === 'event' || route.query.step === undefined)
 const isAddressEventCreation = computed(() => route.query.step === 'address')
@@ -295,6 +296,20 @@ async function submit(photographerId?: number | UserType) {
   }
   DecLoading()
 }
+
+onMounted(async () => {
+  IncLoading()
+  if (!authStore.isAuthUserAdmin
+    && userStore.getAuthUser
+    && userStore.getAuthUser.employeeIds.length > 0) {
+    const missingsEmployeeIds = userStore.getAuthUser.employeeIds.filter(id => !employeeStore.isAlreadyInStore(id))
+
+    if (missingsEmployeeIds?.length > 0) {
+      await fetchMany(missingsEmployeeIds)
+    }
+  }
+  DecLoading()
+})
 
 definePageMeta({
   layout: 'auth',

@@ -121,6 +121,27 @@ export default function employeeHook() {
     DecLoading()
   }
 
+  async function fetchMany(employeeIds: number[]) {
+    IncLoading()
+    try {
+      if (employeeIds.length > 0) {
+        const { data } = await $api().get<EmployeeType[]>(`employee/manyByIds?ids=${employeeIds.join(',')}`)
+
+        if (data && data.length > 0) {
+          const missingsEmployees = data.filter(user => !employeeStore.isAlreadyInStore(user.id))
+
+          if (missingsEmployees.length > 0) {
+            employeeStore.addMany(missingsEmployees)
+          }
+        }
+      }
+    } catch (error) {
+      console.error(error)
+      $toast.error('Une erreur est survenue')
+    }
+    DecLoading()
+  }
+
   async function fetchAllByUserId(userId: number) {
     IncLoading()
     try {
@@ -238,6 +259,7 @@ export default function employeeHook() {
     fetchAll,
     fetchAllByUserId,
     fetchOne,
+    fetchMany,
     getEmployeeFullname,
     fetchEmployeesByEventId,
     getEmployeeStatusColor,
