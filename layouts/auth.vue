@@ -8,8 +8,3 @@
   </div>
 </main>
 </template>
-
-<script setup lang="ts">
-const router = useRouter()
-console.log(router.getRoutes(), '<==== router.getRoutes()')
-</script>
