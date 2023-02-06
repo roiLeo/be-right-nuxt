@@ -65,8 +65,6 @@ interface Props {
 
 const props = defineProps<Props>()
 
-console.log(props.answer, '<==== props.answer')
-
 const hasBeenAnswered = computed(() =>
   noNull(props.answer.hasSigned)
   && noUndefined(props.answer.hasSigned)
