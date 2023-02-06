@@ -19,9 +19,20 @@
         </p>
       </div>
       <div class="px-4 sm:px-0">
-        <h2 class="text-lg font-medium text-gray-900">
-          Destinataires
-        </h2>
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-medium text-gray-900">
+            Destinataires
+          </h2>
+
+          <BaseButton disabled>
+            <template #icon>
+              <ArrowDownTrayIconOutline
+                aria-hidden="true"
+              />
+            </template>
+            Tout Télécharger
+          </BaseButton>
+        </div>
 
         <!-- Tabs -->
         <TabGroup :default-index="0">
