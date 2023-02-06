@@ -283,8 +283,8 @@ export default function userHook() {
 
   async function getPhotographerUserWorkedWith(userId: number) {
     try {
-      const { data } = await $api().get<UserType[]>(`user/partners/${userId}`)
-      if (data) {
+      const { data, success } = await $api().get<UserType[]>(`user/partners/${userId}`)
+      if (data && success) {
         userStore.addMany(data)
         return data
       }

@@ -8,7 +8,7 @@
   >
     <BaseMessage type="warning">
       <div class="flex flex-col items-center">
-        Attention vous devez créer des destinataires avant de créer un événement
+        <p>Attention vous devez créer des destinataires avant de créer un événement</p>
         <BaseButton
           class="mt-4"
           :href="{ name: 'destinataire-create' }"
