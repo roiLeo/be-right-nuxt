@@ -180,7 +180,7 @@ export default function employeeHook() {
     IncLoading()
     try {
       await $api().delete(`employee/${id}`)
-      employeeStore.deleteOne(id)
+      employeeStore.deleteOneEmployee(id)
       $toast.success('Destinataire supprimé avec succès')
     } catch (error) {
       console.error(error)
@@ -214,7 +214,7 @@ export default function employeeHook() {
           ...user,
           employeeIds: [...user.employeeIds, data.id],
         })
-        employeeStore.createOne(data)
+        employeeStore.addMany([data])
         $toast.success('Destinataire créé avec succès')
         return data
       }

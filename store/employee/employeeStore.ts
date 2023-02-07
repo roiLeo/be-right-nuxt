@@ -38,5 +38,11 @@ export const useEmployeeStore = defineStore('employees', {
     resetState() {
       this.$state = defaultEmployeeState()
     },
+
+    deleteOneEmployee(id: number) {
+      delete this.entities.byId[id]
+      this.entities.allIds = this.entities.allIds.filter(entityId => entityId !== id)
+    },
+
   },
 })
