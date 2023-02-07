@@ -36,17 +36,18 @@ const events = computed(() => {
 
 watch(() => tableStore.getFinalUrl, async newValue => {
   IncLoading()
-  eventStore.resetState()
-  await fetchAllEvents(newValue)
+  if (authStore.isAuthUserAdmin && authStore.getIsLoggedIn) {
+    eventStore.resetState()
+    await fetchAllEvents(newValue)
+  }
   DecLoading()
 })
 
 onMounted(async () => {
   const userId = userStore.getAuthUserId
-  const isAdmin = authStore.isAuthUserAdmin
 
   IncLoading()
-  if (isAdmin) {
+  if (authStore.isAuthUserAdmin && authStore.getIsLoggedIn) {
     await fetchAllEvents()
   }
   else if (userId) {
