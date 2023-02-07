@@ -30,5 +30,9 @@ export const useAddressStore = defineStore(EntitiesEnum.ADDRESS, {
     resetState() {
       this.$state = defaultAddressState()
     },
+    deleteOneAddress(id: number) {
+      delete this.entities.byId[id]
+      this.entities.allIds = this.entities.allIds.filter(entityId => entityId !== id)
+    },
   },
 })

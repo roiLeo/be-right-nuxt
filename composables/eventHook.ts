@@ -1,5 +1,5 @@
 import { hasOwnProperty } from '@antfu/utils'
-import { useAddressStore, useEventStore, useFileStore, useUiStore, useUserStore } from '~~/store'
+import { useAddressStore, useAnswerStore, useEventStore, useFileStore, useUiStore, useUserStore } from '~~/store'
 import type { EventCreatePayload, EventType, PaginatedResponse } from '~~/types'
 import { EventStatusEnum, getEventStatusTranslationEnum } from '~~/types'
 
@@ -7,11 +7,13 @@ export default function eventHook() {
   const { $toast, $api } = useNuxtApp()
 
   const eventStore = useEventStore()
-  const { isUserType } = userHook()
+  const { deleteEventAndRelations } = eventStore
   // const { isAddressType } = addressHook()
   const { DecLoading, IncLoading } = useUiStore()
   const addressStore = useAddressStore()
   const userStore = useUserStore()
+  const answerStore = useAnswerStore()
+  const { deleteMany: deleteManyAnswers } = answerStore
   const fileStore = useFileStore()
   const { createOne: createOneAddress } = addressStore
 
@@ -191,8 +193,10 @@ export default function eventHook() {
   async function deleteOne(id: number) {
     IncLoading()
     try {
-      await $api().delete(`event/${id}`)
-      eventStore.deleteOne(id)
+      const { success } = await $api().delete(`event/${id}`)
+      if (success) {
+        deleteEventAndRelations(id)
+      }
       $toast.success('L\'événement a été supprimé avec succès')
     } catch (error) {
       console.error(error)

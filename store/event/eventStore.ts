@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 import { createActions, createGetters } from '@malolebrin/pinia-entity-store'
+import { useAnswerStore } from '../answer'
+import { useAddressStore } from '../address'
 import { baseCreationForm, defaultEventState, eventState } from './state'
 import type { BaseCreationFormType, EventType } from './types'
 
@@ -23,6 +25,28 @@ export const useEventStore = defineStore('events', {
         this.entities.byId[event.id] = { ...event, $isDirty: false }
         this.entities.allIds.push(event.id)
       })
+    },
+
+    deleteEventAndRelations(id: number) {
+      const answerStore = useAnswerStore()
+      const { deleteManyAnswers } = answerStore
+      const { deleteOneAddress } = useAddressStore()
+
+      const event = this.getOne(id)
+
+      if (event.addressId) {
+        deleteOneAddress(event.addressId)
+      }
+
+      delete this.entities.byId[id]
+      this.entities.allIds = this.entities.allIds.filter(entityId => entityId !== id)
+
+      const answers = answerStore.getManyByEventId(id)
+      const answersIds = answers.map(answer => answer.id)
+
+      if (answersIds?.length > 0) {
+        deleteManyAnswers(answersIds)
+      }
     },
 
     setCreationFormField<K extends keyof BaseCreationFormType>(field: K, value: BaseCreationFormType[K]) {

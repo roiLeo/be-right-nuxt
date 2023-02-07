@@ -1,7 +1,7 @@
 <template>
 <PageAuthWrapper>
   <EventList
-    :events="events"
+    :events="eventStore.getAllArray"
   />
 </PageAuthWrapper>
 </template>
@@ -14,12 +14,10 @@ const { IncLoading, DecLoading } = useUiStore()
 const userStore = useUserStore()
 const tableStore = useTableStore()
 const authStore = useAuthStore()
-const { setFilters } = tableStore
+// const { setFilters } = tableStore
 
 const { fetchEventsByUser, fetchAllEvents } = eventHook()
 const { fetchManyAnswerForManyEvent } = answerHook()
-
-const events = computed(() => eventStore.getAllArray)
 
 // onBeforeRouteLeave(() => {
 //   setFilters(null)
