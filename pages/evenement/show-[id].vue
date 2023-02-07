@@ -6,17 +6,11 @@
   />
 
   <BaseLoader v-else />
-
-  <EventModal
-    v-if="isModalActive(ModalNameEnum.EVENT_FORM).value"
-    :is-active="isModalActive(ModalNameEnum.EVENT_FORM).value"
-  />
 </PageAuthWrapper>
 </template>
 
 <script setup lang="ts">
 import {
-  ModalNameEnum,
   useAddressStore,
   useAnswerStore,
   useEmployeeStore,
@@ -27,7 +21,7 @@ import {
 } from '~~/store'
 
 const uiStore = useUiStore()
-const { IncLoading, DecLoading, getUiModalState } = uiStore
+const { IncLoading, DecLoading } = uiStore
 const eventStore = useEventStore()
 const answerStore = useAnswerStore()
 const employeeStore = useEmployeeStore()
@@ -52,11 +46,6 @@ const event = computed(() => {
   }
   return null
 })
-
-const isModalActive = (modalName: ModalNameEnum) => computed(() =>
-  getUiModalState.isActive
-  && getUiModalState.modalName === modalName
-  && !getUiModalState.isLoading)
 
 onMounted(async () => {
   if (eventId) {

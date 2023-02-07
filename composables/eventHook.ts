@@ -160,13 +160,9 @@ export default function eventHook() {
       const { data } = await $api().post<EventType>(`event/${userId}`, payload)
 
       if (data) {
-        const eventToStore = data
-        if (isUserType(data.createdByUser)) {
-          eventToStore.createdByUserId = data.createdByUser.id
-        }
-        eventStore.createOne(eventToStore)
+        eventStore.addMany([data])
         $toast.success('L\'événement a été créé avec succès')
-        return eventToStore
+        return data
       }
       return undefined
     } catch (error) {
@@ -179,8 +175,6 @@ export default function eventHook() {
     if (event && event.id) {
       IncLoading()
       try {
-        delete event.address
-        delete event.partnerId
         const { data } = await $api().patch<EventType>(`event/${event.id}`, event)
         if (data && isEventType(data)) {
           eventStore.updateOne(data.id, data)
