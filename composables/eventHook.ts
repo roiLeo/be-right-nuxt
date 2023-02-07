@@ -1,5 +1,5 @@
 import { hasOwnProperty } from '@antfu/utils'
-import { useAddressStore, useEventStore, useFileStore, useUiStore, useUserStore } from '~~/store'
+import { useAddressStore, useAnswerStore, useEventStore, useFileStore, useUiStore, useUserStore } from '~~/store'
 import type { EventCreatePayload, EventType, PaginatedResponse } from '~~/types'
 import { EventStatusEnum, getEventStatusTranslationEnum } from '~~/types'
 
@@ -7,11 +7,13 @@ export default function eventHook() {
   const { $toast, $api } = useNuxtApp()
 
   const eventStore = useEventStore()
-  const { isUserType } = userHook()
+  const { deleteEventAndRelations } = eventStore
   // const { isAddressType } = addressHook()
   const { DecLoading, IncLoading } = useUiStore()
   const addressStore = useAddressStore()
   const userStore = useUserStore()
+  const answerStore = useAnswerStore()
+  const { deleteMany: deleteManyAnswers } = answerStore
   const fileStore = useFileStore()
   const { createOne: createOneAddress } = addressStore
 
@@ -160,13 +162,9 @@ export default function eventHook() {
       const { data } = await $api().post<EventType>(`event/${userId}`, payload)
 
       if (data) {
-        const eventToStore = data
-        if (isUserType(data.createdByUser)) {
-          eventToStore.createdByUserId = data.createdByUser.id
-        }
-        eventStore.createOne(eventToStore)
+        eventStore.addMany([data])
         $toast.success('L\'événement a été créé avec succès')
-        return eventToStore
+        return data
       }
       return undefined
     } catch (error) {
@@ -179,8 +177,6 @@ export default function eventHook() {
     if (event && event.id) {
       IncLoading()
       try {
-        delete event.address
-        delete event.partnerId
         const { data } = await $api().patch<EventType>(`event/${event.id}`, event)
         if (data && isEventType(data)) {
           eventStore.updateOne(data.id, data)
@@ -197,8 +193,10 @@ export default function eventHook() {
   async function deleteOne(id: number) {
     IncLoading()
     try {
-      await $api().delete(`event/${id}`)
-      eventStore.deleteOne(id)
+      const { success } = await $api().delete(`event/${id}`)
+      if (success) {
+        deleteEventAndRelations(id)
+      }
       $toast.success('L\'événement a été supprimé avec succès')
     } catch (error) {
       console.error(error)

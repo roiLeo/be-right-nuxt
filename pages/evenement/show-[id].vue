@@ -4,6 +4,7 @@
     v-if="!uiStore.isLoading"
     :event-id="eventId"
   />
+
   <BaseLoader v-else />
 </PageAuthWrapper>
 </template>

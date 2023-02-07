@@ -6,10 +6,21 @@
     <HeaderDashboard />
     <slot />
   </div>
+  <EventModal
+    v-if="isModalActive(ModalNameEnum.EVENT_FORM).value"
+    :is-active="isModalActive(ModalNameEnum.EVENT_FORM).value"
+  />
 </main>
 </template>
 
 <script setup lang="ts">
-const router = useRouter()
-console.log(router.getRoutes(), '<==== router.getRoutes()')
+import { useUiStore } from '~~/store'
+import { ModalNameEnum } from '~~/types'
+
+const uiStore = useUiStore()
+
+const isModalActive = (modalName: ModalNameEnum) => computed(() =>
+  uiStore.getUiModalState.isActive
+  && uiStore.getUiModalState.modalName === modalName
+  && !uiStore.getUiModalState.isLoading)
 </script>

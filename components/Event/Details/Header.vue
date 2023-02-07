@@ -56,14 +56,17 @@
           Supprimer
         </BaseButton>
       </div>
-      <!-- <EmployeeCreator :employee-creator="userStore.getOne(event.createdByUser)" /> -->
+      <EmployeeCreator
+        v-if="authStore.isAuthUserAdmin"
+        :employee-creator="userStore.getOne(event.createdByUserId)"
+      />
     </div>
   </div>
 </header>
 </template>
 
 <script setup lang="ts">
-import { useAddressStore, useUiStore } from '~~/store'
+import { useAddressStore, useAuthStore, useUiStore, useUserStore } from '~~/store'
 import type { EventType } from '~~/types'
 import { ModalModeEnum, ModalNameEnum } from '@/types'
 
@@ -74,6 +77,8 @@ interface Props {
 const props = defineProps<Props>()
 
 const addressStore = useAddressStore()
+const userStore = useUserStore()
+const authStore = useAuthStore()
 const { setUiModal } = useUiStore()
 
 const eventAddress = computed(() => {

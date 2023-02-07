@@ -47,45 +47,7 @@
               v-if="getAnswerForEmployee(employee.id).value?.createdAt"
               class="hidden md:block"
             >
-              <p class="text-sm text-gray-900">
-                Ajouté le
-                <time>{{ $toFormat(getAnswerForEmployee(employee.id).value?.createdAt!, 'D MMMM YYYY') }}</time>
-              </p>
-              <p
-                v-if="getAnswerForEmployee(employee.id).value?.hasSigned && getAnswerForEmployee(employee.id).value?.signetAt"
-                class="flex items-center mt-2 text-sm text-gray-500"
-              >
-                <CheckCircleIconOutline
-                  class="flex-shrink-0 mr-1.5 h-5 w-5 text-green-400"
-                  aria-hidden="true"
-                />
-                <span>Signé</span>
-              </p>
-              <p
-                v-else-if="!getAnswerForEmployee(employee.id).value?.hasSigned && getAnswerForEmployee(employee.id).value?.signetAt"
-                class="flex items-center mt-2 text-sm text-gray-500"
-              >
-                <XCircleIconOutline
-                  class="flex-shrink-0 mr-1.5 h-5 w-5 text-red-400"
-                  aria-hidden="true"
-                />
-                <span>Refusé</span>
-              </p>
-              <p
-                v-else
-                class="flex items-center mt-2 text-sm text-gray-500"
-              >
-                <!-- TODO send email to employee again -->
-                <BaseButton disabled>
-                  <template #icon>
-                    <EnvelopeIconOutline
-                      class="text-gray-200"
-                      aria-hidden="true"
-                    />
-                  </template>
-                  Relancer
-                </BaseButton>
-              </p>
+              <AnswerResponseAction :answer="getAnswerForEmployee(employee.id).value" />
             </div>
           </div>
         </div>

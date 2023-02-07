@@ -22,8 +22,8 @@ const userStore = useUserStore()
 const employeeStore = useEmployeeStore()
 const authStore = useAuthStore()
 
-const { fetchAll } = employeeHook()
-const { fetchMany } = userHook()
+const { fetchAll, fetchMany: fetchManyEmployees } = employeeHook()
+const { fetchMany: fetchManyUsers } = userHook()
 
 // onBeforeRouteLeave(() => {
 //   setFilters(null)
@@ -31,26 +31,36 @@ const { fetchMany } = userHook()
 
 watch(() => tableStore.getFinalUrl, async newValue => {
   IncLoading()
-  employeeStore.resetState()
-  await fetchAll(newValue)
-  DecLoading()
+  if (authStore.isAuthUserAdmin) {
+    employeeStore.resetState()
+    await fetchAll(newValue)
+    DecLoading()
+  }
 })
 
 onMounted(async () => {
   IncLoading()
 
-  await fetchAll(tableStore.getFinalUrl)
+  if (authStore.isAuthUserAdmin) {
+    await fetchAll(tableStore.getFinalUrl)
 
-  if (employeeStore.getAllArray.length > 0 && authStore.isAuthUserAdmin) {
-    const userIds = employeeStore.getAllArray.map(employee => employee.createdByUserId)
+    if (employeeStore.getAllArray.length > 0) {
+      const userIds = employeeStore.getAllArray.map(employee => employee.createdByUserId)
 
-    if (userIds?.length > 0) {
-      const uniqIds = uniq(userIds)
-      const missingIds = uniqIds.filter(id => !userStore.isAlreadyInStore(id))
+      if (userIds?.length > 0) {
+        const uniqIds = uniq(userIds)
+        const missingIds = uniqIds.filter(id => !userStore.isAlreadyInStore(id))
 
-      if (missingIds?.length > 0) {
-        await fetchMany(missingIds)
+        if (missingIds?.length > 0) {
+          await fetchManyUsers(missingIds)
+        }
       }
+    }
+  } else if (userStore.getAuthUser && userStore.getAuthUser.employeeIds.length > 0) {
+    const missingsEmployeeIds = userStore.getAuthUser.employeeIds.filter(id => !employeeStore.isAlreadyInStore(id))
+
+    if (missingsEmployeeIds?.length > 0) {
+      await fetchManyEmployees(missingsEmployeeIds)
     }
   }
   DecLoading()

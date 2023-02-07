@@ -47,7 +47,7 @@ export default function employeeHook() {
   }
 
   function storeEmployeeRelationsEntities(employees: EmployeeType[]): EmployeeType[] {
-    if (employees.length > 0) {
+    if (employees?.length > 0) {
       const missingIds = employees
         .map(employee => employee.id)
         .filter(id => !employeeStore.isAlreadyInStore(id))
@@ -113,6 +113,27 @@ export default function employeeHook() {
           event: eventId,
         }))
         employeeStore.addMany(employees)
+      }
+    } catch (error) {
+      console.error(error)
+      $toast.error('Une erreur est survenue')
+    }
+    DecLoading()
+  }
+
+  async function fetchMany(employeeIds: number[]) {
+    IncLoading()
+    try {
+      if (employeeIds.length > 0) {
+        const { data } = await $api().get<EmployeeType[]>(`employee/manyByIds?ids=${employeeIds.join(',')}`)
+
+        if (data && data.length > 0) {
+          const missingsEmployees = data.filter(user => !employeeStore.isAlreadyInStore(user.id))
+
+          if (missingsEmployees.length > 0) {
+            employeeStore.addMany(missingsEmployees)
+          }
+        }
       }
     } catch (error) {
       console.error(error)
@@ -238,6 +259,7 @@ export default function employeeHook() {
     fetchAll,
     fetchAllByUserId,
     fetchOne,
+    fetchMany,
     getEmployeeFullname,
     fetchEmployeesByEventId,
     getEmployeeStatusColor,

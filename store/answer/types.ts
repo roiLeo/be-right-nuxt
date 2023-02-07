@@ -4,7 +4,7 @@ import type { BaseEntity } from '@/types/globals'
 
 export interface AnswerType extends BaseEntity {
   hasSigned: boolean
-  signetAt: Date
+  signedAt: Date
   reason: string
   employee?: null | EmployeeType
   employeeId: number | null

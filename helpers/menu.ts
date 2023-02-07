@@ -28,28 +28,28 @@ export const MENU_ITEMS = [
     linkName: 'destinataire',
     isAdmin: true,
   },
-  {
-    label: 'Fichiers',
-    icon: FolderOpenIcon,
-    // linkName: 'files',
-    isAdmin: true,
-  },
+  // {
+  //   label: 'Fichiers',
+  //   icon: FolderOpenIcon,
+  //   // linkName: 'files',
+  //   isAdmin: true,
+  // },
   {
     label: 'Bugs et Problèmes',
     icon: ExclamationCircleIcon,
-    // linkName: 'bugs',
+    linkName: 'bug',
     isAdmin: true,
   },
   {
     label: 'Newsletter Statistiques',
     icon: ChartPieIcon,
-    // linkName: 'newsletter',
+    linkName: 'newsletter',
     isAdmin: true,
   },
   {
     label: 'Créer un événement',
     icon: PlusIcon,
-    // linkName: 'events.create',
+    linkName: 'evenement-create',
     isAdmin: true,
   },
   {
@@ -58,12 +58,12 @@ export const MENU_ITEMS = [
     linkName: 'destinataire-create',
     isAdmin: true,
   },
-  {
-    label: 'Créer un nouveau fichier',
-    icon: FolderPlusIcon,
-    // linkName: 'files.create',
-    isAdmin: true,
-  },
+  // {
+  //   label: 'Créer un nouveau fichier',
+  //   icon: FolderPlusIcon,
+  //   // linkName: 'files.create',
+  //   isAdmin: true,
+  // },
 
   // user
   {

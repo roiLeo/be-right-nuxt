@@ -1,7 +1,7 @@
 <template>
 <PageAuthWrapper>
   <EventList
-    :events="events"
+    :events="eventStore.getAllArray"
   />
 </PageAuthWrapper>
 </template>
@@ -14,21 +14,10 @@ const { IncLoading, DecLoading } = useUiStore()
 const userStore = useUserStore()
 const tableStore = useTableStore()
 const authStore = useAuthStore()
-const { setFilters } = tableStore
+// const { setFilters } = tableStore
 
 const { fetchEventsByUser, fetchAllEvents } = eventHook()
 const { fetchManyAnswerForManyEvent } = answerHook()
-
-const events = computed(() => {
-  if (authStore.isAuthUserAdmin) {
-    return eventStore.getAllArray
-  }
-  const userId = userStore.getAuthUserId
-  if (userId) {
-    return eventStore.getEventsByUserId(userId)
-  }
-  return []
-})
 
 // onBeforeRouteLeave(() => {
 //   setFilters(null)
@@ -36,17 +25,18 @@ const events = computed(() => {
 
 watch(() => tableStore.getFinalUrl, async newValue => {
   IncLoading()
-  eventStore.resetState()
-  await fetchAllEvents(newValue)
+  if (authStore.isAuthUserAdmin && authStore.getIsLoggedIn) {
+    eventStore.resetState()
+    await fetchAllEvents(newValue)
+  }
   DecLoading()
 })
 
 onMounted(async () => {
   const userId = userStore.getAuthUserId
-  const isAdmin = authStore.isAuthUserAdmin
 
   IncLoading()
-  if (isAdmin) {
+  if (authStore.isAuthUserAdmin && authStore.getIsLoggedIn) {
     await fetchAllEvents()
   }
   else if (userId) {

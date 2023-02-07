@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { createActions, createGetters } from '@malolebrin/pinia-entity-store'
+import { useAnswerStore } from '../answer'
 import { defaultEmployeeState, employeState } from './state'
 import type { EmployeeType } from './types'
 
@@ -11,12 +12,16 @@ export const useEmployeeStore = defineStore('employees', {
     ...createGetters<EmployeeType>(employeState),
 
     // bellow getters in this specific store,
-    // getAllByEventId: state => (eventId: number) => {
-    //   return Object.values(state.entities.byId).filter(employee => employee.event === eventId)
-    // },
-    // getEmployeesByUserId: state => {
-    //   return (userId: number) => Object.values(state.entities.byId).filter(employee => employee.createdByUser === userId)
-    // },
+    getAllByEventId: state => (eventId: number) => {
+      const answerStore = useAnswerStore()
+      const answers = answerStore.getManyByEventId(eventId)
+      const employeeIds = answers.map(an => an.employeeId)
+      return Object.values(state.entities.byId).filter(employee => employeeIds.includes(employee.id))
+    },
+
+    getEmployeesByUserId: state => {
+      return (userId: number) => Object.values(state.entities.byId).filter(employee => employee.createdByUserId === userId)
+    },
 
   },
   actions: {

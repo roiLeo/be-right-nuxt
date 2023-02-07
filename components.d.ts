@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ArrowDownOnSquareIconOutline: typeof import('@heroicons/vue/24/outline/esm/ArrowDownOnSquareIcon.js')['default']
+    ArrowDownTrayIconOutline: typeof import('@heroicons/vue/24/outline/esm/ArrowDownTrayIcon.js')['default']
     ArrowLeftOnRectangleIconOutline: typeof import('@heroicons/vue/24/outline/esm/ArrowLeftOnRectangleIcon.js')['default']
     ArrowsUpDownIconOutline: typeof import('@heroicons/vue/24/outline/esm/ArrowsUpDownIcon.js')['default']
     Bars3IconOutline: typeof import('@heroicons/vue/24/outline/esm/Bars3Icon.js')['default']
@@ -20,6 +21,7 @@ declare module '@vue/runtime-core' {
     ChevronRightIconOutline: typeof import('@heroicons/vue/24/outline/esm/ChevronRightIcon.js')['default']
     Dialog: typeof import('@headlessui/vue')['Dialog']
     DialogOverlay: typeof import('@headlessui/vue')['DialogOverlay']
+    DialogTitle: typeof import('@headlessui/vue')['DialogTitle']
     EnvelopeIconOutline: typeof import('@heroicons/vue/24/outline/esm/EnvelopeIcon.js')['default']
     ExclamationCircleIconOutline: typeof import('@heroicons/vue/24/outline/esm/ExclamationCircleIcon.js')['default']
     ExclamationTriangleIconOutline: typeof import('@heroicons/vue/24/outline/esm/ExclamationTriangleIcon.js')['default']

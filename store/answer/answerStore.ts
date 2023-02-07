@@ -32,6 +32,13 @@ export const useAnswerStore = defineStore('answers', {
       })
     },
 
+    deleteManyAnswers(ids: number[]) {
+      ids.forEach(id => {
+        delete this.entities.byId[id]
+        this.entities.allIds = this.entities.allIds.filter(entityId => entityId !== id)
+      })
+    },
+
     resetState() {
       this.$state = defaultAnswerState()
     },
