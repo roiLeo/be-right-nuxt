@@ -285,8 +285,9 @@ export default function userHook() {
     try {
       const { data, success } = await $api().get<UserType[]>(`user/partners/${userId}`)
       if (data && success) {
-        userStore.addMany(data)
-        return data
+        const partners = data.filter(user => !userStore.isAlreadyInStore(user.id))
+        userStore.addMany(partners)
+        return partners
       }
     } catch (error: any) {
       $toast.error(error.error as string)
