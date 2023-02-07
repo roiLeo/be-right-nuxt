@@ -19,16 +19,7 @@ const { setFilters } = tableStore
 const { fetchEventsByUser, fetchAllEvents } = eventHook()
 const { fetchManyAnswerForManyEvent } = answerHook()
 
-const events = computed(() => {
-  if (authStore.isAuthUserAdmin) {
-    return eventStore.getAllArray
-  }
-  const userId = userStore.getAuthUserId
-  if (userId) {
-    return eventStore.getEventsByUserId(userId)
-  }
-  return []
-})
+const events = computed(() => eventStore.getAllArray)
 
 // onBeforeRouteLeave(() => {
 //   setFilters(null)
