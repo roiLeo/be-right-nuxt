@@ -6,7 +6,8 @@ export default defineNuxtPlugin(async () => {
   let apiUrl: string | null = null
   const { storeUsersEntities } = userHook()
   // const { isJWTUserAdmin } = authHook()
-  const { setJWTasUser, setToken } = useAuthStore()
+  const authStore = useAuthStore()
+  const { setJWTasUser, setToken } = authStore
 
   if (process.env.NODE_ENV === 'development' && process.env.VITE_DEV_API_URL) {
     apiUrl = process.env.VITE_DEV_API_URL
@@ -16,7 +17,7 @@ export default defineNuxtPlugin(async () => {
 
   const cookieToken = useCookie('userToken')
 
-  if (cookieToken.value && apiUrl) {
+  if (cookieToken.value && apiUrl && !authStore.getIsLoggedIn) {
     const response = await fetch(`${apiUrl}/user/token`, {
       method: 'post',
       headers: {
