@@ -237,7 +237,7 @@ export default function eventHook() {
         .filter(id => id && !userStore.isAlreadyInStore(id)) as number[]
 
       if (ids && ids.length > 0) {
-        await fetchManyUsers(ids)
+        await fetchManyUsers(uniq(ids))
       }
 
       const missingAddressIds = []
