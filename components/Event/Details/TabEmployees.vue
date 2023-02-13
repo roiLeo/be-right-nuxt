@@ -7,13 +7,7 @@
     v-for="employee in employees"
     :key="employee.id"
   >
-    <NuxtLink
-      :to="{
-        name: 'destinataire-show-id',
-        params: {
-          id: employee.id,
-        },
-      }"
+    <div
       class="block group"
       :data-cy="`event-details-employee-link-${employee.id}`"
     >
@@ -45,14 +39,14 @@
             </div>
             <div
               v-if="getAnswerForEmployee(employee.id).value?.createdAt"
-              class="hidden md:block"
+              class=""
             >
               <AnswerResponseAction :answer="getAnswerForEmployee(employee.id).value" />
             </div>
           </div>
         </div>
       </div>
-    </NuxtLink>
+    </div>
   </li>
 </ul>
 </template>

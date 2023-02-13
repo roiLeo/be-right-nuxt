@@ -24,9 +24,14 @@
     </p>
 
     <BaseButton
-      disabled
       :color="answer.hasSigned ? 'green' : 'red'"
       class="ml-4"
+      :href="{
+        name: 'evenement-answer-download-id',
+        params: {
+          id: answer.id,
+        },
+      }"
     >
       <template #icon>
         <ArrowDownTrayIconOutline

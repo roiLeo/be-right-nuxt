@@ -9,6 +9,8 @@ export interface EmployeeType extends BaseEntity {
   firstName: string
   lastName: string
   hasSigned: boolean
+  bornAt: Date
+  slug: string
   signedAt: Date
   createdByUser?: null | UserType
   createdByUserId: number

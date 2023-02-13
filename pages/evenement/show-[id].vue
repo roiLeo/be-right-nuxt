@@ -10,6 +10,7 @@
 </template>
 
 <script setup lang="ts">
+import { uniq } from '@antfu/utils'
 import {
   useAddressStore,
   useAnswerStore,
@@ -33,7 +34,7 @@ const { fetchOne } = eventHook()
 const { fetchManyAnswerForEvent } = answerHook()
 const { fetchEmployeesByEventId } = employeeHook()
 const { fetchMany: fetchManyUsers } = userHook()
-const { fetchOne: fetchOneAddress } = addressHook()
+const { fetchMany: fetchManyAddress } = addressHook()
 const { fetchManyFiles } = fileHook()
 
 const route = useRoute()
@@ -79,8 +80,23 @@ onMounted(async () => {
         await fetchManyUsers(ids)
       }
 
+      const missingAddressIds = []
+
+      const user = userStore.getOne(event.value.createdByUserId)
+      if (user && user.addressId && !addressStore.isAlreadyInStore(user.addressId)) {
+        missingAddressIds.push(user.addressId)
+      }
+
       if (event.value.addressId && !addressStore.isAlreadyInStore(event.value.addressId)) {
-        await fetchOneAddress(event.value.addressId)
+        missingAddressIds.push(event.value.addressId)
+      }
+
+      employeeStore.getMany(answers
+        .map(answer => answer.employeeId)).forEach(emp => missingAddressIds.push(emp.addressId))
+
+      const uniqAddressIds = uniq(missingAddressIds)
+      if (uniqAddressIds?.length > 0) {
+        await fetchManyAddress(uniqAddressIds)
       }
 
       if (event.value.filesIds?.length > 0) {
