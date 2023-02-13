@@ -1,4 +1,4 @@
-import type { AnswerType } from '~~/store'
+import type { AnswerType, EmployeeType } from '~~/store'
 import { useAnswerStore, useUiStore } from '~~/store'
 
 export default function answerHook() {
@@ -71,10 +71,23 @@ export default function answerHook() {
     DecLoading()
   }
 
+  async function downloadAnswer({ answerId, employee, templateRef }: { answerId: number; employee: EmployeeType; templateRef: HTMLElement }) {
+    await exportToPDF(`droit-image-${answerId}-${employee.firstName}-${employee.lastName}.pdf`, templateRef,
+      {
+        orientation: 'p',
+        unit: 'mm',
+        format: 'a4',
+        putOnlyUsedFonts: true,
+        floatPrecision: 16, // or "smart", default is 16
+      },
+    )
+  }
+
   return {
     postMany,
     filteringAnswersNotInStore,
     fetchManyAnswerForEvent,
     fetchManyAnswerForManyEvent,
+    downloadAnswer,
   }
 }

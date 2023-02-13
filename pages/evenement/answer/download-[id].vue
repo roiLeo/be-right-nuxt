@@ -78,8 +78,16 @@
 </template>
 
 <script setup lang="ts">
-import { useAddressStore, useAnswerStore, useEmployeeStore, useEventStore, useUserStore } from '~~/store'
-import { exportToPDF } from '#imports'
+import {
+  ModalModeEnum,
+  ModalNameEnum,
+  useAddressStore,
+  useAnswerStore,
+  useEmployeeStore,
+  useEventStore,
+  useUiStore,
+  useUserStore,
+} from '~~/store'
 
 const employeeStore = useEmployeeStore()
 const eventStore = useEventStore()
@@ -87,6 +95,7 @@ const addressStore = useAddressStore()
 const userStore = useUserStore()
 const answerStore = useAnswerStore()
 const route = useRoute()
+const { setUiModal } = useUiStore()
 
 const answerId = parseInt(route.params.id.toString())
 const answer = answerStore.getOne(answerId)
@@ -99,19 +108,18 @@ const employeeAddress = addressStore.getOne(employee.addressId)
 
 const answerTemplate = ref<null | HTMLElement>(null)
 
-watch(() => answerTemplate.value, async () => {
+watch(() => answerTemplate.value, () => {
   if (answerTemplate.value) {
-    await exportToPDF('my-pdf-file.pdf', answerTemplate.value,
-
-      {
-        orientation: 'p',
-        unit: 'mm',
-        format: 'a4',
-        putOnlyUsedFonts: true,
-        floatPrecision: 16, // or "smart", default is 16
+    setUiModal({
+      modalName: ModalNameEnum.DOWNLOAD_ANSWER,
+      modalMode: ModalModeEnum.DOWNLOAD,
+      isActive: true,
+      data: {
+        templateRef: answerTemplate.value,
+        employee,
+        answerId,
       },
-
-    )
+    })
   }
 })
 
