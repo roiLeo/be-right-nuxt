@@ -3,6 +3,7 @@ export enum ModalNameEnum {
   USER_ADMIN = 'USER_ADMIN',
   EVENT_FORM = 'EVENT_FORM',
   FILE_MODAL = 'FILE_MODAL',
+  DOWNLOAD_ANSWER = 'DOWNLOAD_ANSWER',
 }
 
 export enum ModalModeEnum {
@@ -10,6 +11,7 @@ export enum ModalModeEnum {
   EDIT = 'EDIT',
   DELETE = 'DELETE',
   READ = 'READ',
+  DOWNLOAD = 'DOWNLOAD',
 }
 
 export interface UiState {

@@ -10,8 +10,8 @@ export const useAddressStore = defineStore(EntitiesEnum.ADDRESS, {
   }),
   getters: {
     ...createGetters<AddressType>(addressState),
-    getOneByEventId: state => (eventId: number) => Object.values(state.entities.byId).filter(address => address.eventId === eventId)[0],
-    getOneByEmployeeId: state => (employeeId: number) => Object.values(state.entities.byId).filter(address => address.employeeId === employeeId)[0],
+    // getOneByEventId: state => (eventId: number) => Object.values(state.entities.byId).filter(address => address.eventId === eventId)[0],
+    // getOneByEmployeeId: state => (employeeId: number) => Object.values(state.entities.byId).filter(address => address.employeeId === employeeId)[0],
     getCreationForm: state => state.creationForm,
   },
   actions: {
@@ -20,6 +20,12 @@ export const useAddressStore = defineStore(EntitiesEnum.ADDRESS, {
     addOne(address: AddressType) {
       this.entities.byId[address.id] = { ...address, $isDirty: false }
       this.entities.allIds.push(address.id)
+    },
+    addMany(addresses: AddressType[]) {
+      addresses.forEach(address => {
+        this.entities.byId[address.id] = { ...address, $isDirty: false }
+        this.entities.allIds.push(address.id)
+      })
     },
     setCreationForm(payload: BaseCreationForm) {
       this.creationForm = payload

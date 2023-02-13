@@ -18,7 +18,7 @@
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <DialogOverlay class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" />
+        <DialogOverlay class="fixed inset-0 transition-opacity bg-gray-600 bg-opacity-75" />
       </TransitionChild>
 
       <!-- This element is to trick the browser into centering the modal contents. -->
