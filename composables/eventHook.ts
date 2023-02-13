@@ -1,19 +1,33 @@
-import { hasOwnProperty } from '@antfu/utils'
-import { useAddressStore, useAnswerStore, useEventStore, useFileStore, useUiStore, useUserStore } from '~~/store'
+import { hasOwnProperty, uniq } from '@antfu/utils'
+import {
+  useAddressStore,
+  useAnswerStore,
+  useEmployeeStore,
+  useEventStore,
+  useFileStore,
+  useUiStore,
+  useUserStore,
+} from '~~/store'
 import type { EventCreatePayload, EventType, PaginatedResponse } from '~~/types'
 import { EventStatusEnum, getEventStatusTranslationEnum } from '~~/types'
 
 export default function eventHook() {
   const { $toast, $api } = useNuxtApp()
 
+  const { fetchManyAnswerForEvent } = answerHook()
+  const { fetchEmployeesByEventId } = employeeHook()
+  const { fetchMany: fetchManyUsers } = userHook()
+  const { fetchMany: fetchManyAddress } = addressHook()
+  const { fetchManyFiles } = fileHook()
+
   const eventStore = useEventStore()
   const { deleteEventAndRelations } = eventStore
   // const { isAddressType } = addressHook()
   const { DecLoading, IncLoading } = useUiStore()
   const addressStore = useAddressStore()
+  const employeeStore = useEmployeeStore()
   const userStore = useUserStore()
   const answerStore = useAnswerStore()
-  const { deleteMany: deleteManyAnswers } = answerStore
   const fileStore = useFileStore()
   const { createOne: createOneAddress } = addressStore
 
@@ -97,20 +111,6 @@ export default function eventHook() {
 
       if (data) {
         storeEventRelationEntities(data.data)
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.error('Une erreur est survenue')
-    }
-    DecLoading()
-  }
-
-  async function fetchEvent(id: number) {
-    IncLoading()
-    try {
-      const { data } = await $api().get<EventType>(`event/${id}`)
-      if (data && !eventStore.isAlreadyInStore(data.id) && isEventType(data)) {
-        storeEventRelationEntities([data])
       }
     } catch (error) {
       console.error(error)
@@ -209,23 +209,80 @@ export default function eventHook() {
     return hasOwnProperty(event, 'start') && hasOwnProperty(event, 'end')
   }
 
-  function isEventTypeArray(events: any[]): events is EventType[] {
-    return events.every(isEventType)
+  async function fetchEventWithRelations(eventId: number) {
+    IncLoading()
+
+    if (!eventStore.isAlreadyInStore(eventId)) {
+      await fetchOne(eventId)
+    }
+
+    await fetchManyAnswerForEvent(eventId)
+
+    const answers = answerStore.getManyByEventId(eventId)
+
+    if (answers && answers.length > 0) {
+      const missingEmployeeIds = answers
+        .map(answer => answer.employeeId)
+        .filter(id => id && !employeeStore.isAlreadyInStore(id)) as number[]
+
+      if (missingEmployeeIds && missingEmployeeIds.length > 0) {
+        await fetchEmployeesByEventId(eventId)
+      }
+    }
+
+    const event = eventStore.getOne(eventId)
+
+    if (event) {
+      const ids = [event.createdByUserId, event.partnerId]
+        .filter(id => id && !userStore.isAlreadyInStore(id)) as number[]
+
+      if (ids && ids.length > 0) {
+        await fetchManyUsers(ids)
+      }
+
+      const missingAddressIds = []
+
+      const user = userStore.getOne(event.createdByUserId)
+      if (user && user.addressId && !addressStore.isAlreadyInStore(user.addressId)) {
+        missingAddressIds.push(user.addressId)
+      }
+
+      if (event.addressId && !addressStore.isAlreadyInStore(event.addressId)) {
+        missingAddressIds.push(event.addressId)
+      }
+
+      employeeStore.getMany(answers
+        .map(answer => answer.employeeId)).forEach(emp => missingAddressIds.push(emp.addressId))
+
+      const uniqAddressIds = uniq(missingAddressIds)
+      if (uniqAddressIds?.length > 0) {
+        await fetchManyAddress(uniqAddressIds)
+      }
+
+      if (event.filesIds?.length > 0) {
+        const missingIds = fileStore.getMissingIds(event.filesIds)
+
+        if (missingIds.length > 0) {
+          await fetchManyFiles(missingIds)
+        }
+      }
+    }
+
+    DecLoading()
   }
 
   return {
     deleteOne,
     fetchAllEvents,
-    fetchEvent,
     fetchEventsByUser,
     fetchOne,
     getEventStatusColor,
     getEventStatusTranslation,
     isEventType,
-    isEventTypeArray,
     patchOne,
     postOne,
     sortEventByDate,
     storeEventRelationEntities,
+    fetchEventWithRelations,
   }
 }
