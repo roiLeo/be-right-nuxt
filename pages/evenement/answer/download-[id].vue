@@ -126,7 +126,7 @@ watch(() => answerTemplate.value, () => {
 definePageMeta({
   layout: 'none',
   isAuth: true,
-  middleware: 'guards-middleware',
+  middleware: ['guards-middleware', 'answer-download-middleware'],
 })
 </script>
 
