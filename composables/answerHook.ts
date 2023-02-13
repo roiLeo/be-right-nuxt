@@ -1,3 +1,4 @@
+import { uniq } from '@antfu/utils'
 import type { AnswerType, EmployeeType } from '~~/store'
 import { useAnswerStore, useUiStore } from '~~/store'
 
@@ -71,6 +72,28 @@ export default function answerHook() {
     DecLoading()
   }
 
+  async function fetchMany(ids: number[]) {
+    IncLoading()
+    try {
+      const answerIds = ids?.length > 1 ? uniq(ids) : ids
+      if (answerIds?.length > 0) {
+        const { data: answers } = await $api().get<AnswerType[]>(`answer/manyByIds?ids=${answerIds.join(',')}`)
+
+        if (answers && answers.length > 0) {
+          const answersNotInStore = filteringAnswersNotInStore(answers)
+
+          if (answersNotInStore.length > 0) {
+            createManyAnswers(answersNotInStore)
+          }
+        }
+      }
+    } catch (error) {
+      console.error(error)
+      $toast.error('Une erreur est survenue')
+    }
+    DecLoading()
+  }
+
   async function downloadAnswer({ answerId, employee, templateRef }: { answerId: number; employee: EmployeeType; templateRef: HTMLElement }) {
     await exportToPDF(`droit-image-${answerId}-${employee.firstName}-${employee.lastName}.pdf`, templateRef,
       {
@@ -86,6 +109,7 @@ export default function answerHook() {
   return {
     postMany,
     filteringAnswersNotInStore,
+    fetchMany,
     fetchManyAnswerForEvent,
     fetchManyAnswerForManyEvent,
     downloadAnswer,
