@@ -271,11 +271,30 @@ export default function eventHook() {
     DecLoading()
   }
 
+  async function fetchMany(eventIds: number[]) {
+    IncLoading()
+    try {
+      const ids = eventIds?.length > 1 ? uniq(eventIds) : eventIds
+      if (ids?.length > 0) {
+        const { data: events } = await $api().get<EventType[]>(`event/manyByIds?ids=${ids.join(',')}`)
+
+        if (events && events.length > 0) {
+          storeEventRelationEntities(events)
+        }
+      }
+    } catch (error) {
+      console.error(error)
+      $toast.error('Une erreur est survenue')
+    }
+    DecLoading()
+  }
+
   return {
     deleteOne,
     fetchAllEvents,
     fetchEventsByUser,
     fetchOne,
+    fetchMany,
     getEventStatusColor,
     getEventStatusTranslation,
     isEventType,

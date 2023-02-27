@@ -23,12 +23,15 @@
 </template>
 
 <script setup lang="ts">
-import { useEventStore, useUiStore } from '~~/store'
+import { useAuthStore, useEventStore, useUiStore, useUserStore } from '~~/store'
 import { ModalNameEnum } from '~~/types'
 
 const uiStore = useUiStore()
 const { resetUiModalState } = uiStore
 const eventStore = useEventStore()
+const authStore = useAuthStore()
+const userStore = useUserStore()
+const { fetchUserNotifications } = notificationHook()
 
 const isModalActive = (modalName: ModalNameEnum) => computed(() =>
   uiStore.getUiModalState.isActive
@@ -44,4 +47,10 @@ const eventID = computed(() => {
 function CloseResetModalState() {
   resetUiModalState()
 }
+
+onMounted(async () => {
+  if (!authStore.isAuthUserAdmin && userStore.getAuthUser) {
+    await fetchUserNotifications()
+  }
+})
 </script>

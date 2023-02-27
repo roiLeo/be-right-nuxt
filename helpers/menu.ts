@@ -1,8 +1,8 @@
 import {
+  BellAlertIcon,
   ChartPieIcon,
   ExclamationCircleIcon,
   FolderOpenIcon,
-  FolderPlusIcon,
   HomeIcon,
   PlusIcon,
   UserGroupIcon,
@@ -78,12 +78,12 @@ export const MENU_ITEMS = [
     linkName: 'destinataire',
     isAdmin: false,
   },
-  // {
-  //   label: 'Fichiers',
-  //   icon: FolderOpenIcon,
-  //   // linkName: 'user.files',
-  //   isAdmin: false,
-  // },
+  {
+    label: 'Notifications',
+    icon: BellAlertIcon,
+    linkName: 'notifications',
+    isAdmin: false,
+  },
   {
     label: 'Créer un événement',
     icon: PlusIcon,
