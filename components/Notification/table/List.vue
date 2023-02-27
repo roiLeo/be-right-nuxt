@@ -10,7 +10,7 @@
           v-for="notif in notifications"
           :key="notif.id"
           :notification="notif"
-          :event="eventStore.getOne(notif.eventNotification?.eventId)"
+          :event="event(notif.id).value"
         />
       </tbody>
     </template>
@@ -26,15 +26,26 @@
 
 <script setup lang="ts">
 import type { NotificationType } from '~~/store'
-import { useEventStore } from '~~/store'
+import { useAnswerStore, useEventStore } from '~~/store'
 
 interface Props {
   notifications: NotificationType[]
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   notifications: () => [],
 })
 
 const eventStore = useEventStore()
+const answerStore = useAnswerStore()
+
+const event = (id: number) => computed(() => {
+  const notif = props.notifications.find(n => n.id === id)
+  if (notif?.eventNotification?.eventId) {
+    return eventStore.getOne(notif.eventNotification?.eventId)
+  }
+  if (notif?.eventNotification?.answerId) {
+    return eventStore.getOne(answerStore.getOne(notif?.eventNotification?.answerId)?.eventId)
+  }
+})
 </script>

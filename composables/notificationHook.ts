@@ -53,10 +53,10 @@ export default function notificationHook() {
         return eventName ? `Événement "${eventName}" complété` : 'Événement complété'
 
       case NotificationTypeEnum.ANSWER_RESPONSE_ACCEPTED:
-        return 'Réponse acceptée'
+        return eventName ? `Réponse "${eventName}" acceptée` : 'Réponse acceptée'
 
       case NotificationTypeEnum.ANSWER_RESPONSE_REFUSED:
-        return 'Réponse refusée'
+        return eventName ? `Réponse "${eventName}" refusée` : 'Réponse refusée'
 
       default:
         break

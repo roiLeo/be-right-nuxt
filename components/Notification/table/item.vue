@@ -6,7 +6,7 @@
   <td class="py-4 pl-4 text-sm font-medium text-gray-900 truncate whitespace-nowrap">
     {{ getNotifTranslation({
       type: notification.type,
-      eventName: event?.name,
+      eventName: getEvent?.name,
     }) }}
   </td>
   <td class="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
@@ -18,12 +18,7 @@
   </td>
   <td class="flex items-center justify-end py-4 pl-3 pr-4 space-x-2 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
     <BaseButton
-      :href="{
-        name: 'evenement-show-id',
-        params: {
-          id: event?.id,
-        },
-      }"
+      :href="getLinkPath"
     >
       Voir
     </BaseButton>
@@ -38,14 +33,48 @@
 </template>
 
 <script setup lang="ts">
-import type { EventType, NotificationType } from '~~/store'
+import type { NotificationType } from '~~/store'
+import { useAnswerStore, useEventStore } from '~~/store'
 
 interface Props {
   notification: NotificationType
-  event: EventType
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const { getNotifTranslation } = notificationHook()
+const eventStore = useEventStore()
+const answerStore = useAnswerStore()
+
+const getLinkPath = computed(() => {
+  if (props.notification.eventNotification?.eventId) {
+    return {
+      name: 'evenement-show-id',
+      params: {
+        id: props.notification.eventNotification?.eventId,
+      },
+    }
+  }
+  if (props.notification.eventNotification?.answerId) {
+    const answer = answerStore.getOne(props.notification.eventNotification?.answerId)
+    if (answer) {
+      return {
+        name: 'evenement-show-id',
+        params: {
+          id: answer?.eventId,
+        },
+      }
+    }
+  }
+})
+
+const getEvent = computed(() => {
+  if (props.notification.eventNotification?.eventId) {
+    return eventStore.getOne(props.notification.eventNotification?.eventId)
+  }
+  if (props.notification.eventNotification?.answerId) {
+    const answer = answerStore.getOne(props.notification.eventNotification?.answerId)
+    return eventStore.getOne(answer?.eventId)
+  }
+})
 </script>
