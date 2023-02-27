@@ -24,14 +24,14 @@
   >
     <MenuItems
       class="absolute py-1 bg-white rounded-md shadow-lg w-96 ring-1 ring-black ring-opacity-5 focus:outline-none"
-      :class="[isInHeader ? 'origin-top-left -left-56' : 'origin-top-right -top-24']"
+      :class="[isInHeader ? 'origin-top-left -left-80' : 'origin-top-right -top-24']"
       as="div"
     >
       <div class="flex items-center p-2 border-b border-gray-200">
         <span class="text-sm">Notifications</span>
       </div>
 
-      <div class="py-2 space-y-2 divide-y-2">
+      <div class="py-2 space-y-2 divide-y">
         <template v-if="notifications?.length > 0">
           <NotificationListItem
             v-for="notif in notifications"

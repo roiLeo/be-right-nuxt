@@ -2,21 +2,23 @@
 <MenuItem
   as="div"
 >
-  <div class="flex items-center px-2">
-    <div
-      v-if="!notification.readAt"
-      class="w-2 h-2 mr-2 bg-purple-500 rounded-full"
-    />
-    <div>
-      <p class="text-sm">
-        {{ getNotifTranslation({
-          type: notification.type,
-          eventName: event?.name,
-        }) }}
-      </p>
-      <p class="mt-1 text-xs text-gray-400 font-font-extralight">
-        {{ getDateDisplayedNotification(notification) }}
-      </p>
+  <div class="flex justify-between w-full p-2">
+    <div class="flex items-center">
+      <div
+        v-if="!notification.readAt"
+        class="w-2 h-2 mr-2 bg-purple-500 rounded-full"
+      />
+      <div>
+        <p class="text-sm">
+          {{ getNotifTranslation({
+            type: notification.type,
+            eventName: event?.name,
+          }) }}
+        </p>
+        <p class="mt-1 text-xs text-gray-400 font-font-extralight">
+          {{ getDateDisplayedNotification(notification) }}
+        </p>
+      </div>
     </div>
 
     <NotificationActionButton
