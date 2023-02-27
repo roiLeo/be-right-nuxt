@@ -43,11 +43,16 @@
       <span>{{ getOutsideMenuRouteLabel }}</span>
     </h3>
   </div>
-  <UserMenu
-    is-in-header
-    class="lg:hidden"
-    data-cy="user-menu-in-header"
-  />
+
+  <div class="flex items-center">
+    <NotificationMenu is-in-header />
+
+    <UserMenu
+      is-in-header
+      class="lg:hidden"
+      data-cy="user-menu-in-header"
+    />
+  </div>
 </div>
 </template>
 

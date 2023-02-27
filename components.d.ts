@@ -15,6 +15,7 @@ declare module '@vue/runtime-core' {
     ArrowsUpDownIconOutline: typeof import('@heroicons/vue/24/outline/esm/ArrowsUpDownIcon.js')['default']
     Bars3IconOutline: typeof import('@heroicons/vue/24/outline/esm/Bars3Icon.js')['default']
     CalendarDaysIconOutline: typeof import('@heroicons/vue/24/outline/esm/CalendarDaysIcon.js')['default']
+    CheckBadgeIconOutline: typeof import('@heroicons/vue/24/outline/esm/CheckBadgeIcon.js')['default']
     CheckCircleIconOutline: typeof import('@heroicons/vue/24/outline/esm/CheckCircleIcon.js')['default']
     CheckCircleIconSolid: typeof import('@heroicons/vue/24/solid/esm/CheckCircleIcon.js')['default']
     CheckIconOutline: typeof import('@heroicons/vue/24/outline/esm/CheckIcon.js')['default']
