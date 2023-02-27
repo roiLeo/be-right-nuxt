@@ -14,6 +14,13 @@ export const useNotificationsSubscriptionStore = defineStore('notificationSubscr
 
   actions: {
     ...createActions<NotificationSubscriptionType>(notificationSubscriptionState),
+
+    addMany(notifSubs: NotificationSubscriptionType[]) {
+      notifSubs.forEach(sub => {
+        this.entities.byId[sub.id] = { ...sub, $isDirty: false }
+        this.entities.allIds.push(sub.id)
+      })
+    },
   },
 })
 
@@ -28,5 +35,12 @@ export const useNotificationsStore = defineStore('notification', {
 
   actions: {
     ...createActions<NotificationType>(notificationsState),
+
+    addMany(notifs: NotificationType[]) {
+      notifs.forEach(notif => {
+        this.entities.byId[notif.id] = { ...notif, $isDirty: false }
+        this.entities.allIds.push(notif.id)
+      })
+    },
   },
 })
