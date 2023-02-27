@@ -1,4 +1,4 @@
-import { hasOwnProperty } from '@antfu/utils'
+import { hasOwnProperty, uniq } from '@antfu/utils'
 import { RoleEnum } from '@/types'
 import type {
   EmployeeType,
@@ -286,9 +286,10 @@ export default function userHook() {
       const { data, success } = await $api().get<UserType[]>(`user/partners/${userId}`)
       if (data && success) {
         const partners = data.filter(user => !userStore.isAlreadyInStore(user.id))
-        userStore.addMany(partners)
+        userStore.addMany(uniq(partners))
         return partners
       }
+      return []
     } catch (error: any) {
       $toast.error(error.error as string)
       console.error(error)
