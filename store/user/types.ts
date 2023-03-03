@@ -23,6 +23,7 @@ export interface UserType extends BaseEntity {
   files?: FileType[]
   filesIds: number[]
   profilePicture: string | null
+  notificationSubscriptionIds: number[]
 }
 
 export type UserTypeOmitRelations = Omit<UserType, 'profilePicture' | 'createdAt' | 'updatedAt' | 'events' | 'employee' | 'files'>

@@ -30,6 +30,7 @@
               active ? 'bg-purple-300 text-purple-800' : 'text-gray-900',
             ]"
             :to="{ name: 'evenement-show-id', params: { id: props.eventId } }"
+            @click="patchAsRead([notificationId])"
           >
             <PencilSquareIconOutline
               :active="active"

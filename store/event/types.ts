@@ -48,7 +48,7 @@ export enum EventStatusEnum {
 export const eventStatusArray = Object.values(EventStatusEnum)
 
 export enum getEventStatusTranslationEnum {
-  CREATE = 'créé',
+  CREATE = 'à venir',
   PENDING = 'en cours',
   COMPLETED = 'complété',
   CLOSED = 'terminé',

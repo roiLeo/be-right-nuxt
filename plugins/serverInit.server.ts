@@ -42,6 +42,9 @@ export default defineNuxtPlugin(async () => {
 
         router.push({
           name: route.name || 'evenement',
+          query: {
+            ...route.query,
+          },
         })
       }
 

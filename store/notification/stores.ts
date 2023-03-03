@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { createActions, createGetters } from '@malolebrin/pinia-entity-store'
 import dayjs from 'dayjs'
+import { useUserStore } from '../user'
 import { notificationSubscriptionState, notificationsState } from './states'
 import type { NotificationSubscriptionType, NotificationType } from './types'
 
@@ -11,6 +12,11 @@ export const useNotificationsSubscriptionStore = defineStore('notificationSubscr
 
   getters: {
     ...createGetters<NotificationSubscriptionType>(notificationSubscriptionState),
+
+    getForCurrentUser: state => {
+      const userStore = useUserStore()
+      return Object.values(state.entities.byId).filter(sub => sub.createdByUserId === userStore.getAuthUserId)
+    },
   },
 
   actions: {
@@ -21,6 +27,11 @@ export const useNotificationsSubscriptionStore = defineStore('notificationSubscr
         this.entities.byId[sub.id] = { ...sub, $isDirty: false }
         this.entities.allIds.push(sub.id)
       })
+    },
+
+    removeOne(id: number) {
+      delete this.entities.byId[id]
+      this.entities.allIds = this.entities.allIds.filter(entityId => entityId !== id)
     },
   },
 })

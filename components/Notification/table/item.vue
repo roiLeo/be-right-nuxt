@@ -13,7 +13,7 @@
     {{ $toFormat(notification.createdAt, 'D/MM/YY') }}
   </td>
   <td class="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
-    <span v-if="notification.readAt">{{ $toFormat(notification.readAt, 'D/MM/YY') }}</span>
+    <span v-if="notification.readAt">Lue le {{ $toFormat(notification.readAt, 'D/MM/YY') }}</span>
     <span v-else>Non lue</span>
   </td>
   <td class="flex items-center justify-end py-4 pl-3 pr-4 space-x-2 text-sm font-medium text-right whitespace-nowrap sm:pr-6">

@@ -21,7 +21,7 @@
             class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
             aria-hidden="true"
           />
-          Se termine le {{ $toFormat(event.end, 'DD MMMM YYYY') }}
+          {{ getDateEventDisplay }}
         </div>
       </div>
     </div>
@@ -66,6 +66,7 @@
 </template>
 
 <script setup lang="ts">
+import dayjs from 'dayjs'
 import { useAddressStore, useAuthStore, useUiStore, useUserStore } from '~~/store'
 import type { EventType } from '~~/types'
 import { ModalModeEnum, ModalNameEnum } from '@/types'
@@ -80,6 +81,15 @@ const addressStore = useAddressStore()
 const userStore = useUserStore()
 const authStore = useAuthStore()
 const { setUiModal } = useUiStore()
+
+const { $toFormat } = useNuxtApp()
+
+const getDateEventDisplay = computed(() => {
+  if (dayjs(props.event.end).isSame(props.event.start, 'day')) {
+    return $toFormat(props.event.end, 'DD MMMM YYYY')
+  }
+  return `Du ${$toFormat(props.event.start, 'DD MMMM YYYY')} au ${$toFormat(props.event.end, 'DD MMMM YYYY')}`
+})
 
 const eventAddress = computed(() => {
   if (props.event) {

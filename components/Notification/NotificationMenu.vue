@@ -37,6 +37,7 @@
             v-for="notif in notifications"
             :key="notif.id"
             :notification="notif"
+            :event="getEventNotif(notif).value"
           />
         </template>
         <div v-else>
@@ -50,7 +51,7 @@
           class="text-xs underline"
           :class="[areAllRead ? 'cursor-not-allowed opacity-40' : 'cursor-pointer']"
           :title="areAllRead ? 'Toutes les notifications ont été lues' : 'Marquer toutes les notifications comme lues'"
-          @click="markAsRead"
+          @click="markAllAsRead"
         >Tout marquer comme lu</a>
       </div>
     </MenuItems>
@@ -59,7 +60,8 @@
 </template>
 
 <script setup lang="ts">
-import { useNotificationsStore } from '~~/store'
+import type { NotificationType } from '~~/store'
+import { useEventStore, useNotificationsStore } from '~~/store'
 
 interface Props {
   isInHeader?: boolean
@@ -70,15 +72,21 @@ withDefaults(defineProps<Props>(), {
 })
 
 const notificationStore = useNotificationsStore()
+const eventStore = useEventStore()
 const { patchAsRead } = notificationHook()
 
 const notifications = computed(() => notificationStore.getAllSorted)
 const hasAtLeastOneNotRead = computed(() => notifications.value.some(notif => !notif.readAt))
 const newNotificationNb = computed(() => notifications.value.filter(notif => !notif.readAt)?.length)
 const areAllRead = computed(() =>
-  notifications.value.every(notif => noNull(notif.readAt) || noUndefined(notif.readAt)))
+  notifications.value.every(notif => noNull(notif.readAt) && noUndefined(notif.readAt)))
+const getEventNotif = (notif: NotificationType) => computed(() => {
+  if (notif.eventNotification?.eventId) {
+    return eventStore.getOne(notif.eventNotification?.eventId)
+  }
+})
 
-async function markAsRead() {
+async function markAllAsRead() {
   const noReadNotificationIds = notifications.value
     .filter(notif => noNull(notif.readAt) && noUndefined(notif.readAt))
     .map(notif => notif.id)

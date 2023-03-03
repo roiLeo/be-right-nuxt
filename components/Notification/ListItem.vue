@@ -30,26 +30,17 @@
 </template>
 
 <script setup lang="ts">
-import type { NotificationType } from '~~/store'
-import { useEventStore } from '~~/store'
+import type { EventType, NotificationType } from '~~/store'
 
 interface Props {
   notification: NotificationType
+  event: EventType
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const {
   getNotifTranslation,
   getDateDisplayedNotification,
 } = notificationHook()
-
-const eventStore = useEventStore()
-
-const event = computed(() => {
-  if (props.notification.eventNotification?.eventId) {
-    return eventStore.getOne(props.notification.eventNotification?.eventId)
-  }
-  return null
-})
 </script>

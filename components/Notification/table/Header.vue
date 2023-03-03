@@ -13,7 +13,7 @@
     <span
       class="inline-flex truncate group"
     >
-      Nom de l'événement
+      Notification
     </span>
   </th>
   <th
@@ -33,7 +33,7 @@
     <span
       class="inline-flex truncate group"
     >
-      Lue le
+      État
     </span>
   </th>
   <th

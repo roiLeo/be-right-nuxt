@@ -1,5 +1,7 @@
 <template>
 <PageAuthWrapper>
+  <NotificationSubscriptionForm />
+
   <NotificationTableList
     :notifications="notificationStore.getAllSorted"
   />
@@ -12,20 +14,29 @@ import {
   useAnswerStore,
   useEventStore,
   useNotificationsStore,
+  useNotificationsSubscriptionStore,
   useUiStore,
+  useUserStore,
 } from '~~/store'
 
 const { IncLoading, DecLoading } = useUiStore()
 const { fetchUserNotifications } = notificationHook()
+const { fetchSubscriptions } = notificationSubscriptionHook()
 const { fetchMany: fetchManyAnswers } = answerHook()
 const { fetchMany: fetchManyEvents } = eventHook()
 
 const notificationStore = useNotificationsStore()
+const notificationSubscriptionStore = useNotificationsSubscriptionStore()
 const eventStore = useEventStore()
 const answerStore = useAnswerStore()
+const userStore = useUserStore()
 
 onMounted(async () => {
   IncLoading()
+
+  if (!userStore.getAuthUser?.notificationSubscriptionIds.every(id => notificationSubscriptionStore.isAlreadyInStore(id))) {
+    await fetchSubscriptions()
+  }
   await fetchUserNotifications()
 
   const notifications = notificationStore.getAllArray
