@@ -4,6 +4,7 @@ import { useAnswerStore } from '../answer'
 import { useAddressStore } from '../address'
 import { baseCreationForm, defaultEventState, eventState } from './state'
 import type { BaseCreationFormType, EventType } from './types'
+import { EventStatusOrder } from './types'
 
 export const useEventStore = defineStore('events', {
   state: () => ({
@@ -16,6 +17,12 @@ export const useEventStore = defineStore('events', {
     getEventsByUserId: state => (userId: number) => Object.values(state.entities.byId).filter(event => event.createdByUserId === userId),
 
     getCreationForm: state => state.creationForm,
+
+    getAllSorted: state => {
+      return Object.values(state.entities.byId).sort((a, b) => {
+        return EventStatusOrder[a.status] - EventStatusOrder[b.status]
+      })
+    },
   },
   actions: {
     ...createActions<EventType>(eventState),

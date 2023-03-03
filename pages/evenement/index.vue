@@ -1,7 +1,7 @@
 <template>
 <PageAuthWrapper>
   <EventList
-    :events="eventStore.getAllArray"
+    :events="eventStore.getAllSorted"
   />
 </PageAuthWrapper>
 </template>

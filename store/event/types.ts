@@ -63,4 +63,11 @@ export interface BaseCreationFormType {
   employeeIds: number[]
 }
 
+export const EventStatusOrder = {
+  [EventStatusEnum.PENDING]: 1,
+  [EventStatusEnum.CREATE]: 2,
+  [EventStatusEnum.COMPLETED]: 3,
+  [EventStatusEnum.CLOSED]: 4,
+}
+
 export interface EventState extends State<EventType> { }
