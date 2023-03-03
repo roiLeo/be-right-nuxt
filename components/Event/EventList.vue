@@ -1,6 +1,9 @@
 <template>
 <div class="h-full min-h-screen px-4 sm:px-6 lg:px-8">
-  <div class=" sm:flex-col lg:flex-row lg:items-center">
+  <div
+    v-if="authStore.isAuthUserAdmin"
+    class=" sm:flex-col lg:flex-row lg:items-center"
+  >
     <div class="w-full mb-4 sm:flex-auto">
       <BaseInput
         v-model="state.search"
@@ -40,7 +43,7 @@
 
 <script setup lang="ts">
 import type { EventType } from '@/types'
-import { useTableStore } from '~~/store'
+import { useAuthStore, useTableStore } from '~~/store'
 
 interface Props {
   noEventMessage?: string
@@ -53,6 +56,7 @@ withDefaults(defineProps<Props>(), {
 })
 
 const { setSearch } = useTableStore()
+const authStore = useAuthStore()
 
 const state = reactive({
   search: '',
