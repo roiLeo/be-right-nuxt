@@ -9,17 +9,11 @@
   <td class="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
     <EventStatusTag :status="event.status" />
   </td>
-  <td class="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
-    {{ toFormat(event.start, 'D/MM/YYYY') }}
-  </td>
-  <td class="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
-    {{ toFormat(event.end, 'D/MM/YYYY') }}
-  </td>
-  <td class="px-3 py-4 text-sm text-center text-gray-500 truncate whitespace-nowrap">
-    {{ event.signatureCount }}/{{ event.totalSignatureNeeded }}
-  </td>
   <td class="relative py-4 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
-    <EventTableActionButton :event="event" />
+    <EmployeeEventTableActionButton
+      :event="event"
+      :employee-id="employeeId"
+    />
   </td>
 </tr>
 </template>
@@ -29,9 +23,8 @@ import type { EventType } from '@/types'
 
 interface Props {
   event: EventType
+  employeeId: number
 }
 
 defineProps<Props>()
-
-const { toFormat } = dateHook()
 </script>

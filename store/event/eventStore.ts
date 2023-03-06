@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { createActions, createGetters } from '@malolebrin/pinia-entity-store'
+import { uniq } from '@antfu/utils'
 import { useAnswerStore } from '../answer'
 import { useAddressStore } from '../address'
 import { baseCreationForm, defaultEventState, eventState } from './state'
@@ -23,6 +24,21 @@ export const useEventStore = defineStore('events', {
         return EventStatusOrder[a.status] - EventStatusOrder[b.status]
       })
     },
+
+    getAllByEmployee: state => {
+      return (employeeId: number) => {
+        const answerStore = useAnswerStore()
+        const answers = answerStore.getManyByEmployeeId(employeeId)
+        if (answers.length > 0) {
+          const eventIds = uniq(answers.map(answer => answer.eventId))
+          if (eventIds.length > 0) {
+            return Object.values(state.entities.byId).filter(event => eventIds.includes(event.id))
+          }
+        }
+        return []
+      }
+    },
+
   },
   actions: {
     ...createActions<EventType>(eventState),
