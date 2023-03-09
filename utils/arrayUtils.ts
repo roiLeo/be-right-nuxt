@@ -11,7 +11,7 @@ export function isArray(value: any): value is any[] {
   return getType(value) === 'Array'
 }
 
-export function alphabetical(entityArray: UserType[] | EmployeeType[]) {
+export function alphabetical<T extends UserType[] | EmployeeType[]>(entityArray: T): T {
   return entityArray.sort((a, b) => {
     const lastNameA = a.lastName.toLowerCase()
     const lastNameB = b.lastName.toLowerCase()
@@ -22,7 +22,7 @@ export function alphabetical(entityArray: UserType[] | EmployeeType[]) {
       return 1
     }
     return 0
-  })
+  }) as T
 }
 
 /**

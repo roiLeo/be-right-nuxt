@@ -18,7 +18,8 @@
 >
   <span
     v-if="$slots.icon"
-    class="w-6 h-6 mr-2"
+    class="w-6 h-6"
+    :class="[!$slots.default ? '-mr-2' : 'mr-2']"
   >
     <slot name="icon" />
   </span>
@@ -72,13 +73,11 @@
   <div
     v-if="$slots.icon"
     class="w-6 h-6"
+    :class="[!$slots.default ? '-mr-2' : 'mr-2']"
   >
     <slot name="icon" />
   </div>
-  <div
-
-    class="flex items-center justify-center"
-  >
+  <div class="flex items-center justify-center">
     <div
       v-if="isLoading"
       class="flex items-center justify-center w-full h-full"

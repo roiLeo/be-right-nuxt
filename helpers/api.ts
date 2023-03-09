@@ -45,17 +45,39 @@ export class FetchWrapper implements ApiMethods {
     this.redirect = init.redirect
   }
 
-  private async http<T>(url: string, config: RequestInit): Promise<FetchWrapperResponse<T>> {
+  private buildBody(body: BodyInit | null | undefined, isFileRequest?: boolean) {
+    if (!body) {
+      return null
+    }
+    if (isFileRequest) {
+      return body
+    }
+    return JSON.stringify(body)
+  }
+
+  private buildHeaders(headersInit: HeadersInit | undefined, isFileRequest?: boolean) {
+    if (isFileRequest) {
+      return new Headers({
+        ...headersInit,
+        Accept: 'application/json',
+        Authorization: `Bearer ${this.token ? this.token : ''}`,
+      })
+    }
+    return new Headers({
+      ...headersInit,
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${this.token ? this.token : ''}`,
+      'Content-type': 'application/json; charset=UTF-8',
+    })
+  }
+
+  private async http<T>(url: string, config: RequestInit, isFileRequest?: boolean): Promise<FetchWrapperResponse<T>> {
     const request = new Request(url, {
       ...config,
-      headers: {
-        'Accept': 'application/json',
-        'Content-type': 'application/json; charset=UTF-8',
-        'Authorization': `Bearer ${this.token ? this.token : ''}`,
-        ...config.headers,
-      },
-      body: config.body ? JSON.stringify(config.body) : null,
+      headers: this.buildHeaders(config.headers, isFileRequest),
+      body: this.buildBody(config.body, isFileRequest),
     })
+
     const response = await fetch(request)
 
     return {
@@ -76,11 +98,11 @@ export class FetchWrapper implements ApiMethods {
     })
   }
 
-  async post<T>(path: string, data?: WithoutId<T>): Promise<FetchWrapperResponse<T>> {
+  async post<T>(path: string, data?: WithoutId<T>, isFileRequest?: boolean): Promise<FetchWrapperResponse<T>> {
     return this.http<T>(this.getPath(path), {
       method: FetchMethods.POST,
       body: data,
-    })
+    }, isFileRequest)
   }
 
   async patch<T>(path: string, data: Partial<T>): Promise<FetchWrapperResponse<T>> {
