@@ -3,8 +3,6 @@ import type { JWTDecodedType, ValidationRequest } from '@/types'
 import { RoleEnum } from '@/types'
 import {
   useAuthStore,
-  // useAnswerStore,
-  // useBugStore,
   useEmployeeStore,
   useEventStore,
   useFileStore,
@@ -17,8 +15,6 @@ export default function authHook() {
   const { $toast, $api } = useNuxtApp()
 
   const userStore = useUserStore()
-  // const answerStore = useAnswerStore()
-  // const bugStore = useBugStore()
   const employeeStore = useEmployeeStore()
   const eventStore = useEventStore()
   const fileStore = useFileStore()
@@ -31,8 +27,6 @@ export default function authHook() {
     // api.deleteCredentials()
     // TODO add deletecredentials functions
 
-    // answerStore.resetState()
-    // bugStore.resetState()
     employeeStore.resetState()
     eventStore.resetState()
     fileStore.resetState()
@@ -54,14 +48,6 @@ export default function authHook() {
     return data
   }
 
-  // function getRouteName(routeName: string) {
-  //   const roleRoutePrefix = userStore.getRoutePrefixBasedOnRole
-  //   if (roleRoutePrefix) {
-  //     return `${roleRoutePrefix}.${routeName}`
-  //   }
-  //   return ''
-  // }
-
   function jwtDecode(jwt: any): JWTDecodedType | null {
     if (typeof jwt !== 'string' && !(jwt instanceof String))
       return null
@@ -82,9 +68,7 @@ export default function authHook() {
   return {
     checkMailIsAlreadyExist,
     isJWTUserAdmin,
-    // getRouteName,
     jwtDecode,
-    // loginWithToken,
     logout,
   }
 }

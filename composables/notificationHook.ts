@@ -1,15 +1,18 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import isBetween from 'dayjs/plugin/isBetween'
+import { uniq } from '@antfu/utils'
 import type { NotificationType } from '~~/store'
 import {
   NotificationTypeEnum,
+  useAnswerStore,
+  useAuthStore,
+  useEventStore,
   useNotificationsStore,
-  // useNotificationsSubscriptionStore,
   useUiStore,
+  useUserStore,
 } from '~~/store'
 
-dayjs.locale('fr')
 dayjs.extend(relativeTime)
 dayjs.extend(isBetween)
 
@@ -17,9 +20,15 @@ export default function notificationHook() {
   const { $api, $toFormat, $toast } = useNuxtApp()
 
   const { IncLoading, DecLoading } = useUiStore()
+  const authStore = useAuthStore()
+  const userStore = useUserStore()
+  const eventStore = useEventStore()
+  const answerStore = useAnswerStore()
   const notificationStore = useNotificationsStore()
   const { addMany: addManyNotifications, updateMany } = notificationStore
-  // const notificationSubscriptionStore = useNotificationsSubscriptionStore()
+
+  const { fetchMany: fetchManyAnswers } = answerHook()
+  const { fetchMany: fetchManyEvents } = eventHook()
 
   async function fetchUserNotifications() {
     IncLoading()
@@ -131,8 +140,42 @@ export default function notificationHook() {
     }
   }
 
+  async function fetchUserNotificationsAndRelations() {
+    if (!authStore.isAuthUserAdmin && userStore.getAuthUser) {
+      await fetchUserNotifications()
+    }
+
+    const notifications = notificationStore.getAllArray
+
+    if (notifications?.length > 0) {
+      const missingEventIds: number[] = []
+      const missingAnswerIds: number[] = []
+
+      notifications.forEach(notif => {
+        if (notif.eventNotification) {
+          const { eventId, answerId } = notif.eventNotification
+          if (eventId && !eventStore.isAlreadyInStore(eventId)) {
+            missingEventIds.push(eventId)
+          }
+          if (answerId && !answerStore.isAlreadyInStore(answerId)) {
+            missingAnswerIds.push(answerId)
+          }
+        }
+      })
+
+      if (missingAnswerIds.length > 0) {
+        await fetchManyAnswers(uniq(missingAnswerIds))
+      }
+
+      if (missingEventIds.length > 0) {
+        await fetchManyEvents(uniq(missingEventIds))
+      }
+    }
+  }
+
   return {
     fetchUserNotifications,
+    fetchUserNotificationsAndRelations,
     getNotifTranslation,
     getDateDisplayedNotification,
     getTranslationNotificationType,

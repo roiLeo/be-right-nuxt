@@ -35,21 +35,14 @@
 </template>
 
 <script setup lang="ts">
-import { uniq } from '@antfu/utils'
-import { useAnswerStore, useAuthStore, useEventStore, useNotificationsStore, useUiStore, useUserStore } from '~~/store'
+import { useEventStore, useUiStore } from '~~/store'
 import { ModalNameEnum } from '~~/types'
 
 const uiStore = useUiStore()
 const { resetUiModalState } = uiStore
 const eventStore = useEventStore()
-const authStore = useAuthStore()
-const userStore = useUserStore()
-const answerStore = useAnswerStore()
 
-const notificationStore = useNotificationsStore()
-const { fetchUserNotifications } = notificationHook()
-const { fetchMany: fetchManyAnswers } = answerHook()
-const { fetchMany: fetchManyEvents } = eventHook()
+const { fetchUserNotificationsAndRelations } = notificationHook()
 
 const isModalActive = (modalName: ModalNameEnum) => computed(() =>
   uiStore.getUiModalState.isActive
@@ -67,36 +60,6 @@ function CloseResetModalState() {
 }
 
 onMounted(async () => {
-  // TODO refacto this in hook
-  if (!authStore.isAuthUserAdmin && userStore.getAuthUser) {
-    await fetchUserNotifications()
-  }
-
-  const notifications = notificationStore.getAllArray
-
-  if (notifications?.length > 0) {
-    const eventIds: number[] = []
-    const answerIds: number[] = []
-
-    notifications.forEach(notif => {
-      if (notif.eventNotification) {
-        const { eventId, answerId } = notif.eventNotification
-        if (eventId && !eventStore.isAlreadyInStore(eventId)) {
-          eventIds.push(eventId)
-        }
-        if (answerId && !answerStore.isAlreadyInStore(answerId)) {
-          answerIds.push(answerId)
-        }
-      }
-    })
-
-    if (answerIds.length > 0) {
-      await fetchManyAnswers(uniq(answerIds))
-    }
-
-    if (eventIds.length > 0) {
-      await fetchManyEvents(uniq(eventIds))
-    }
-  }
+  await fetchUserNotificationsAndRelations()
 })
 </script>

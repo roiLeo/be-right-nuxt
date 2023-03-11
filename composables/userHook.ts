@@ -4,23 +4,18 @@ import type {
   EmployeeType,
   EventType,
   FileType,
-  Loginpayload,
   PaginatedResponse,
   PhotographerCreatePayload,
-  RegisterPayload,
   ThemeEnum,
   UserType,
 } from '@/types'
 import { isArrayOfNumbers } from '@/utils'
 import {
-  // useAnswerStore,
-  // useBugStore,
-  // useEmployeeStore,
+  useAddressStore,
   useEventStore,
   useFileStore,
+  useNotificationsSubscriptionStore,
   useSubscriptionStore,
-  // useMainStore,
-  // useTableStore,
   useUiStore,
   useUserStore,
 } from '~~/store'
@@ -28,10 +23,12 @@ import {
 export default function userHook() {
   const { $toast, $api } = useNuxtApp()
 
+  const addressStore = useAddressStore()
   const userStore = useUserStore()
   const eventStore = useEventStore()
   const fileStore = useFileStore()
   const subscriptionStore = useSubscriptionStore()
+  const notificationSubscriptionStore = useNotificationsSubscriptionStore()
 
   const { IncLoading, DecLoading } = useUiStore()
   const { storeEmployeeRelationsEntities } = employeeHook()
@@ -58,14 +55,23 @@ export default function userHook() {
    * @param isUserToSetCurrent
    */
   function storeUsersEntities(user: UserType, isUserToSetCurrent = true) {
-    if (user.events && user.events.length > 0 && !isArrayOfNumbers(user.events)) {
+    if (user.events && user.events.length > 0) {
       const userEvents = user.events
       const eventsToStore = userEvents.filter(event => !eventStore.isAlreadyInStore(event.id))
-      eventStore.createMany(eventsToStore)
+      eventStore.addMany(eventsToStore)
+    }
+
+    if (user.address && !addressStore.isAlreadyInStore(user.address.id)) {
+      addressStore.addOne(user.address)
     }
 
     if (user.employee && user.employee.length > 0 && !isArrayOfNumbers(user.employee)) {
       storeEmployeeRelationsEntities(user.employee)
+    }
+
+    if (user.notificationSubscriptions && user.notificationSubscriptions.length > 0) {
+      const missingNotifSubscriptions = user.notificationSubscriptions.filter(notifSub => !notificationSubscriptionStore.isAlreadyInStore(notifSub.id))
+      notificationSubscriptionStore.addMany(missingNotifSubscriptions)
     }
 
     if (user.files && user.files.length > 0 && !isArrayOfNumbers(user.files)) {
@@ -74,8 +80,8 @@ export default function userHook() {
       fileStore.createMany(filesToStore)
     }
 
-    if (user.subscription && subscriptionStore.isAlreadyInStore(user.subscriptionId)) {
-      subscriptionStore.createOne(user.subscription)
+    if (user.subscription && !subscriptionStore.isAlreadyInStore(user.subscriptionId)) {
+      subscriptionStore.addMany([user.subscription])
     }
 
     if (isUserToSetCurrent) {

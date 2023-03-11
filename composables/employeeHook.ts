@@ -19,7 +19,7 @@ export default function employeeHook() {
   const { createMany: createManyFiles } = useFileStore()
   const { IncLoading, DecLoading } = useUiStore()
   const addressStore = useAddressStore()
-  const { createOne: createOneAddress } = addressStore
+  const { addMany: addManyAddresses } = addressStore
   const { filteringFilesNotInStore } = fileHook()
   // const { filteringAnswersNotInStore } = answerHook()
   const { isAddressType } = addressHook()
@@ -77,7 +77,7 @@ export default function employeeHook() {
 
           if (employee.address && isAddressType(employee.address)) {
             if (!addressStore.isAlreadyInStore(employee.addressId)) {
-              createOneAddress(employee.address)
+              addManyAddresses([employee.address])
             }
           }
         })
@@ -108,11 +108,7 @@ export default function employeeHook() {
       const { data } = await $api().get<EmployeeType[]>(`employee/event/${eventId}`)
 
       if (data) {
-        const employees: EmployeeType[] = data.map(employe => ({
-          ...employe,
-          event: eventId,
-        }))
-        employeeStore.addMany(employees)
+        employeeStore.addMany(data)
       }
     } catch (error) {
       console.error(error)

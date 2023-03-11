@@ -14,5 +14,12 @@ export const useSubscriptionStore = defineStore('subscription', {
 
   actions: {
     ...createActions<SubscriptionType>(subscriptionState),
+
+    addMany(subs: SubscriptionType[]) {
+      subs.forEach(sub => {
+        this.entities.byId[sub.id] = { ...sub, $isDirty: false }
+        this.entities.allIds.push(sub.id)
+      })
+    },
   },
 })

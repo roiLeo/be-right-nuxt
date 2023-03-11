@@ -75,9 +75,7 @@ export default function groupHook() {
 
   async function fetchUserGroupsAndRelations() {
     IncLoading()
-    if (groupStore.getIsEmpty) {
-      await fetchByUser()
-    }
+    await fetchByUser()
 
     await fetchGroupRelations(groupStore.getAllArray)
     DecLoading()

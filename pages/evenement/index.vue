@@ -38,8 +38,7 @@ onMounted(async () => {
   IncLoading()
   if (authStore.isAuthUserAdmin && authStore.getIsLoggedIn) {
     await fetchAllEvents()
-  }
-  else if (userId) {
+  } else if (userId) {
     const eventIds = userStore.getAuthUser?.eventIds
 
     if (eventIds && eventIds.length > 0) {

@@ -1,3 +1,4 @@
+import type { NotificationSubscriptionType } from '../notification'
 import type { AddressType, EmployeeType, EventType, FileType, SubscriptionEnum, SubscriptionType } from '@/types'
 import type { BaseEntity } from '@/types/globals'
 import type { RoleEnum } from '@/types/Roles'
@@ -23,6 +24,7 @@ export interface UserType extends BaseEntity {
   files?: FileType[]
   filesIds: number[]
   profilePicture: string | null
+  notificationSubscriptions?: NotificationSubscriptionType[]
   notificationSubscriptionIds: number[]
 }
 
