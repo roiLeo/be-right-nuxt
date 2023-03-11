@@ -92,7 +92,6 @@ defineProps<Props>()
 const uiStore = useUiStore()
 const employeeStore = useEmployeeStore()
 
-const { getEmployeeFullname } = employeeHook()
 const { postOne, postOneCSV } = groupHook()
 
 const selected = ref<'list' | 'csv'>('list')

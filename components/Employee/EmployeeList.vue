@@ -106,6 +106,7 @@ import {
 const { setSearch } = useTableStore()
 const authStore = useAuthStore()
 const employeeStore = useEmployeeStore()
+const route = useRoute()
 
 const employees = computed(() => alphabetical(employeeStore.getAllArray) as EmployeeType[])
 
@@ -115,6 +116,12 @@ const state = reactive({
   isLoading: false,
   activeEmployee: employees.value[0]?.id || null,
   isActiveEmployeeDirty: false,
+})
+
+onMounted(() => {
+  if (route.query.id) {
+    state.activeEmployee = parseInt(route.query.id.toString()) || employees.value[0]?.id
+  }
 })
 
 const activeEmployee = computed(() => {
