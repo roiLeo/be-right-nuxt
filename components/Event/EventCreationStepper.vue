@@ -14,7 +14,7 @@
         class="relative overflow-hidden lg:flex-1"
       >
         <div
-          class="border border-gray-200 overflow-hidden lg:border-0"
+          class="overflow-hidden border border-gray-200 lg:border-0"
           :class="[
             stepIdx === 0 ? 'border-b-0 rounded-t-md' : '',
             stepIdx === steps.length - 1 ? 'border-t-0 rounded-b-md' : '']"
@@ -26,7 +26,7 @@
               aria-hidden="true"
             />
             <span
-              class="px-6 py-5 flex items-start text-sm font-medium"
+              class="flex items-start px-6 py-5 text-sm font-medium"
               :class="[stepIdx !== 0 ? 'lg:pl-9' : '']"
             >
               <span class="flex-shrink-0">
@@ -90,8 +90,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const steps = [
   { id: '1', name: 'Nouvel évenement', description: 'Créez la date et le contenu de l\'évenement.' },
-  { id: '2', name: 'Adresse', description: 'Ajouter lui une Adresse.' },
-  { id: '3', name: 'Photographe', description: 'Ajouter lui un photographe.' },
+  { id: '2', name: 'Adresse', description: 'Ajoutez une Adresse.' },
+  { id: '3', name: 'Photographe', description: 'Ajoutez un photographe.' },
   { id: '4', name: 'Fin', description: 'Enregistrement de données.' },
 ]
 
