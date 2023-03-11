@@ -41,15 +41,12 @@
     </RadioGroup>
   </div>
 
-  <BaseMultipleSelect
+  <EmployeeComboboxSelector
     v-if="selected === 'list'"
-    class="md:col-span-2"
-    :values="employeeStore.getAllArray"
-    value-key="id"
-    :display-key="getEmployeeFullname"
-    label="Choix des destinataires"
     name="employeeIds"
-    placeholder="Choisissez des destinataires"
+    :default-values="employeeStore.getAllArray"
+    value-key="id"
+    wrapper-classes="md:col-span-2"
     is-required
   />
 
