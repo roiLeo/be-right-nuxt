@@ -144,7 +144,6 @@ import type { EmployeeType } from '~~/types'
 
 interface Props {
   defaultValues: EmployeeType[]
-  selectedValues: EmployeeType[]
   isRequired?: boolean
   helpMessage?: string
   name: string
@@ -156,7 +155,6 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   defaultValues: () => [],
-  selectedValues: () => [],
   isRequired: false,
   disabled: false,
   label: 'Sélectionner des destinataires',
@@ -199,7 +197,7 @@ function onRemoveValue(index: number) {
 }
 
 function filterAlReadyInGroup(employees: EmployeeType[]) {
-  const employeesAlReadyInGroup = props.selectedValues.map(emp => emp.id)
+  const employeesAlReadyInGroup = inputValue.value.map(emp => emp.id)
   return employees.filter(emp => !employeesAlReadyInGroup.includes(emp.id))
 }
 

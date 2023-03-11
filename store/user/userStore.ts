@@ -30,20 +30,16 @@ export const useUserStore = defineStore('user', {
       const authStore = useAuthStore()
       return Object.values(state.entities.byId).find(user => user.email === authStore.user?.email)?.id
     },
-
-    // getUserFullName: state => {
-    //   const user = state.entities.current
-    //   return `${user?.firstName} ${user?.lastName}`
-    // },
-    // getFirst: state => Object.values(state.entities.byId)?.length > 0 ? Object.values(state.entities.byId)[0] : null,
   },
 
   actions: {
     ...createActions<UserType>(userState),
 
     addOne(user: UserType) {
-      this.entities.byId[user.id] = { ...user, $isDirty: false }
-      this.entities.allIds = uniq([...this.entities.allIds, user.id])
+      if (this.entities.byId[user.id] === null || this.entities.byId[user.id] === undefined) {
+        this.entities.byId[user.id] = { ...user, $isDirty: false }
+        this.entities.allIds = uniq([...this.entities.allIds, user.id])
+      }
     },
 
     addMany(users: UserType[]) {
@@ -60,12 +56,6 @@ export const useUserStore = defineStore('user', {
     resetState() {
       this.$state = defaultUserState()
     },
-
-    // async getUserWithTokenFromAPI(token: string) {
-    //   const { loginWithToken } = authHook()
-    //   await loginWithToken(token)
-    // },
-    // TODO resolve when hooks are implemented
   },
 
 })
