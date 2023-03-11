@@ -100,30 +100,15 @@
     />
   </div>
 
-  <template v-if="!authStore.isAuthUserAdmin && userStore.getAuthUserId">
-    <BaseMultipleSelect
-      :values="employeeStore.getEmployeesByUserId(userStore.getAuthUserId)"
-      value-key="id"
-      :display-key="getEmployeeFullname"
-      label="Choix des destinataires"
+  <template v-if="userStore.getAuthUserId">
+    <EmployeeComboboxSelector
       name="employees"
-      placeholder="Choisissez des destinataires"
+      :default-values="authStore.isAuthUserAdmin ? employeeStore.getAllArray : employeeStore.getEmployeesByUserId(userStore.getAuthUserId)"
+      value-key="id"
+      wrapper-classes="md:col-span-2"
       is-required
-      wrapper-classes="col-span-2 md:col-span-1"
     />
   </template>
-  <div
-    v-else
-    class="space-y-2 md:col-span-3"
-  >
-    <EmployeeSearchInput
-      label="Choix de destinataires"
-      name="employees"
-      value-key="id"
-      placeholder="Choisissez un destinataires"
-      is-required
-    />
-  </div>
 
   <div class="flex items-center justify-center mt-6 md:col-span-3">
     <BaseButton
@@ -187,7 +172,6 @@ const { postMany: postManyAnswers } = answerHook()
 const { patchOne: patchOneAddress, postOne: postOneAddress } = addressHook()
 const { patchOne: patchOneEvent } = eventHook()
 const { isUserType } = userHook()
-const { getEmployeeFullname } = employeeHook()
 
 const isEditMode = computed(() => props.mode === ModalModeEnum.EDIT)
 const event = computed(() => props.eventId ? eventStore.getOne(props.eventId) : null)

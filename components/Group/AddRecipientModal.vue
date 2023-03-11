@@ -57,7 +57,7 @@
               v-if="filteredEmployee.length === 0 && query !== ''"
               class="relative px-4 py-2 text-gray-700 cursor-default select-none"
             >
-              Nothing found.
+              Aucun trouvé
             </div>
             <li
               class="relative py-2 pl-10 pr-4 cursor-pointer select-none hover:bg-teal-600 hover:text-white"
@@ -139,9 +139,7 @@
           </p>
         </div>
 
-        <div
-          class="flex items-center justify-center mt-4 space-x-2"
-        >
+        <div class="flex items-center justify-center mt-4 space-x-2">
           <BaseButton @click="close">
             Retour
           </BaseButton>

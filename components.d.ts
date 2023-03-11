@@ -31,6 +31,7 @@ declare module '@vue/runtime-core' {
     Combobox: typeof import('@headlessui/vue')['Combobox']
     ComboboxButton: typeof import('@headlessui/vue')['ComboboxButton']
     ComboboxInput: typeof import('@headlessui/vue')['ComboboxInput']
+    ComboboxLabel: typeof import('@headlessui/vue')['ComboboxLabel']
     ComboboxOption: typeof import('@headlessui/vue')['ComboboxOption']
     ComboboxOptions: typeof import('@headlessui/vue')['ComboboxOptions']
     CurrencyDollarIconOutline: typeof import('@heroicons/vue/24/outline/esm/CurrencyDollarIcon.js')['default']
