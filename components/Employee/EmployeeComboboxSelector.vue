@@ -183,6 +183,10 @@ const filteredEmployee = computed(() =>
       person.lastName
         .toLowerCase()
         .replace(/\s+/g, '')
+        .includes(query.value.toLowerCase().replace(/\s+/g, ''))
+      || person.firstName
+        .toLowerCase()
+        .replace(/\s+/g, '')
         .includes(query.value.toLowerCase().replace(/\s+/g, '')),
     ),
 )
@@ -193,7 +197,7 @@ const isSelected = (active: boolean, selected: boolean, id: number) => computed(
 )
 
 function onRemoveValue(index: number) {
-  selected.value.splice(index, 1)
+  inputValue.value.splice(index, 1)
 }
 
 function filterAlReadyInGroup(employees: EmployeeType[]) {
