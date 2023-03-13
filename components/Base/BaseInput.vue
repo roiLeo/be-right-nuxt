@@ -23,7 +23,7 @@
       :aria-placeholder="placeholder"
       :name="name"
       :type="computedInputType"
-      class="appearance-none block shadow-md py-2 px-4 border focus:ring-purple-500 focus:border-purple-500 w-full sm:text-sm border-gray-300 rounded-md text-gray-800"
+      class="block w-full px-4 py-2 text-gray-800 border border-gray-300 rounded-md shadow-md appearance-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
       :class="[{ 'border-red-300': errors?.length },
                { 'cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-200': disabled },
                getBorderClasses(errors, meta),

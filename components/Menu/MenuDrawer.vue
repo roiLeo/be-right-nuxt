@@ -63,9 +63,9 @@
                 v-for="(item, index) in getMenuItems()"
                 :key="index"
                 :to="{ name: item.linkName }"
+                class="flex items-center px-2 py-2 text-sm font-medium text-gray-600 rounded-md group dark:text-gray-300 hover:bg-gray-700 hover:text-white"
                 exact-active-class="active-nuxt-link"
                 :data-cy="`drawer-link-${item.linkName}`"
-                class="flex items-center px-2 py-2 text-sm font-medium text-gray-600 rounded-md group dark:text-gray-300 hover:bg-gray-700 hover:text-white"
                 @click="closeDrawer"
               >
                 <component
@@ -77,12 +77,6 @@
               </NuxtLink>
             </nav>
           </div>
-          <!-- <div
-            v-if="userStore.getCurrent"
-            class="flex flex-shrink-0 p-4"
-          >
-            <UserMenu />
-          </div> -->
         </div>
       </TransitionChild>
       <div class="flex-shrink-0 w-14">
@@ -142,6 +136,6 @@ function getMenuItems() {
 
 <style scoped>
 .active-nuxt-link {
-  @apply bg-gray-900 text-white
-}
+    @apply bg-gray-900 text-white
+  }
 </style>

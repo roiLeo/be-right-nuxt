@@ -57,7 +57,10 @@ function close() {
   emit('close')
 }
 
-const getModalTitle = computed(() => uiStore.getUiModalData?.groupId && groupStore.getOne(uiStore.getUiModalData.groupId)
-  ? `Supprimer la liste de diffusion: ${groupStore.getOne(uiStore.getUiModalData.groupId).name}`
-  : 'Supprimer une liste de diffusion')
+const getModalTitle = computed(() => {
+  if (uiStore.getUiModalData?.groupId && groupStore.getOne(uiStore.getUiModalData.groupId)) {
+    return `Supprimer la liste de diffusion: ${groupStore.getOne(uiStore.getUiModalData.groupId).name}`
+  }
+  return 'Supprimer une liste de diffusion'
+})
 </script>

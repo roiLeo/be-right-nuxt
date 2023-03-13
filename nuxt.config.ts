@@ -33,11 +33,11 @@ export default defineNuxtConfig({
           name => {
             if (name.includes('IconSolid')) {
               const realName = name.split('Solid')[0]
-              return `@heroicons/vue/24/solid/esm/${realName}.js`
+              return `@heroicons/vue/24/solid/esm/${realName}`
             }
             if (name.includes('IconOutline')) {
               const realName = name.split('Outline')[0]
-              return `@heroicons/vue/24/outline/esm/${realName}.js`
+              return `@heroicons/vue/24/outline/esm/${realName}`
             }
           },
         ],
