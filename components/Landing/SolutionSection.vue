@@ -26,7 +26,7 @@
           </div>
           <p class="px-6 mb-5 text-base text-left text-gray-800 dark:text-gray-100">
             Be right est une plateforme de gestion dématérialisée de vos documents de droits à l'image.
-            Avec cette application, vous, photograpges et agences de photos pouvez gérer vos événements et
+            Avec cette application, vous, photographes et agences de photos pouvez gérer vos événements et
             faire signer vos documents en seulement quelques clics.
             Pour vérifier l'authenticité des signatures un code de vérification sera envoyé au destinataire.
           </p>

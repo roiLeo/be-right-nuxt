@@ -130,8 +130,6 @@ const emit = defineEmits<{
   (e: 'onClick', event: Event): void
 }>()
 
-// const mainStore = useMainStore()
-
 interface Props {
   tag?: string
   href?: string | Record< string, string | Record<string, string | number>> | null | RouteLocation
