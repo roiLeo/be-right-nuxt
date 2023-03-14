@@ -20,9 +20,17 @@ export const useEventStore = defineStore('events', {
     getCreationForm: state => state.creationForm,
 
     getAllSorted: state => {
-      return Object.values(state.entities.byId).sort((a, b) => {
-        return EventStatusOrder[a.status] - EventStatusOrder[b.status]
-      })
+      return (onlyDeleted?: boolean) => {
+        const events = Object.values(state.entities.byId)
+        if (onlyDeleted) {
+          return events
+            .filter(event => noNull(event.deletedAt) && noUndefined(event.deletedAt))
+            .sort((a, b) => EventStatusOrder[a.status] - EventStatusOrder[b.status])
+        }
+        return events
+          .filter(event => !event.deletedAt)
+          .sort((a, b) => EventStatusOrder[a.status] - EventStatusOrder[b.status])
+      }
     },
 
     getAllByEmployee: state => {
@@ -38,7 +46,6 @@ export const useEventStore = defineStore('events', {
         return []
       }
     },
-
   },
   actions: {
     ...createActions<EventType>(eventState),

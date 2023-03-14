@@ -9,6 +9,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ArchiveBoxIconOutline: typeof import('@heroicons/vue/24/outline/esm/ArchiveBoxIcon')['default']
     ArrowDownOnSquareIconOutline: typeof import('@heroicons/vue/24/outline/esm/ArrowDownOnSquareIcon')['default']
     ArrowDownTrayIconOutline: typeof import('@heroicons/vue/24/outline/esm/ArrowDownTrayIcon')['default']
     ArrowLeftOnRectangleIconOutline: typeof import('@heroicons/vue/24/outline/esm/ArrowLeftOnRectangleIcon')['default']

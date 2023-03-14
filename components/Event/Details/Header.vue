@@ -48,12 +48,12 @@
           @click="deleteEvent"
         >
           <template #icon>
-            <TrashIconOutline
+            <ArchiveBoxIconOutline
               class="w-5 h-5"
               aria-hidden="true"
             />
           </template>
-          Supprimer
+          Archiver
         </BaseButton>
       </div>
       <EmployeeCreator

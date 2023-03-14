@@ -289,9 +289,30 @@ export default function eventHook() {
     DecLoading()
   }
 
+  async function fetchDeleted() {
+    IncLoading()
+    try {
+      const { data } = await $api().get<EventType[]>('event/deleted')
+
+      if (data) {
+        const missingIds = data.map((event: EventType) => event.id).filter(id => !eventStore.isAlreadyInStore(id))
+
+        if (missingIds.length > 0) {
+          const events = data.filter(event => missingIds.includes(event.id))
+          storeEventRelationEntities(events)
+        }
+      }
+    } catch (error) {
+      console.error(error)
+      $toast.error('Une erreur est survenue')
+    }
+    DecLoading()
+  }
+
   return {
     deleteOne,
     fetchAllEvents,
+    fetchDeleted,
     fetchEventsByUser,
     fetchOne,
     fetchMany,

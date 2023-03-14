@@ -1,4 +1,5 @@
 import {
+  ArchiveBoxIcon,
   BellAlertIcon,
   ChartPieIcon,
   ExclamationCircleIcon,
@@ -70,6 +71,12 @@ export const MENU_ITEMS = [
     label: 'Événements',
     icon: HomeIcon,
     linkName: 'evenement',
+    isAdmin: false,
+  },
+  {
+    label: 'Événements Archivés',
+    icon: ArchiveBoxIcon,
+    linkName: 'evenement-archives',
     isAdmin: false,
   },
   {

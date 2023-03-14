@@ -1,13 +1,19 @@
 <template>
 <PageAuthWrapper>
   <EventList
-    :events="eventStore.getAllSorted"
+    :events="events"
   />
 </PageAuthWrapper>
 </template>
 
 <script setup lang="ts">
-import { useAuthStore, useEventStore, useTableStore, useUiStore, useUserStore } from '~~/store'
+import {
+  useAuthStore,
+  useEventStore,
+  useTableStore,
+  useUiStore,
+  useUserStore,
+} from '~~/store'
 
 const eventStore = useEventStore()
 const { IncLoading, DecLoading } = useUiStore()
@@ -15,6 +21,9 @@ const userStore = useUserStore()
 const tableStore = useTableStore()
 const authStore = useAuthStore()
 // const { setFilters } = tableStore
+const events = computed(() =>
+  eventStore.getAllSorted(),
+)
 
 const { fetchEventsByUser, fetchAllEvents } = eventHook()
 const { fetchManyAnswerForManyEvent } = answerHook()

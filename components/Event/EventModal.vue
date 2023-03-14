@@ -1,10 +1,10 @@
 <template>
 <BaseDeleteConfirmModal
-  :title="`Êtes vous sur de supprimer l'Événement ${event.name} ?`"
+  :title="`Êtes vous sur de archiver l'Événement ${event.name} ?`"
   :is-active="isActive"
 >
   <p class="text-sm text-gray-500">
-    Êtes-vous sûr de vouloir supprimer cette liste ?
+    Êtes-vous sûr de vouloir archiver cet événement ?
   </p>
   <div class="mt-5 sm:space-x-8 sm:mt-4 sm:flex sm:items-center sm:justify-center">
     <BaseButton
@@ -12,7 +12,7 @@
       :is-loading="uiStore.getUIIsLoading"
       @click="deleteEvent"
     >
-      Supprimer
+      Archiver
     </BaseButton>
     <BaseButton @click="close">
       Annuler
