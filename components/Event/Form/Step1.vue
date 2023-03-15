@@ -30,10 +30,8 @@
           color="purple"
           is-required
           locale="fr"
-          mode="dateTime"
+          mode="date"
           is-range
-          is24hr
-          is-expanded
         />
       </Clientonly>
     </Field>
