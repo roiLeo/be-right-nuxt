@@ -3,7 +3,7 @@
   v-slot="{ meta, isSubmitting }"
   :validation-schema="schema"
   :initial-values="initialValues"
-  class="grid w-full grid-cols-1 gap-6 mt-4 md:gap-12 md:grid-cols-2 mb-36"
+  class="grid w-full grid-cols-1 gap-4 mt-4 md:grid-cols-2"
   @submit="submit"
 >
   <BaseInput
@@ -28,13 +28,14 @@
     autocomplete="email"
     is-required
   />
+
   <BaseInput
     label="Nom de l'entreprise"
     name="companyName"
     type="text"
     autocomplete="companyName"
-    is-required
   />
+
   <div class="flex items-center justify-center mt-6 md:col-span-2">
     <BaseButton
       :disabled="!meta.valid || !meta.dirty"

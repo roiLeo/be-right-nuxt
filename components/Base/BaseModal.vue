@@ -18,7 +18,7 @@
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <DialogOverlay class="fixed inset-0 transition-opacity bg-gray-600 bg-opacity-75" />
+        <DialogOverlay class="fixed inset-0 z-0 transition-opacity bg-gray-600 bg-opacity-75" />
       </TransitionChild>
 
       <!-- This element is to trick the browser into centering the modal contents. -->
@@ -36,8 +36,14 @@
         leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
       >
         <div
-          class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6"
+          class="relative inline-block px-4 pt-5 pb-4 overflow-visible text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6"
         >
+          <button
+            class="absolute z-20 bg-white border-none rounded-full -top-2 -right-2"
+            @click="closeModal"
+          >
+            <XCircleIconOutline class="text-gray-900 w-7 h-7" />
+          </button>
           <slot />
         </div>
       </TransitionChild>

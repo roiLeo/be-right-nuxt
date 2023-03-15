@@ -1,4 +1,4 @@
-import { uniq } from '@antfu/utils'
+import { hasOwnProperty, uniq } from '@antfu/utils'
 import type { AnswerType, EmployeeType } from '~~/store'
 import { useAnswerStore, useUiStore } from '~~/store'
 
@@ -106,6 +106,14 @@ export default function answerHook() {
     )
   }
 
+  function isAnswerType(obj: any): obj is AnswerType {
+    return hasOwnProperty(obj, 'hasSigned') && hasOwnProperty(obj, 'eventId') && hasOwnProperty(obj, 'employeeId')
+  }
+
+  function areAnswersType(array: any[]): array is AnswerType[] {
+    return array.every(item => isAnswerType(item))
+  }
+
   return {
     postMany,
     filteringAnswersNotInStore,
@@ -113,5 +121,6 @@ export default function answerHook() {
     fetchManyAnswerForEvent,
     fetchManyAnswerForManyEvent,
     downloadAnswer,
+    areAnswersType,
   }
 }

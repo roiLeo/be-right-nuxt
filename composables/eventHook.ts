@@ -1,4 +1,5 @@
 import { hasOwnProperty, uniq } from '@antfu/utils'
+import type { AnswerType } from '~~/store'
 import {
   useAddressStore,
   useAnswerStore,
@@ -8,13 +9,13 @@ import {
   useUiStore,
   useUserStore,
 } from '~~/store'
-import type { EventCreatePayload, EventType, PaginatedResponse } from '~~/types'
+import type { AddressType, EventCreatePayload, EventType, PaginatedResponse } from '~~/types'
 import { EventStatusEnum, getEventStatusTranslationEnum } from '~~/types'
 
 export default function eventHook() {
   const { $toast, $api } = useNuxtApp()
 
-  const { fetchManyAnswerForEvent } = answerHook()
+  const { fetchManyAnswerForEvent, areAnswersType } = answerHook()
   const { fetchEmployeesByEventId } = employeeHook()
   const { fetchMany: fetchManyUsers } = userHook()
   const { fetchMany: fetchManyAddress } = addressHook()
@@ -22,7 +23,7 @@ export default function eventHook() {
 
   const eventStore = useEventStore()
   const { deleteEventAndRelations } = eventStore
-  // const { isAddressType } = addressHook()
+  const { isAddressType } = addressHook()
   const { DecLoading, IncLoading } = useUiStore()
   const addressStore = useAddressStore()
   const employeeStore = useEmployeeStore()
@@ -158,13 +159,29 @@ export default function eventHook() {
 
   async function postOne(payload: EventCreatePayload): Promise<EventType | undefined> {
     try {
-      const { userId } = payload
-      const { data } = await $api().post<EventType>(`event/${userId}`, payload)
+      const { data } = await $api().post<{
+        event: EventType
+        address: AddressType
+        answers: AnswerType[]
+      }>('event', payload)
 
       if (data) {
-        eventStore.addMany([data])
+        const { event, address, answers } = data
+
+        if (isEventType(event)) {
+          eventStore.addMany([event])
+        }
+
+        if (isAddressType(address)) {
+          addressStore.addOne(address)
+        }
+
+        if (areAnswersType(answers)) {
+          answerStore.addMany(answers)
+        }
+
         $toast.success('L\'événement a été créé avec succès')
-        return data
+        return event
       }
       return undefined
     } catch (error) {

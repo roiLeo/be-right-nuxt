@@ -15,7 +15,7 @@
     />
   </div>
 
-  <div class="space-y-2">
+  <div class="col-span-3 space-y-2 md:col-span-1">
     <label class="block mb-2 text-sm font-bold text-blue dark:text-gray-100">
       Dates de l'événement&nbsp;*&nbsp;:
     </label>
@@ -25,13 +25,13 @@
     >
       <ClientOnly>
         <DatePicker
-          v-model="values.period"
+          v-model.range="values.period"
           v-bind="field"
           color="purple"
           is-required
           locale="fr"
           mode="date"
-          is-range
+          range
         />
       </Clientonly>
     </Field>
@@ -39,7 +39,7 @@
   </div>
 
   <BaseTextarea
-    class="md:col-span-2"
+    class="col-span-3 md:col-span-2"
     label="Description de l'événement"
     name="description"
     autocomplete="description"
@@ -80,7 +80,7 @@
     is-required
   />
 
-  <div class="flex items-center justify-center mt-6 md:col-span-3">
+  <div class="flex items-center justify-center col-span-3 mt-6">
     <BaseButton
       :disabled="!meta.valid || !meta.dirty"
       :is-loading="uiStore.getUIIsLoading || isSubmitting"
