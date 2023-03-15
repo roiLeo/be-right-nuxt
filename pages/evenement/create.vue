@@ -20,14 +20,11 @@
   </div>
 
   <template v-if="isEventCreation">
-    <EventForm
-      class="px-4 lg:px-8"
-      :mode="ModalModeEnum.CREATE"
-    />
+    <EventFormStep1 class="px-4 lg:px-8" />
   </template>
 
-  <AddressForm
-    v-if="isAddressEventCreation"
+  <EventFormStep2
+    v-if="isEmployeeStepEventCreation"
     class="px-4 lg:px-8"
   />
 
@@ -160,12 +157,6 @@
           </div>
           <div
             class="text-center"
-            :class="isSubmitStepComplete(40).value ? 'text-indigo-600' : ''"
-          >
-            Adresse
-          </div>
-          <div
-            class="text-center"
             :class="isSubmitStepComplete(60).value ? 'text-indigo-600' : ''"
           >
             Photographe
@@ -192,8 +183,6 @@
 <script setup lang="ts">
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue'
 import type { EventTypeCreate, UserType } from '@/types'
-import { ModalModeEnum } from '@/types'
-import { isArrayOfNumbers } from '@/utils'
 import {
   useAddressStore,
   useAuthStore,
@@ -218,12 +207,11 @@ const employeeStore = useEmployeeStore()
 const authStore = useAuthStore()
 
 const { postOne: postOneEvent } = eventHook()
-const { postMany: postManyAnswers } = answerHook()
 const { postPhotographer } = userHook()
 const { fetchMany } = employeeHook()
 
 const isEventCreation = computed(() => route.query.step === 'event' || route.query.step === undefined)
-const isAddressEventCreation = computed(() => route.query.step === 'address')
+const isEmployeeStepEventCreation = computed(() => route.query.step === 'destinataires')
 const isPhotographerCreation = computed(() => route.query.step === 'photographer')
 const isEnd = computed(() => route.query.step === 'end')
 const isPhotographerAlreadyCreated = ref(true)
@@ -232,7 +220,7 @@ const currentStepIndex = computed(() => {
   if (isEventCreation.value) {
     return 0
   }
-  if (isAddressEventCreation.value) {
+  if (isEmployeeStepEventCreation.value) {
     return 1
   }
   if (isPhotographerCreation.value) {
@@ -257,6 +245,7 @@ const haveUserEmployees = computed(() => {
 async function submit(photographerId?: number | UserType) {
   IncLoading()
   let photographer = null
+
   if (!isPhotographerAlreadyCreated.value) {
     photographer = await postPhotographer({
       ...userStore.photographerForm,
@@ -264,30 +253,24 @@ async function submit(photographerId?: number | UserType) {
   } else if (photographerId) {
     photographer = userStore.getOne(photographerId)
   }
+
   resetPhotographerForm()
   progressBarProgession.value = 20
-  if (photographer && eventStore.creationForm.createdByUser) {
-    const userId = eventStore.creationForm.createdByUser
-    const event = {
-      ...eventStore.creationForm,
-      createdByUser: userId,
-      partner: photographer.id,
-    } as unknown as EventTypeCreate
+
+  if (photographer) {
     const newEvent = await postOneEvent(
       {
-        event,
-        userId,
+        event: eventStore.creationForm as unknown as EventTypeCreate,
         address: { ...addressStore.creationForm },
         photographerId: photographer.id,
       })
+
     progressBarProgession.value = 40
+
     if (newEvent) {
-      if (eventStore.creationForm.employeeIds.length > 0 && isArrayOfNumbers(eventStore.creationForm.employeeIds)) {
-        await postManyAnswers(newEvent.id, eventStore.creationForm.employeeIds)
-        progressBarProgession.value = 60
-      }
       resetEventForm()
       progressBarProgession.value = 100
+
       resetAddressForm()
       router.push({
         name: 'evenement-show-id',

@@ -90,7 +90,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const steps = [
   { id: '1', name: 'Nouvel évenement', description: 'Créez la date et le contenu de l\'évenement.' },
-  { id: '2', name: 'Adresse', description: 'Ajoutez une Adresse.' },
+  { id: '2', name: 'Destinataires', description: 'Sélectionnez des destinataires.' },
   { id: '3', name: 'Photographe', description: 'Ajoutez un photographe.' },
   { id: '4', name: 'Fin', description: 'Enregistrement de données.' },
 ]
