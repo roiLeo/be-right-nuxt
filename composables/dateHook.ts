@@ -12,8 +12,13 @@ export default function dateHook() {
     return dayjs(date1).isSame(dayjs(date2), 'day')
   }
 
+  function isBefore(date1: Date, date2: Date) {
+    return dayjs(date1).isBefore(dayjs(date2))
+  }
+
   return {
     toFormat,
+    isBefore,
     isSameDay,
   }
 }
