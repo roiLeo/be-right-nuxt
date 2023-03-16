@@ -33,6 +33,7 @@
     "@antfu/utils": "^0.7.2",
     "@headlessui/vue": "^1.7.12",
     "@nuxtjs/tailwindcss": "^6.4.1",
+    "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
     "@sidebase/nuxt-pdf": "^0.1.1",
     "@types/jsonwebtoken": "^9.0.1",
     "autoprefixer": "^10.4.14",

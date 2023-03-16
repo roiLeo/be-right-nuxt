@@ -133,16 +133,18 @@ import { array, date, number, object, string } from 'yup'
 import { uniq } from '@antfu/utils'
 import { ErrorMessage, Field, Form } from 'vee-validate'
 import { ModalModeEnum } from '@/types'
-import type { BaseCreationFormType, EventType, VeeValidateValues } from '@/types'
+import type { EventType, VeeValidateValues } from '@/types'
 import {
   useAddressStore,
   useAnswerStore,
   useAuthStore,
   useEmployeeStore,
   useEventStore,
+  useFormStore,
   useUiStore,
   useUserStore,
 } from '~~/store'
+import type { BaseEventFormType } from '~~/store/form/types'
 
 interface Props {
   eventId?: number | null
@@ -158,13 +160,14 @@ const emit = defineEmits<{
 }>()
 
 const eventStore = useEventStore()
-const { setCreationForm } = eventStore
 const userStore = useUserStore()
 const uiStore = useUiStore()
 const addressStore = useAddressStore()
 const employeeStore = useEmployeeStore()
 const answerStore = useAnswerStore()
 const authStore = useAuthStore()
+const formStore = useFormStore()
+const { setEventForm } = formStore
 const router = useRouter()
 
 const { IncLoading, DecLoading, resetUiModalState } = uiStore
@@ -179,7 +182,7 @@ const eventAddress = computed(() => {
   if (event.value) {
     const address = addressStore.getOne(event.value.addressId as number)
     if (!address) {
-      return addressStore.getOneByEventId(event.value.id) || null
+      return addressStore.getOne(event.value.addressId) || null
     }
     return address
   }
@@ -207,7 +210,7 @@ const schema = object({
 
 const userCreateEvent = computed(() => {
   if (authStore.isAuthUserAdmin) {
-    return event.value ? isUserType(event.value.createdByUser) ? event.value.createdByUser.id : event.value.createdByUser as number : null
+    return event.value ? isUserType(event.value.createdByUser) ? event.value.createdByUser.id : event.value.createdByUserId : null
   } else {
     return userStore.getAuthUserId
   }
@@ -216,17 +219,17 @@ const userCreateEvent = computed(() => {
 const eventEmployees = computed(() => props.eventId ? employeeStore.getAllByEventId(props.eventId).map(emp => emp.id) : [])
 
 const initialValues = {
-  name: event.value?.name || eventStore.getCreationForm.name,
-  description: event.value?.description || eventStore.getCreationForm.description,
+  name: event.value?.name || formStore.eventform.name,
+  description: event.value?.description || formStore.eventform.description,
   period: {
-    start: event.value?.start || eventStore.getCreationForm.start,
-    end: event.value?.end || eventStore.getCreationForm.end,
+    start: event.value?.start || formStore.eventform.start,
+    end: event.value?.end || formStore.eventform.end,
   },
-  addressLine: eventAddress.value?.addressLine || addressStore.getCreationForm.addressLine,
-  addressLine2: eventAddress.value?.addressLine2 || addressStore.getCreationForm.addressLine2,
-  postalCode: eventAddress.value?.postalCode || addressStore.getCreationForm.postalCode,
-  city: eventAddress.value?.city || addressStore.getCreationForm.city,
-  country: eventAddress.value?.country || addressStore.getCreationForm.country || 'France',
+  addressLine: eventAddress.value?.addressLine || formStore.addressForm.addressLine,
+  addressLine2: eventAddress.value?.addressLine2 || formStore.addressForm.addressLine2,
+  postalCode: eventAddress.value?.postalCode || formStore.addressForm.postalCode,
+  city: eventAddress.value?.city || formStore.addressForm.city,
+  country: eventAddress.value?.country || formStore.addressForm.country || 'France',
   userId: userCreateEvent.value,
   employees: eventEmployees.value,
 }
@@ -247,7 +250,7 @@ async function submit(form: VeeValidateValues) {
 
   if (!isEditMode.value) {
     if (formValues.userId) {
-      setCreationForm(payload.event as BaseCreationFormType)
+      setEventForm(payload.event as Partial<BaseEventFormType>)
       router.push({
         name: 'evenement-create',
         query: { step: 'address' },
@@ -289,7 +292,7 @@ async function submit(form: VeeValidateValues) {
 
     if (formValues.employees && formValues.employees.length > 0) {
       const employeesIds = formValues.employees.filter(id => id) as number[]
-      const answerAlreadyCreated = answerStore.getManyByEventId(props.eventId).map(answer => answer.employee)
+      const answerAlreadyCreated = answerStore.getManyByEventId(props.eventId).map(answer => answer.employeeId)
       const empToCreateAnswer = employeesIds.filter(empId => !answerAlreadyCreated.includes(empId))
       const eventId = props.eventId
       if (empToCreateAnswer?.length > 0) {

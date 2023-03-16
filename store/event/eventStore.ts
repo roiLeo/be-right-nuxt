@@ -3,8 +3,8 @@ import { createActions, createGetters } from '@malolebrin/pinia-entity-store'
 import { uniq } from '@antfu/utils'
 import { useAnswerStore } from '../answer'
 import { useAddressStore } from '../address'
-import { baseCreationForm, defaultEventState, eventState } from './state'
-import type { BaseCreationFormType, EventType } from './types'
+import { defaultEventState, eventState } from './state'
+import type { EventType } from './types'
 
 export const useEventStore = defineStore('events', {
   state: () => ({
@@ -15,8 +15,6 @@ export const useEventStore = defineStore('events', {
 
     // bellow getters in this specific store
     getEventsByUserId: state => (userId: number) => Object.values(state.entities.byId).filter(event => event.createdByUserId === userId),
-
-    getCreationForm: state => state.creationForm,
 
     getAllSorted: state => {
       return (onlyDeleted?: boolean) => {
@@ -77,16 +75,6 @@ export const useEventStore = defineStore('events', {
       if (answersIds?.length > 0) {
         deleteManyAnswers(answersIds)
       }
-    },
-
-    setCreationFormField<K extends keyof BaseCreationFormType>(field: K, value: BaseCreationFormType[K]) {
-      this.creationForm[field] = value
-    },
-    setCreationForm(payload: BaseCreationFormType) {
-      this.creationForm = payload
-    },
-    resetCreationForm() {
-      this.creationForm = baseCreationForm
     },
 
     // actions common to all entities

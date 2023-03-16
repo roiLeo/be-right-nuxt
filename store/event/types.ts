@@ -1,5 +1,5 @@
 import type { State } from '@malolebrin/pinia-entity-store'
-import type { AddressType, AddressTypeCreate, BaseEntity, EmployeeType, FileType, UserType } from '@/types'
+import type { AddressType, AddressTypeCreate, BaseEntity, FileType, UserType } from '@/types'
 
 export interface IEvent extends BaseEntity {
   name: string
@@ -52,14 +52,6 @@ export enum getEventStatusTranslationEnum {
   PENDING = 'en cours',
   COMPLETED = 'complété',
   CLOSED = 'terminé',
-}
-
-export interface BaseCreationFormType {
-  name: string
-  description?: string | null
-  start: Date
-  end: Date
-  employeeIds: number[]
 }
 
 export interface EventState extends State<EventType> { }

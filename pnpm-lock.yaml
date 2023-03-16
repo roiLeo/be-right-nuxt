@@ -7,6 +7,7 @@ specifiers:
   '@heroicons/vue': ^2.0.16
   '@malolebrin/pinia-entity-store': ^0.2.4
   '@nuxtjs/tailwindcss': ^6.4.1
+  '@pinia-plugin-persistedstate/nuxt': ^1.1.1
   '@pinia/nuxt': ^0.4.7
   '@popperjs/core': ^2.11.6
   '@sidebase/nuxt-pdf': ^0.1.1
@@ -48,6 +49,7 @@ devDependencies:
   '@antfu/utils': 0.7.2
   '@headlessui/vue': 1.7.12
   '@nuxtjs/tailwindcss': 6.4.1
+  '@pinia-plugin-persistedstate/nuxt': 1.1.1_2fa6k6uov4i2t7fhwaa7f3r2li
   '@sidebase/nuxt-pdf': 0.1.1
   '@types/jsonwebtoken': 9.0.1
   autoprefixer: 10.4.14_postcss@8.4.21
@@ -1776,6 +1778,21 @@ packages:
     dev: true
     optional: true
 
+  /@pinia-plugin-persistedstate/nuxt/1.1.1_2fa6k6uov4i2t7fhwaa7f3r2li:
+    resolution: {integrity: sha512-b6ZNP3Re8COmfZEpj4KQmbp2TuDKrLggDFLZa8FiJF68xE/oCsPXIuXUvAt8E4ht/5sq4Z/grlA+iGXaI2aeKQ==}
+    peerDependencies:
+      '@pinia/nuxt': ^0.4.4
+    dependencies:
+      '@nuxt/kit': 3.3.1
+      '@pinia/nuxt': 0.4.7_typescript@4.9.5
+      defu: 6.1.2
+      pinia-plugin-persistedstate: 3.1.0_pinia@2.0.33
+    transitivePeerDependencies:
+      - pinia
+      - rollup
+      - supports-color
+    dev: true
+
   /@pinia/nuxt/0.4.7_typescript@4.9.5:
     resolution: {integrity: sha512-ifgA9PO/jmPlK1e/HtkrZa7OMSL8EUOpo8Z1O5vNLRr/OZ42kKGEaY1NbIoCz6dIf/pbkATTNHJmcrlPCo3zSA==}
     dependencies:
@@ -1787,7 +1804,6 @@ packages:
       - supports-color
       - typescript
       - vue
-    dev: false
 
   /@planetscale/database/1.6.0:
     resolution: {integrity: sha512-eb02567S706Xme/nVwx+EN/wyoHhHBXl1a7+67R/Xm91myEpLn0vZNl58TvLZztBxje4gga16lc8dLt0elNrJA==}
@@ -6650,6 +6666,14 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
+  /pinia-plugin-persistedstate/3.1.0_pinia@2.0.33:
+    resolution: {integrity: sha512-8UN+vYMEPBdgNLwceY08mi5olI0wkYaEb8b6hD6xW7SnBRuPydWHlEhZvUWgNb/ibuf4PvufpvtS+dmhYjJQOw==}
+    peerDependencies:
+      pinia: ^2.0.0
+    dependencies:
+      pinia: 2.0.33_typescript@4.9.5
+    dev: true
+
   /pinia/2.0.33_typescript@4.9.5:
     resolution: {integrity: sha512-HOj1yVV2itw6rNIrR2f7+MirGNxhORjrULL8GWgRwXsGSvEqIQ+SE0MYt6cwtpegzCda3i+rVTZM+AM7CG+kRg==}
     peerDependencies:
@@ -6665,7 +6689,6 @@ packages:
       '@vue/devtools-api': 6.5.0
       typescript: 4.9.5
       vue-demi: 0.13.11
-    dev: false
 
   /pkg-types/1.0.2:
     resolution: {integrity: sha512-hM58GKXOcj8WTqUXnsQyJYXdeAPbythQgEF3nTcEo+nkD49chjQ9IKm/QJy9xf6JakXptz86h7ecP2024rrLaQ==}
@@ -8700,7 +8723,6 @@ packages:
     peerDependenciesMeta:
       '@vue/composition-api':
         optional: true
-    dev: false
 
   /vue-devtools-stub/0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}

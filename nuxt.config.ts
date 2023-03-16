@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'nuxt-headlessui',
     '@sidebase/nuxt-pdf',
+    '@pinia-plugin-persistedstate/nuxt',
   ],
 
   build: {

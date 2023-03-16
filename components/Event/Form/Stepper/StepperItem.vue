@@ -94,7 +94,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAddressStore, useEventStore, useUserStore } from '~~/store'
+import { useFormStore } from '~~/store'
 
 interface Props {
   currentStepIndex: number
@@ -112,39 +112,23 @@ const props = withDefaults(defineProps<Props>(), {
   currentStepIndex: 0,
 })
 
-const eventStore = useEventStore()
-const addressStore = useAddressStore()
-const userStore = useUserStore()
+const formStore = useFormStore()
 
 function isStepPassed(index: number) {
   return props.currentStepIndex > index
 }
 
 function isStepCompleted(index: number) {
-  const { name, start, end } = eventStore.getCreationForm
-  const { addressLine, city, country, postalCode } = addressStore.getCreationForm
-
   if (index === 0) {
-    return name
-      && start
-      && end
-      && addressLine
-      && city
-      && country
-      && postalCode
+    return formStore.isStepEventValid
   }
 
   if (index === 1) {
-    return eventStore.getCreationForm.employeeIds?.length > 0
+    return formStore.isStepEmployeeValid
   }
 
   if (index === 2) {
-    const { firstName, lastName, email, photographerId } = userStore.photographerForm
-    return (
-      (firstName
-        && lastName
-        && email)
-        || photographerId)
+    return formStore.isStepPhotographerValid
   }
 
   return true
