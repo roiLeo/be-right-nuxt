@@ -1,6 +1,6 @@
 <template>
 <PageAuthWrapper>
-  <EventCreationStepper :current-step-index="currentStepIndex" />
+  <EventFormStepperWrapper :current-step-index="currentStepIndex" />
 
   <div
     v-if="!haveUserEmployees"
@@ -136,10 +136,10 @@ const { postOne: postOneEvent } = eventHook()
 const { postPhotographer, getPhotographerUserWorkedWith } = userHook()
 const { fetchMany } = employeeHook()
 
-const isEventCreation = computed(() => route.query.step === 'event' || route.query.step === undefined)
+const isEventCreation = computed(() => route.query.step === 'evenement' || route.query.step === undefined)
 const isEmployeeStepEventCreation = computed(() => route.query.step === 'destinataires')
 const isPhotographerCreation = computed(() => route.query.step === 'photographer')
-const isEnd = computed(() => route.query.step === 'end')
+const isEnd = computed(() => route.query.step === 'paiement')
 
 const currentStepIndex = computed(() => {
   if (isEventCreation.value) {

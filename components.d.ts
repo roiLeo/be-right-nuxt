@@ -82,6 +82,7 @@ declare module '@vue/runtime-core' {
     TrashIconOutline: typeof import('@heroicons/vue/24/outline/esm/TrashIcon')['default']
     UserCircleIconOutline: typeof import('@heroicons/vue/24/outline/esm/UserCircleIcon')['default']
     UserPlusIconOutline: typeof import('@heroicons/vue/24/outline/esm/UserPlusIcon')['default']
+    WarningIconOutline: typeof import('@heroicons/vue/24/outline/esm/WarningIcon')['default']
     XCircleIconOutline: typeof import('@heroicons/vue/24/outline/esm/XCircleIcon')['default']
     XCircleIconSolid: typeof import('@heroicons/vue/24/solid/esm/XCircleIcon')['default']
   }

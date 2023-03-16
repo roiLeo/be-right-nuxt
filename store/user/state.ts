@@ -1,11 +1,12 @@
 import { createState } from '@malolebrin/pinia-entity-store'
-import type { PhotographerCreatePayload, UserType } from './types'
+import type { BasePhotographerForm, UserType } from './types'
 
-export const basePhotographerForm: PhotographerCreatePayload = {
+export const basePhotographerForm: BasePhotographerForm = {
   firstName: '',
   lastName: '',
   companyName: null,
   email: '',
+  photographerId: null,
 }
 
 export const userState = defaultUserState()

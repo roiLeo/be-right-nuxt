@@ -6,7 +6,6 @@ export const baseCreationForm: BaseCreationFormType = {
   description: '',
   start: new Date(),
   end: new Date(),
-  createdByUser: null,
   employeeIds: [],
 }
 

@@ -59,7 +59,6 @@ export interface BaseCreationFormType {
   description?: string | null
   start: Date
   end: Date
-  createdByUser: null | number
   employeeIds: number[]
 }
 

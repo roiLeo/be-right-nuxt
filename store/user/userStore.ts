@@ -2,9 +2,8 @@ import { defineStore } from 'pinia'
 import { createActions, createGetters } from '@malolebrin/pinia-entity-store'
 import { uniq } from '@antfu/utils'
 import { useAuthStore } from '../auth/authStore'
-import type { PhotographerCreatePayload, UserType } from './types'
+import type { BasePhotographerForm, UserType } from './types'
 import { basePhotographerForm, defaultUserState, userState } from './state'
-import { RoleEnum } from '@/types/Roles'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -43,8 +42,11 @@ export const useUserStore = defineStore('user', {
       users.forEach(user => this.addOne(user))
     },
 
-    setPhotographerForm(payload: PhotographerCreatePayload) {
+    setPhotographerForm(payload: BasePhotographerForm) {
       this.photographerForm = payload
+    },
+    setPhotographerFormField<K extends keyof BasePhotographerForm>(field: K, value: BasePhotographerForm[K]) {
+      this.photographerForm[field] = value
     },
     resetPhotographerForm() {
       this.photographerForm = basePhotographerForm

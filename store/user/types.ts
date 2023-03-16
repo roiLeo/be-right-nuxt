@@ -40,3 +40,7 @@ export enum UserSearchableFields {
 }
 
 export type PhotographerCreatePayload = Pick<UserType, 'companyName' | 'firstName' | 'lastName' | 'email'>
+
+export interface BasePhotographerForm extends PhotographerCreatePayload {
+  photographerId: number | null
+}

@@ -114,7 +114,7 @@ async function submit(form: VeeValidateValues) {
     setPhotographerForm(formValues)
     router.push({
       name: 'evenement-create',
-      query: { step: 'end' },
+      query: { step: 'paiement' },
     })
     emit('submitted', formValues as UserType)
   }
