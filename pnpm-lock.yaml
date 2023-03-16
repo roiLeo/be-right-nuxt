@@ -26,7 +26,7 @@ specifiers:
   tailwindcss: ^3.2.7
   typescript: ^4.9.5
   unplugin-vue-components: ^0.24.1
-  v-calendar: 3.0.0
+  v-calendar: 3.0.1
   vee-validate: ^4.8.1
   vue-toastification: 2.0.0-rc.5
   yup: ^1.0.2
@@ -39,7 +39,7 @@ dependencies:
   jsonwebtoken: 9.0.0
   pinia: 2.0.33_typescript@4.9.5
   rollup-plugin-visualizer: 5.9.0
-  v-calendar: 3.0.0_@popperjs+core@2.11.6
+  v-calendar: 3.0.1_@popperjs+core@2.11.6
   vee-validate: 4.8.1
   vue-toastification: 2.0.0-rc.5
   yup: 1.0.2
@@ -4569,6 +4569,16 @@ packages:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
     dev: true
 
+  /follow-redirects/1.15.2:
+    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: true
+
   /follow-redirects/1.15.2_debug@4.3.4:
     resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
     engines: {node: '>=4.0'}
@@ -5039,7 +5049,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.2_debug@4.3.4
+      follow-redirects: 1.15.2
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -8516,8 +8526,8 @@ packages:
     hasBin: true
     dev: true
 
-  /v-calendar/3.0.0_@popperjs+core@2.11.6:
-    resolution: {integrity: sha512-9r+swG8v2iUvaa2P1BGWEEeutZ+XCttHOzl0uXmzA7JND86GGZbM4QDPm8ZpBXav+NgheRm9MYs/Uz8mgKVZXg==}
+  /v-calendar/3.0.1_@popperjs+core@2.11.6:
+    resolution: {integrity: sha512-basXEXcmBsxHyxqjj/82vjgz5vbIMREiiUC2VOVh0pHCDXEF1birPUZD12lk8u3+5R+909WUnxu7bt0DFxCOLw==}
     peerDependencies:
       '@popperjs/core': ^2.0.0
       vue: ^3.2.0
