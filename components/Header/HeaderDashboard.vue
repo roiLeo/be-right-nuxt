@@ -28,7 +28,7 @@
     </a>
     <h3
       v-if="getRouteHeaderContent"
-      class="flex items-center space-x-4 text-2xl font-semibold text-gray-800 dark:text-white"
+      class="flex items-center space-x-4 font-semibold text-gray-800 text-normal md:text-2xl dark:text-white"
     >
       <component
         :is="getRouteHeaderContent.icon"
@@ -38,13 +38,13 @@
     </h3>
     <h3
       v-else
-      class="flex items-center space-x-4 text-2xl font-semibold text-gray-800 dark:text-white"
+      class="flex items-center space-x-4 font-semibold text-gray-800 text-normal md:text-2xl dark:text-white"
     >
       <span>{{ getOutsideMenuRouteLabel }}</span>
     </h3>
   </div>
 
-  <div class="flex items-center">
+  <div class="flex items-ceneter">
     <NotificationMenu is-in-header />
 
     <UserMenu

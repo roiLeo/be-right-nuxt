@@ -6,13 +6,11 @@
   <div>
     <MenuButton
       :data-cy="`event-${props.event.id}-options-links`"
-      class="inline-flex justify-center w-full px-2 py-1 text-sm font-medium text-purple-500 bg-purple-300 border border-purple-500 rounded-md bg-opacity-20 hover:bg-opacity-40 hover:text-purple-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+      class="flex flex-col justify-center w-full px-2 py-1 space-y-1"
     >
-      Options
-      <ChevronDownIconSolid
-        class="w-5 h-5 ml-1 -mr-1 text-purple-500 hover:text-purple-800"
-        aria-hidden="true"
-      />
+      <div class="w-1 h-1 md:w-1.3 md:h-1.3 bg-purple-800 rounded-full" />
+      <div class="w-1 h-1 md:w-1.3 md:h-1.3 bg-purple-800 rounded-full" />
+      <div class="w-1 h-1 md:w-1.3 md:h-1.3 bg-purple-800 rounded-full" />
     </MenuButton>
   </div>
 

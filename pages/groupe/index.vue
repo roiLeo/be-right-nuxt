@@ -1,6 +1,6 @@
 <template>
 <PageAuthWrapper>
-  <div class="px-8">
+  <div class="px-8 py-4 md:py-8">
     <template v-if="groupStore.getAllArray?.length > 0">
       <GroupList :groups="groupStore.getAllArray" />
     </template>

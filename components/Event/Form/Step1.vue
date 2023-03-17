@@ -6,7 +6,7 @@
   class="grid max-w-4xl grid-cols-1 gap-6 mt-4 md:grid-cols-3 mb-36"
   @submit="submit"
 >
-  <div class="col-span-2 md:col-span-3">
+  <div class="col-span-3">
     <BaseInput
       label="Nom de l'événement"
       name="name"
@@ -15,7 +15,7 @@
     />
   </div>
 
-  <div class="col-span-3 space-y-2 md:col-span-1">
+  <div class="flex flex-col items-center col-span-3 space-y-2 md:col-span-1">
     <label class="block mb-2 text-sm font-bold text-blue dark:text-gray-100">
       Dates de l'événement&nbsp;*&nbsp;:
     </label>
@@ -59,26 +59,28 @@
     />
   </div>
 
-  <BaseInput
-    label="Code postal"
-    name="postalCode"
-    autocomplete="postalCode"
-    is-required
-  />
+  <div class="grid grid-cols-1 col-span-3 gap-4 md:grid-cols-3">
+    <BaseInput
+      label="Code postal"
+      name="postalCode"
+      autocomplete="postalCode"
+      is-required
+    />
 
-  <BaseInput
-    label="Ville"
-    name="city"
-    autocomplete="city"
-    is-required
-  />
+    <BaseInput
+      label="Ville"
+      name="city"
+      autocomplete="city"
+      is-required
+    />
 
-  <BaseInput
-    label="Pays"
-    name="country"
-    autocomplete="country"
-    is-required
-  />
+    <BaseInput
+      label="Pays"
+      name="country"
+      autocomplete="country"
+      is-required
+    />
+  </div>
 
   <div class="flex items-center justify-center col-span-3 mt-6">
     <BaseButton

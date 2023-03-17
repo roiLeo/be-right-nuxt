@@ -1,10 +1,12 @@
 <template>
 <PageAuthWrapper>
-  <NotificationSubscriptionForm />
+  <div class="py-4 md:py-8">
+    <NotificationSubscriptionForm />
 
-  <NotificationTableList
-    :notifications="notificationStore.getAllSorted"
-  />
+    <NotificationTableList
+      :notifications="notificationStore.getAllSorted"
+    />
+  </div>
 </PageAuthWrapper>
 </template>
 

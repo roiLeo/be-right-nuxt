@@ -1,5 +1,5 @@
 <template>
-<div class="lg:border-t lg:border-b lg:border-gray-200">
+<div class="lg:sticky lg:z-20 lg:bg-white top-16 lg:border-t lg:border-b lg:border-gray-200">
   <nav
     class="mx-auto max-w-7xl"
     aria-label="Progress"
