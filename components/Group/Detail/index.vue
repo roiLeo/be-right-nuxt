@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import type { Group } from '~~/store'
-import { useEmployeeStore, useUiStore } from '~~/store'
+import { useEmployeeStore } from '~~/store'
 
 interface Props {
   group: Group
@@ -30,27 +30,10 @@ interface Props {
 const props = defineProps<Props>()
 
 const employeeStore = useEmployeeStore()
-const uiStore = useUiStore()
-
-const { getEmployeeFullname } = employeeHook()
-const { removeRecipients, openAddRecipientModal } = groupHook()
 
 const employees = computed(() =>
   props.group.employeeIds.length > 0
     ? alphabetical(employeeStore.getMany(props.group.employeeIds))
     : [],
 )
-
-const selectedPeople = ref<number[]>([])
-const indeterminate = computed(() =>
-  selectedPeople.value.length > 0
-  && selectedPeople.value.length
-  < employees.value.length)
-
-async function removeManyRecipient() {
-  if (selectedPeople.value.length > 0 && props.group?.id) {
-    await removeRecipients(selectedPeople.value, props.group.id)
-    selectedPeople.value = []
-  }
-}
 </script>

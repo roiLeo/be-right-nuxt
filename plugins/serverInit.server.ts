@@ -5,6 +5,7 @@ import type { JWTDecodedType } from '~~/types'
 export default defineNuxtPlugin(async () => {
   let apiUrl: string | null = null
   const { storeUsersEntities } = userHook()
+  const { storeCompanyEntities } = companyHook()
   // const { isJWTUserAdmin } = authHook()
   const authStore = useAuthStore()
   const { setJWTasUser, setToken } = authStore
@@ -28,29 +29,33 @@ export default defineNuxtPlugin(async () => {
       body: JSON.stringify({ token: cookieToken.value }),
     })
 
-    const user = await response.json()
+    const data = await response.json()
 
-    if (user && user.token && process.env.JWT_SECRET) {
-      setToken(user.token)
-      storeUsersEntities(user, false)
+    if (data) {
+      const { user, company } = data
 
-      const decoded = verify(user.token, process.env.JWT_SECRET) as JWTDecodedType
-      if (decoded) {
-        setJWTasUser(decoded)
-        const router = useRouter()
-        const route = useRoute()
-
-        router.push({
-          name: route.name || 'evenement',
-          query: {
-            ...route.query,
-          },
-        })
+      if (company) {
+        storeCompanyEntities(company)
       }
 
-      // if (isJWTUserAdmin(decoded)) {
-      //   // navigateTo('/evenement')
-      // }
+      if (user && user.token && process.env.JWT_SECRET) {
+        setToken(user.token)
+        storeUsersEntities(user, false)
+
+        const decoded = verify(user.token, process.env.JWT_SECRET) as JWTDecodedType
+        if (decoded) {
+          setJWTasUser(decoded)
+          const router = useRouter()
+          const route = useRoute()
+
+          router.push({
+            name: route.name || 'evenement',
+            query: {
+              ...route.query,
+            },
+          })
+        }
+      }
     }
   }
 })

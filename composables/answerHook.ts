@@ -111,7 +111,7 @@ export default function answerHook() {
   }
 
   function areAnswersType(array: any[]): array is AnswerType[] {
-    return array.every(item => isAnswerType(item))
+    return array?.every(item => isAnswerType(item))
   }
 
   return {

@@ -1,20 +1,12 @@
 import { hasOwnProperty } from '@antfu/utils'
 import { RoleEnum } from '@/types'
 import type {
-  EmployeeType,
-  EventType,
-  FileType,
   PaginatedResponse,
   PhotographerCreatePayload,
   UserType,
 } from '@/types'
-import { isArrayOfNumbers } from '@/utils'
 import {
-  useAddressStore,
-  useEventStore,
-  useFileStore,
   useNotificationsSubscriptionStore,
-  useSubscriptionStore,
   useUiStore,
   useUserStore,
 } from '~~/store'
@@ -22,15 +14,10 @@ import {
 export default function userHook() {
   const { $toast, $api } = useNuxtApp()
 
-  const addressStore = useAddressStore()
   const userStore = useUserStore()
-  const eventStore = useEventStore()
-  const fileStore = useFileStore()
-  const subscriptionStore = useSubscriptionStore()
   const notificationSubscriptionStore = useNotificationsSubscriptionStore()
 
   const { IncLoading, DecLoading } = useUiStore()
-  const { storeEmployeeRelationsEntities } = employeeHook()
 
   const router = useRouter()
 
@@ -54,33 +41,9 @@ export default function userHook() {
    * @param isUserToSetCurrent
    */
   function storeUsersEntities(user: UserType, isUserToSetCurrent = true) {
-    if (user.events && user.events.length > 0) {
-      const userEvents = user.events
-      const eventsToStore = userEvents.filter(event => !eventStore.isAlreadyInStore(event.id))
-      eventStore.addMany(eventsToStore)
-    }
-
-    if (user.address && !addressStore.isAlreadyInStore(user.address.id)) {
-      addressStore.addOne(user.address)
-    }
-
-    if (user.employee && user.employee.length > 0 && !isArrayOfNumbers(user.employee)) {
-      storeEmployeeRelationsEntities(user.employee)
-    }
-
     if (user.notificationSubscriptions && user.notificationSubscriptions.length > 0) {
       const missingNotifSubscriptions = user.notificationSubscriptions.filter(notifSub => !notificationSubscriptionStore.isAlreadyInStore(notifSub.id))
       notificationSubscriptionStore.addMany(missingNotifSubscriptions)
-    }
-
-    if (user.files && user.files.length > 0 && !isArrayOfNumbers(user.files)) {
-      const files = user.files
-      const filesToStore = files.filter(file => !fileStore.isAlreadyInStore(file.id))
-      fileStore.createMany(filesToStore)
-    }
-
-    if (user.subscription && !subscriptionStore.isAlreadyInStore(user.subscriptionId)) {
-      subscriptionStore.addMany([user.subscription])
     }
 
     if (isUserToSetCurrent) {
@@ -94,48 +57,6 @@ export default function userHook() {
     }
   }
 
-  function storeUsersEntitiesForManyUsers(users: UserType[]): void {
-    if (users && users?.length > 0) {
-      const events = users.reduce((acc, user) => {
-        if (user.events && user.events.length > 0) {
-          return [...acc, ...user?.events as EventType[]]
-        }
-        return acc
-      }, [] as EventType[])
-
-      const eventsToStore = events.filter(event => !eventStore.isAlreadyInStore(event.id))
-
-      if (eventsToStore.length > 0) {
-        eventStore.addMany(eventsToStore)
-      }
-
-      const employees = users.reduce((acc, user) => {
-        if (user.employee && user.employee.length > 0) {
-          return [...acc, ...user.employee as EmployeeType[]]
-        }
-        return acc
-      }, [] as EmployeeType[])
-      storeEmployeeRelationsEntities(employees)
-
-      const files = users.reduce((acc, user) => {
-        if (user.files && user.files.length > 0) {
-          return [...acc, ...user.files as FileType[]]
-        }
-        return acc
-      }, [] as FileType[])
-
-      const filesToStore = files.filter(file => !fileStore.isAlreadyInStore(file.id))
-      if (filesToStore.length > 0) {
-        fileStore.createMany(filesToStore)
-      }
-
-      const missingsUsers = users.filter(user => !userStore.isAlreadyInStore(user.id))
-      if (missingsUsers.length > 0) {
-        userStore.addMany(missingsUsers)
-      }
-    }
-  }
-
   async function fetchAll(url?: string) {
     IncLoading()
     try {
@@ -146,7 +67,7 @@ export default function userHook() {
       const { data } = await $api().get<PaginatedResponse<UserType>>(finalUrl)
 
       if (data && isArrayUserType(data.data)) {
-        storeUsersEntitiesForManyUsers(data.data)
+        userStore.addMany(data.data)
       }
     } catch (error) {
       $toast.error('Une erreur est survenue')
@@ -193,8 +114,8 @@ export default function userHook() {
         return 'Destinataire'
       case RoleEnum.SUPER_USER:
         return 'Super utilisateur'
-      case RoleEnum.COMPANY:
-        return 'Entreprise'
+      case RoleEnum.OWNER:
+        return 'Propriétaire'
       case RoleEnum.PHOTOGRAPHER:
         return 'Photographe'
       case RoleEnum.CUSTOMER:
@@ -288,6 +209,10 @@ export default function userHook() {
     return user?.roles === RoleEnum.ADMIN
   }
 
+  function isUserOwner(user: UserType) {
+    return user?.roles === RoleEnum.OWNER
+  }
+
   return {
     deleteUser,
     fetchAll,
@@ -298,6 +223,7 @@ export default function userHook() {
     getUserfullName,
     isArrayUserType,
     isUserAdmin,
+    isUserOwner,
     isUserType,
     patchOne,
     postPhotographer,

@@ -1,27 +1,23 @@
-import { uniq } from '@antfu/utils'
 import type { AddressType, EmployeeType, FileType, PaginatedResponse } from '@/types'
 import { isArrayOfNumbers } from '~~/utils'
 import {
   useAddressStore,
-  // useAnswerStore,
+  useCompanyStore,
   useEmployeeStore,
   useFileStore,
   useUiStore,
-  useUserStore,
 } from '~~/store'
 
 export default function employeeHook() {
   const { $toast, $api } = useNuxtApp()
 
   const employeeStore = useEmployeeStore()
-  const userStore = useUserStore()
-  // const { createMany: createManyAnswers } = useAnswerStore()
+  const companyStore = useCompanyStore()
   const { createMany: createManyFiles } = useFileStore()
   const { IncLoading, DecLoading } = useUiStore()
   const addressStore = useAddressStore()
   const { addMany: addManyAddresses } = addressStore
   const { filteringFilesNotInStore } = fileHook()
-  // const { filteringAnswersNotInStore } = answerHook()
   const { isAddressType } = addressHook()
 
   function getEmployeeStatusSignature(employee: EmployeeType): string {
@@ -67,13 +63,6 @@ export default function employeeHook() {
               createManyFiles(employeeFiles)
             }
           }
-
-          // if (employee.answers && employee.answers.length > 0 && !isArrayOfNumbers(employee.answers)) {
-          //   employeeAnswers = filteringAnswersNotInStore(employee.answers as AnswerType[])
-          //   if (employeeAnswers.length > 0) {
-          //     createManyAnswers(employeeAnswers)
-          //   }
-          // }
 
           if (employee.address && isAddressType(employee.address)) {
             if (!addressStore.isAlreadyInStore(employee.addressId)) {
@@ -200,16 +189,17 @@ export default function employeeHook() {
     DecLoading()
   }
 
-  async function postOne(employee: EmployeeType, address: AddressType, userId: number) {
+  async function postOne(employee: EmployeeType, address: AddressType) {
     try {
-      const { data } = await $api().post<EmployeeType>(`employee/${userId}`, { employee, address })
+      const { data } = await $api().post<EmployeeType>('employee', { employee, address })
 
       if (data) {
-        const user = userStore.getOne(userId)
-        userStore.updateOne(userId, {
-          ...user,
-          employeeIds: [...user.employeeIds, data.id],
-        })
+        const company = companyStore.getAuthCompany
+        if (company) {
+          companyStore.updateOneCompany(company.id, {
+            employeeIds: [...company.employeeIds, data.id],
+          })
+        }
         employeeStore.addMany([data])
         $toast.success('Destinataire créé avec succès')
         return data
@@ -227,10 +217,12 @@ export default function employeeHook() {
       const { data } = await $api().post<EmployeeType[]>(`employee/manyonevent/${eventId}/${userId}`, employees)
 
       if (data) {
-        const user = userStore.getOne(userId)
-        userStore.updateOne(userId, {
-          ...user,
-        })
+        const company = companyStore.getAuthCompany
+        if (company) {
+          companyStore.updateOneCompany(company.id, {
+            employeeIds: [...company.employeeIds, ...data.map(emp => emp.id)],
+          })
+        }
         employeeStore.addMany(data)
         $toast.success('Destinataires créés avec succès')
       }

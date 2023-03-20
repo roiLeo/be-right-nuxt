@@ -109,6 +109,7 @@
 import type { EventTypeCreate } from '@/types'
 import {
   useAuthStore,
+  useCompanyStore,
   useEmployeeStore,
   useFormStore,
   useUiStore,
@@ -132,6 +133,7 @@ const { postOne: postOneEvent } = eventHook()
 const { postPhotographer, getPhotographerUserWorkedWith } = userHook()
 const { fetchMany } = employeeHook()
 const formStore = useFormStore()
+const companyStore = useCompanyStore()
 
 const isEventCreation = computed(() => route.query.step === 'evenement' || route.query.step === undefined)
 const isEmployeeStepEventCreation = computed(() => route.query.step === 'destinataires')
@@ -216,14 +218,14 @@ async function submit() {
 onMounted(async () => {
   IncLoading()
   if (!authStore.isAuthUserAdmin
-    && userStore.getAuthUser
-    && userStore.getAuthUser.employeeIds.length > 0) {
-    const missingsEmployeeIds = userStore.getAuthUser.employeeIds.filter(id => !employeeStore.isAlreadyInStore(id))
+    && companyStore.getAuthCompany
+    && companyStore.getAuthCompany.employeeIds.length > 0) {
+    const missingsEmployeeIds = companyStore.getAuthCompany.employeeIds.filter(id => !employeeStore.isAlreadyInStore(id))
 
     if (missingsEmployeeIds?.length > 0) {
       await fetchMany(missingsEmployeeIds)
     }
-    await getPhotographerUserWorkedWith(userStore.getAuthUser.id)
+    await getPhotographerUserWorkedWith(companyStore.getAuthCompany?.id)
   }
   DecLoading()
 })

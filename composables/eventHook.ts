@@ -3,6 +3,7 @@ import type { AnswerType } from '~~/store'
 import {
   useAddressStore,
   useAnswerStore,
+  useCompanyStore,
   useEmployeeStore,
   useEventStore,
   useFileStore,
@@ -29,6 +30,7 @@ export default function eventHook() {
   const employeeStore = useEmployeeStore()
   const userStore = useUserStore()
   const answerStore = useAnswerStore()
+  const companyStore = useCompanyStore()
   const fileStore = useFileStore()
   const { createOne: createOneAddress } = addressStore
 
@@ -66,12 +68,6 @@ export default function eventHook() {
         if (partner && !userStore.isAlreadyInStore(partner.id)) {
           userStore.createOne(partner)
           delete event.partner
-        }
-
-        const creator = event.createdByUser
-        if (creator && !userStore.isAlreadyInStore(creator.id)) {
-          userStore.createOne(creator)
-          delete event.createdByUser
         }
 
         const files = event.files
@@ -120,19 +116,17 @@ export default function eventHook() {
     DecLoading()
   }
 
-  async function fetchEventsByUser(userId: number) {
+  async function fetchEventsByCompany() {
     IncLoading()
     try {
-      if (userId) {
-        const { data } = await $api().get<EventType[]>(`event/user/${userId}`)
+      const { data } = await $api().get<EventType[]>('event/user')
 
-        if (data) {
-          const missingIds = data.map((event: EventType) => event.id).filter(id => !eventStore.isAlreadyInStore(id))
+      if (data) {
+        const missingIds = data.map((event: EventType) => event.id).filter(id => !eventStore.isAlreadyInStore(id))
 
-          if (missingIds.length > 0) {
-            const events = data.filter(event => missingIds.includes(event.id))
-            storeEventRelationEntities(events)
-          }
+        if (missingIds.length > 0) {
+          const events = data.filter(event => missingIds.includes(event.id))
+          storeEventRelationEntities(events)
         }
       }
     } catch (error) {
@@ -250,18 +244,15 @@ export default function eventHook() {
     const event = eventStore.getOne(eventId)
 
     if (event) {
-      const ids = [event.createdByUserId, event.partnerId]
-        .filter(id => id && !userStore.isAlreadyInStore(id)) as number[]
-
-      if (ids && ids.length > 0) {
-        await fetchManyUsers(uniq(ids))
+      if (event.partnerId && !userStore.isAlreadyInStore(event.partnerId)) {
+        await fetchManyUsers([event.partnerId])
       }
 
       const missingAddressIds = []
 
-      const user = userStore.getOne(event.createdByUserId)
-      if (user && user.addressId && !addressStore.isAlreadyInStore(user.addressId)) {
-        missingAddressIds.push(user.addressId)
+      const company = companyStore.getAuthCompany
+      if (company && company.addressId && !addressStore.isAlreadyInStore(company.addressId)) {
+        missingAddressIds.push(company.addressId)
       }
 
       if (event.addressId && !addressStore.isAlreadyInStore(event.addressId)) {
@@ -330,7 +321,7 @@ export default function eventHook() {
     deleteOne,
     fetchAllEvents,
     fetchDeleted,
-    fetchEventsByUser,
+    fetchEventsByCompany,
     fetchOne,
     fetchMany,
     getEventStatusColor,

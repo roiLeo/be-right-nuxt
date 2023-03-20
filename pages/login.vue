@@ -67,9 +67,11 @@
 import { object, string } from 'yup'
 import { Form } from 'vee-validate'
 import type { UserType, VeeValidateValues, WithoutId } from '@/types'
+import type { Company } from '~~/store'
 import { useAuthStore, useUiStore } from '~~/store'
 
 const { storeUsersEntities, getUserfullName } = userHook()
+const { storeCompanyEntities } = companyHook()
 const { jwtDecode } = authHook()
 const { IncLoading, DecLoading } = useUiStore()
 const { setJWTasUser, setToken } = useAuthStore()
@@ -97,21 +99,24 @@ async function submitLogin(form: VeeValidateValues) {
   const cookieToken = useCookie('userToken')
   try {
     IncLoading()
-    const { data: user } = await $api().post<UserType>('user/login', form as WithoutId<UserType>)
+    const { data } = await $api().post<{ user: UserType; company: Company }>('user/login', form as WithoutId<UserType>)
+    if (data) {
+      const { user, company } = data
+      if (user?.token && company) {
+        storeCompanyEntities(company)
+        storeUsersEntities(user, false)
+        cookieToken.value = user.token
+        const decode = jwtDecode(user.token)
+        setToken(user.token)
 
-    if (user?.token) {
-      storeUsersEntities(user, false)
-      cookieToken.value = user.token
-      const decode = jwtDecode(user.token)
-      setToken(user.token)
-
-      if (decode) {
-        setJWTasUser(decode)
+        if (decode) {
+          setJWTasUser(decode)
+        }
+        $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
+        router.replace({
+          name: 'evenement',
+        })
       }
-      $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
-      router.replace({
-        name: 'evenement',
-      })
     }
   } catch (error) {
     console.error(error)

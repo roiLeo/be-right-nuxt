@@ -1,5 +1,12 @@
 import type { State } from '@malolebrin/pinia-entity-store'
-import type { AddressType, AddressTypeCreate, BaseEntity, FileType, UserType } from '@/types'
+import type { Company } from '../company'
+import type {
+  AddressType,
+  AddressTypeCreate,
+  BaseEntity,
+  FileType,
+  UserType,
+} from '@/types'
 
 export interface IEvent extends BaseEntity {
   name: string
@@ -9,8 +16,8 @@ export interface IEvent extends BaseEntity {
   status: EventStatusEnum
   signatureCount: number
   totalSignatureNeeded: number
-  createdByUser?: UserType
-  createdByUserId: number
+  company?: Company
+  companyId: number
   partner?: UserType | null
   partnerId: number | null
 }
@@ -29,7 +36,6 @@ export interface EventCreatePayload {
   event: EventTypeCreate
   address?: AddressTypeCreate
   photographerId?: number
-  userId?: number
 }
 
 export enum EventSearchableFields {

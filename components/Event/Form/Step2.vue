@@ -8,7 +8,7 @@
 >
   <EmployeeComboboxSelector
     name="employees"
-    :default-values="authStore.isAuthUserAdmin ? employeeStore.getAllArray : employeeStore.getEmployeesByUserId(userStore.getAuthUserId!)"
+    :default-values="defaultValues"
     value-key="id"
     wrapper-classes="md:col-span-2"
     is-required
@@ -57,6 +57,16 @@ const schema = object({
 const initialValues = {
   employees: formStore.getEmployeeIds || [],
 }
+
+const defaultValues = computed(() => {
+  if (authStore.isAuthUserAdmin) {
+    return employeeStore.getAllArray
+  }
+  if (userStore.getAuthUser?.companyId) {
+    return employeeStore.getEmployeesByUserId(userStore.getAuthUser.companyId)
+  }
+  return []
+})
 
 async function submit(form: VeeValidateValues) {
   IncLoading()

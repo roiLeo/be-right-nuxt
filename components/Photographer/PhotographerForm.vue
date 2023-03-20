@@ -94,7 +94,7 @@ const initialValues = {
   email: props.photographer?.email || formStore.photographerForm.email,
   firstName: props.photographer?.firstName || formStore.photographerForm.firstName,
   lastName: props.photographer?.lastName || formStore.photographerForm.lastName,
-  companyName: props.photographer?.companyName || formStore.photographerForm.companyName,
+  companyName: formStore.photographerForm.companyName,
 }
 
 async function submit(form: VeeValidateValues) {
@@ -106,10 +106,6 @@ async function submit(form: VeeValidateValues) {
       ...props.photographer,
       ...formValues,
     }
-    delete payload.profilePicture
-    delete payload.events
-    delete payload.employee
-    delete payload.files
     await patchOne(props.photographer.id, payload)
   } else {
     setPhotographerForm(formValues)

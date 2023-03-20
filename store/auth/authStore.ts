@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', {
   }),
   getters: {
     isAuthUserAdmin: state => state.user?.roles.includes(RoleEnum.ADMIN),
+    isAuthUserOwner: state => state.user?.roles.includes(RoleEnum.OWNER),
 
     getIsLoggedIn: state => noNull(state.user) && notUndefined(state.user),
 

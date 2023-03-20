@@ -13,9 +13,6 @@ export const useEventStore = defineStore('events', {
   getters: {
     ...createGetters<EventType>(eventState),
 
-    // bellow getters in this specific store
-    getEventsByUserId: state => (userId: number) => Object.values(state.entities.byId).filter(event => event.createdByUserId === userId),
-
     getAllSorted: state => {
       return (onlyDeleted?: boolean) => {
         const { isBefore } = dateHook()

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { createActions, createGetters } from '@malolebrin/pinia-entity-store'
 import { useAnswerStore } from '../answer'
+import { useUserStore } from '../user'
 import { defaultEmployeeState, employeState } from './state'
 import type { EmployeeType } from './types'
 
@@ -20,7 +21,13 @@ export const useEmployeeStore = defineStore('employees', {
     },
 
     getEmployeesByUserId: state => {
-      return (userId: number) => Object.values(state.entities.byId).filter(employee => employee.createdByUserId === userId)
+      return (companyId: number) => Object.values(state.entities.byId).filter(employee => employee.companyId === companyId)
+    },
+
+    getEmployeesForAuthUser: state => {
+      const userStore = useUserStore()
+      const user = userStore.getAuthUser
+      return Object.values(state.entities.byId).filter(employee => employee.companyId === user?.companyId)
     },
 
   },

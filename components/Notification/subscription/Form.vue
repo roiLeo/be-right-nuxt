@@ -14,7 +14,6 @@
     >
       <span>Abonnez vous à des notifications</span>
       <ChevronUpIconOutline
-        v-if="open"
         :class="open ? 'rotate-180 transform' : ''"
         class="w-5 h-5 text-purple-500"
       />

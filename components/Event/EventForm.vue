@@ -103,7 +103,7 @@
   <template v-if="userStore.getAuthUserId">
     <EmployeeComboboxSelector
       name="employees"
-      :default-values="authStore.isAuthUserAdmin ? employeeStore.getAllArray : employeeStore.getEmployeesByUserId(userStore.getAuthUserId)"
+      :default-values="defaultValues"
       value-key="id"
       wrapper-classes="md:col-span-2"
       is-required
@@ -208,12 +208,14 @@ const schema = object({
     .required('Les destinataires sont obligatoire'),
 })
 
-const userCreateEvent = computed(() => {
+const defaultValues = computed(() => {
   if (authStore.isAuthUserAdmin) {
-    return event.value ? isUserType(event.value.createdByUser) ? event.value.createdByUser.id : event.value.createdByUserId : null
-  } else {
-    return userStore.getAuthUserId
+    return employeeStore.getAllArray
   }
+  if (userStore.getAuthUser?.companyId) {
+    return employeeStore.getEmployeesByUserId(userStore.getAuthUser.companyId)
+  }
+  return []
 })
 
 const eventEmployees = computed(() => props.eventId ? employeeStore.getAllByEventId(props.eventId).map(emp => emp.id) : [])
@@ -230,7 +232,6 @@ const initialValues = {
   postalCode: eventAddress.value?.postalCode || formStore.addressForm.postalCode,
   city: eventAddress.value?.city || formStore.addressForm.city,
   country: eventAddress.value?.country || formStore.addressForm.country || 'France',
-  userId: userCreateEvent.value,
   employees: eventEmployees.value,
 }
 
