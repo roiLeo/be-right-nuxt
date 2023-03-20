@@ -23,8 +23,8 @@
         je suis un photographe ou agence de photographie
       </BaseRadio>
       <BaseRadio
-        :id="RoleEnum.COMPANY"
-        :value="RoleEnum.COMPANY"
+        :id="RoleEnum.OWNER"
+        :value="RoleEnum.OWNER"
         name="roles"
       >
         je suis une enteprise ou un particulier
@@ -111,12 +111,14 @@ import { Form } from 'vee-validate'
 import { object, string } from 'yup'
 import type { UserType, VeeValidateValues } from '@/types'
 import { RoleEnum } from '@/types'
+import type { Company } from '~~/store'
 import { useAuthStore, useUiStore } from '~~/store'
 
 const { $toast, $api } = useNuxtApp()
 const router = useRouter()
 const { checkMailIsAlreadyExist, jwtDecode } = authHook()
 const { storeUsersEntities, getUserfullName } = userHook()
+const { storeCompanyEntities } = companyHook()
 const { setJWTasUser } = useAuthStore()
 const uiStore = useUiStore()
 const { IncLoading, DecLoading } = uiStore
@@ -127,7 +129,7 @@ const schema = object({
   password: string().required('Le mot de passe est requis').label('Mot de passe'),
   firstName: string().required('Le prénom est requis').label('Prénom'),
   lastName: string().required('le nom est requis').label('Nom'),
-  roles: string().oneOf([RoleEnum.PHOTOGRAPHER, RoleEnum.COMPANY]),
+  roles: string().oneOf([RoleEnum.PHOTOGRAPHER, RoleEnum.OWNER]),
 })
 
 const initialValues = {
@@ -136,7 +138,7 @@ const initialValues = {
   password: '',
   firstName: '',
   lastName: '',
-  roles: RoleEnum.COMPANY,
+  roles: RoleEnum.OWNER,
 }
 
 async function submitregister(form: VeeValidateValues) {
@@ -149,20 +151,28 @@ async function submitregister(form: VeeValidateValues) {
     $toast.error(isEmailExist.message)
   } else {
     try {
-      const { data: user } = await $api().post<UserType>('user', form)
+      const { data } = await $api().post<{ user: UserType; company: Company }>('auth/signup', form)
 
-      if (user) {
-        storeUsersEntities(user, false)
-        cookieToken.value = user.token
-        const decode = jwtDecode(user.token)
+      if (data) {
+        const { user, company } = data
 
-        if (decode) {
-          setJWTasUser(decode)
+        if (company) {
+          storeCompanyEntities(company)
         }
-        $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
-        router.replace({
-          name: 'evenement',
-        })
+
+        if (user) {
+          storeUsersEntities(user, false)
+          cookieToken.value = user.token
+          const decode = jwtDecode(user.token)
+
+          if (decode) {
+            setJWTasUser(decode)
+          }
+          $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
+          router.replace({
+            name: 'evenement',
+          })
+        }
       }
     } catch (error) {
       $toast.error('Une erreur est survenue')
