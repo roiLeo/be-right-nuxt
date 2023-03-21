@@ -34,9 +34,6 @@ export default defineNuxtPlugin(async () => {
     if (data) {
       const { user, company } = data
 
-      console.log(user, '<==== user')
-      console.log(company, '<==== company')
-
       if (company) {
         storeCompanyEntities(company)
       }
