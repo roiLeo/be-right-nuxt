@@ -15,4 +15,10 @@ definePageMeta({
   isAuth: true,
   middleware: 'guards-middleware',
 })
+
+const { fetchSubscriptions } = notificationSubscriptionHook()
+
+onMounted(async () => {
+  await fetchSubscriptions()
+})
 </script>
