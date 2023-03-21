@@ -3,7 +3,7 @@
   v-slot="{ meta, isSubmitting }"
   :validation-schema="schema"
   :initial-values="initialValues"
-  class="grid w-full grid-cols-1 gap-6 mt-4 md:grid-cols-3 mb-36"
+  class="grid w-full grid-cols-1 gap-6 mt-4 md:grid-cols-3"
   @submit="submit"
 >
   <BaseInput
@@ -61,13 +61,10 @@ import type { InferType } from 'yup'
 import { object, string } from 'yup'
 import { Form } from 'vee-validate'
 import type { AddressType, VeeValidateValues } from '@/types'
-import { useAddressStore, useUiStore } from '~~/store'
+import { useUiStore } from '~~/store'
 interface IForm extends InferType<typeof schema> {}
 
 interface Props {
-  eventId?: number | null
-  employeeId?: number | null
-  userId?: number | null
   address?: AddressType | null
 }
 
@@ -81,10 +78,8 @@ const emit = defineEmits<{
 }>()
 
 const uiStore = useUiStore()
-const { setCreationForm } = useAddressStore()
 const { IncLoading, DecLoading, resetUiModalState } = uiStore
 const { patchOne: patchOneAddress } = addressHook()
-const router = useRouter()
 
 const schema = object({
   addressLine: string().required('L\'adresse est requise'),
@@ -114,20 +109,7 @@ async function submit(form: VeeValidateValues) {
       city: formValues.city,
       country: formValues.country,
     })
-  } else {
-    setCreationForm({
-      addressLine: formValues.addressLine,
-      addressLine2: formValues.addressLine2,
-      postalCode: formValues.postalCode,
-      city: formValues.city,
-      country: formValues.country,
-    })
-    router.push({
-      name: 'evenement-create',
-      query: { step: 'photographer' },
-    })
   }
-
   emit('submitted')
   DecLoading()
   resetUiModalState()

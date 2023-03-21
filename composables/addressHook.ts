@@ -7,7 +7,7 @@ export default function addressHook() {
 
   const { IncLoading, DecLoading } = useUiStore()
   const addressStore = useAddressStore()
-  const { createOne, updateOne, addOne, addMany } = addressStore
+  const { updateOneAddress, addOne, addMany } = addressStore
 
   async function fetchOne(id: number) {
     IncLoading()
@@ -45,7 +45,7 @@ export default function addressHook() {
     try {
       const { data: address } = await $api().post<AddressType>('address/', payload as unknown as WithoutId<AddressType>)
       if (address) {
-        createOne(address)
+        addOne(address)
       }
     } catch (error) {
       console.error(error)
@@ -57,9 +57,10 @@ export default function addressHook() {
   async function patchOne(id: number, payload: Partial<AddressType>) {
     IncLoading()
     try {
-      const { data: address } = await $api().patch<AddressType>(`address/${id}`, payload)
+      const { data: address } = await $api().patch<AddressType>(`address/${id}`, { address: payload })
       if (isAddressType(address)) {
-        updateOne(id, address)
+        updateOneAddress(id, address)
+        $toast.success('Adresse mise à jours')
       }
     } catch (error) {
       console.error(error)

@@ -92,9 +92,9 @@ export default function userHook() {
   async function patchOne(id: number, user: UserType) {
     IncLoading()
     try {
-      const { data } = await $api().patch<UserType>(`user/${id}`, user)
+      const { data } = await $api().patch<UserType>(`user/${id}`, { user })
       if (data && isUserType(data)) {
-        userStore.updateOne(id, data)
+        userStore.updateOneUser(id, data)
         $toast.success('Utilisateur à été modifié avec succès')
       }
     } catch (error) {
@@ -120,8 +120,6 @@ export default function userHook() {
         return 'Photographe'
       case RoleEnum.CUSTOMER:
         return 'Client'
-      default:
-        return 'Utilisateur'
     }
   }
 

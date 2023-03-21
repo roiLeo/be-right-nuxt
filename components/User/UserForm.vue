@@ -36,10 +36,14 @@
       <BaseSelect
         label="Rôle de l'utilisateur"
         name="roles"
-        :display-value="getRoleTranslation(values.roles)"
+        :display-value="getRoleTranslation(values.roles) || 'Sélectionner un rôle'"
         placeholder="Choisissez un rôle"
         is-required
       >
+        <BaseOption
+          :value="null"
+          name="Sélectionner un Rôle"
+        />
         <BaseOption
           v-for="role in [RoleEnum.OWNER, RoleEnum.USER]"
           :key="role"
@@ -82,16 +86,16 @@
 <script setup lang="ts">
 import { object, string } from 'yup'
 import { Form } from 'vee-validate'
-import type { VeeValidateValues } from '@/types'
+import type { UserType, VeeValidateValues } from '@/types'
 import { RoleEnum } from '@/types'
 import { useUiStore } from '~~/store'
 
 interface Props {
   isDebug?: boolean
+  user?: UserType
 }
 
-const props = withDefaults(defineProps<Props>(), {
-})
+const props = defineProps<Props>()
 
 const emit = defineEmits<{
   (e: 'submit'): void
@@ -100,7 +104,7 @@ const emit = defineEmits<{
 const uiStore = useUiStore()
 const { IncLoading, DecLoading, resetUiModalState } = uiStore
 
-const { getRoleTranslation } = userHook()
+const { getRoleTranslation, patchOne } = userHook()
 const { createNewUser } = companyHook()
 
 const router = useRouter()
@@ -115,17 +119,23 @@ const schema = object({
 })
 
 const initialValues = {
-  email: '',
-  firstName: '',
-  lastName: '',
+  email: props.user?.email || '',
+  firstName: props.user?.firstName || '',
+  lastName: props.user?.lastName || '',
+  roles: props.user?.roles || null,
 }
 
 async function submit(form: VeeValidateValues) {
   IncLoading()
-  await createNewUser(form)
+
+  if (props.user) {
+    await patchOne(props.user.id, form)
+  } else {
+    await createNewUser(form)
+  }
   resetUiModalState()
   router.push({
-    name: 'mon-compte-utilisateurs',
+    name: 'mon-compte',
   })
   emit('submit')
   DecLoading()

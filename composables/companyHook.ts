@@ -1,3 +1,4 @@
+import { hasOwnProperty } from '@antfu/utils'
 import type { Company, CreateNewUserPayload, UserType } from '~~/store'
 import {
   useAddressStore,
@@ -17,7 +18,7 @@ export default function userHook() {
   const fileStore = useFileStore()
   const userStore = useUserStore()
   const companyStore = useCompanyStore()
-  const { addOne: addCompany } = companyStore
+  const { addOne: addCompany, updateOneCompany } = companyStore
   const subscriptionStore = useSubscriptionStore()
   const { IncLoading, DecLoading } = useUiStore()
   const { storeEmployeeRelationsEntities } = employeeHook()
@@ -114,10 +115,34 @@ export default function userHook() {
     DecLoading()
   }
 
+  async function patchOne(companyId: number, company: Partial<Company>) {
+    IncLoading()
+    try {
+      const { data } = await $api().patch<Company>(`company/${companyId}`, { company })
+      if (isCompanyType(data)) {
+        updateOneCompany(companyId, data)
+        $toast.success('Entreprise mise à jours')
+      }
+    } catch (error) {
+      console.error(error)
+      $toast.error('Une erreur est survenue')
+    }
+    DecLoading()
+  }
+
+  function isCompanyType(arg: any): arg is Company {
+    return hasOwnProperty(arg, 'subscriptionLabel')
+      && hasOwnProperty(arg, 'siret')
+      && hasOwnProperty(arg, 'name')
+      && hasOwnProperty(arg, 'subscriptionId')
+  }
+
   return {
     addOrRemoveOwner,
     createNewUser,
     fetchOne,
+    isCompanyType,
+    patchOne,
     storeCompanyEntities,
   }
 }

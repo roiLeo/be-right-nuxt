@@ -26,6 +26,15 @@ export const useAddressStore = defineStore(EntitiesEnum.ADDRESS, {
       })
     },
 
+    updateOneAddress(id: number, data: Partial<AddressType>) {
+      if (this.entities.byId[id] !== null || this.entities.byId[id] !== undefined) {
+        this.entities.byId[id] = {
+          ...this.entities.byId[id],
+          ...data,
+        }
+      }
+    },
+
     resetState() {
       this.$state = defaultAddressState()
     },
