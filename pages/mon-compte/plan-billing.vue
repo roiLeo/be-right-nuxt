@@ -121,7 +121,7 @@
   </AccountBaseCard>
 
   <!-- Plan -->
-  <AccountBaseCard title="Plan">
+  <AccountBaseCard title="Abonnements">
     <div class="px-4 space-y-6">
       <RadioGroup v-model="selectedPlan">
         <RadioGroupLabel class="sr-only">
@@ -211,66 +211,8 @@
     </template>
   </AccountBaseCard>
 
-  <AccountBaseCard title="Billing history">
-    <div class="inline-block min-w-full py-2 align-middle">
-      <div class="overflow-hidden border-t border-gray-200">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-            <tr>
-              <th
-                scope="col"
-                class="px-6 py-3 text-sm font-semibold text-left text-gray-900"
-              >
-                Date
-              </th>
-              <th
-                scope="col"
-                class="px-6 py-3 text-sm font-semibold text-left text-gray-900"
-              >
-                Description
-              </th>
-              <th
-                scope="col"
-                class="px-6 py-3 text-sm font-semibold text-left text-gray-900"
-              >
-                Amount
-              </th>
-              <!--
-                              `relative` is added here due to a weird bug in Safari that causes `sr-only` headings to introduce overflow on the body on mobile.
-                            -->
-              <th
-                scope="col"
-                class="relative px-6 py-3 text-sm font-medium text-left text-gray-500"
-              >
-                <span class="sr-only">View receipt</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr
-              v-for="payment in payments"
-              :key="payment.id"
-            >
-              <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                <time :datetime="payment.datetime">{{ payment.date }}</time>
-              </td>
-              <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                {{ payment.description }}
-              </td>
-              <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                {{ payment.amount }}
-              </td>
-              <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                <a
-                  :href="payment.href"
-                  class="text-orange-600 hover:text-orange-900"
-                >View receipt</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <AccountBaseCard title="Historique de paiement">
+    <PaymentList :payments="payments" />
   </AccountBaseCard>
 </div>
 </template>
@@ -289,7 +231,6 @@ import {
 import { QuestionMarkCircleIcon } from '@heroicons/vue/20/solid'
 
 const plans = [
-
   { name: 'Startup', priceMonthly: 29, priceYearly: 290, limit: 'Up to 5 active job postings' },
   { name: 'Business', priceMonthly: 99, priceYearly: 990, limit: 'Up to 25 active job postings' },
   { name: 'Enterprise', priceMonthly: 249, priceYearly: 2490, limit: 'Unlimited active job postings' },
@@ -308,6 +249,7 @@ const payments = [
 
 const selectedPlan = ref(plans[1])
 const annualBillingEnabled = ref(true)
+
 definePageMeta({
   layout: 'account',
   isAuth: true,
