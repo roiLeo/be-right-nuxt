@@ -1,12 +1,10 @@
 <template>
-<PageAuthWrapper>
-  mon compte edit
-</PageAuthWrapper>
+Paramètres
 </template>
 
 <script setup lang="ts">
 definePageMeta({
-  layout: 'auth',
+  layout: 'account',
   isAuth: true,
   middleware: 'guards-middleware',
 })

@@ -28,3 +28,10 @@ export enum UserSearchableFields {
   FISTNAME = 'firstName',
   LASTNAME = 'lastName',
 }
+
+export interface CreateNewUserPayload {
+  email: string
+  firstName: string
+  lastName: string
+  roles: RoleEnum
+}

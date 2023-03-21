@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { defaultUiState, uiState } from './state'
-import type { ModalOptionsUi } from './types'
+import type { ModalNameEnum, ModalOptionsUi } from './types'
 import { ModalModeEnum } from './types'
 import { EntitiesEnum } from '@/types'
 
@@ -13,6 +13,12 @@ export const useUiStore = defineStore(EntitiesEnum.UI, {
     getUIIsLoading: state => state.isLoading > 0,
     getUiModalData: state => state.modal.data,
     getIsDrawerOpen: state => state.isDrawerOpen,
+
+    isModalActive: state => {
+      return (modalName: ModalNameEnum) => state.modal.isActive
+        && state.modal.modalName === modalName
+        && !state.modal.isLoading
+    },
   },
   actions: {
     resetUIState() {

@@ -38,7 +38,7 @@
         as="div"
       >
         <NuxtLink
-          :to="{ name: 'mon-compte-show-id', params: { id: userStore.getAuthUser?.id } }"
+          :to="{ name: 'mon-compte', params: { id: userStore.getAuthUser?.id } }"
           class="flex items-center justify-start px-4 py-2 space-x-2 text-sm text-gray-700"
           :class="[active ? 'bg-gray-100' : '']"
         >

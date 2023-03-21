@@ -1,4 +1,4 @@
-import type { Company } from '~~/store'
+import type { Company, CreateNewUserPayload, UserType } from '~~/store'
 import {
   useAddressStore,
   useCompanyStore,
@@ -6,6 +6,7 @@ import {
   useFileStore,
   useSubscriptionStore,
   useUiStore,
+  useUserStore,
 } from '~~/store'
 
 export default function userHook() {
@@ -14,6 +15,7 @@ export default function userHook() {
   const addressStore = useAddressStore()
   const eventStore = useEventStore()
   const fileStore = useFileStore()
+  const userStore = useUserStore()
   const companyStore = useCompanyStore()
   const { addOne: addCompany } = companyStore
   const subscriptionStore = useSubscriptionStore()
@@ -70,19 +72,44 @@ export default function userHook() {
   async function addOrRemoveOwner(userId: number) {
     try {
       IncLoading()
-      const { data: company } = await $api().patch<Company>(`company/owners/${userId}`, {})
+      const { data } = await $api().patch<{ user: UserType; company: Company }>(`company/owners/${userId}`, {})
 
-      if (company) {
-        storeCompanyEntities(company)
+      if (data) {
+        const { user, company } = data
+        if (company) {
+          storeCompanyEntities(company)
+          userStore.updateOneUser(user.id, user)
+        }
       }
     } catch (error) {
       console.error(error)
       $toast.error('Une erreur est survenue')
     }
+    DecLoading()
+  }
+
+  async function createNewUser(payload: CreateNewUserPayload) {
+    try {
+      IncLoading()
+      const { data } = await $api().post<{ user: UserType; company: Company }>('user', payload)
+
+      if (data) {
+        const { user, company } = data
+        if (user) {
+          userStore.addOne(user)
+          companyStore.updateOneCompany(company.id, company)
+        }
+      }
+    } catch (error) {
+      console.error(error)
+      $toast.error('Une erreur est survenue')
+    }
+    DecLoading()
   }
 
   return {
     addOrRemoveOwner,
+    createNewUser,
     fetchOne,
     storeCompanyEntities,
   }

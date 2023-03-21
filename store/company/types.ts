@@ -29,9 +29,6 @@ export interface Company extends BaseEntity {
   users?: UserType[]
   userIds: number[]
 
-  owners?: UserType[]
-  onwerIds: number[]
-
   files?: FileType[]
   filesIds: number[]
 }
