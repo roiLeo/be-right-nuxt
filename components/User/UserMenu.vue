@@ -39,29 +39,20 @@
       >
         <NuxtLink
           :to="{ name: 'mon-compte', params: { id: userStore.getAuthUser?.id } }"
-          class="flex items-center justify-start px-4 py-2 space-x-2 text-sm text-gray-700"
+          class="flex items-center justify-start px-4 py-2 space-x-2 text-sm text-gray-700 hover:bg-red-100 hover:text-red-800"
           :class="[active ? 'bg-gray-100' : '']"
         >
-          <UserCircleIconOutline class="h-6 text-gray-500" />
+          <UserCircleIconOutline
+            class="h-6 text-gray-500 hover:text-red-800"
+            :class="{ active: 'hover:text-red-800' }"
+          />
           <span>Voir le profile</span>
         </NuxtLink>
-      </MenuItem>
-
-      <MenuItem
-        v-if="!authStore.isAuthUserAdmin"
-        as="div"
-      >
-        <div class="flex items-center justify-start w-full space-x-2 text-sm text-gray-700 cursor-pointer">
-          <ExclamationCircleIconOutline class="h-6 text-gray-500" />
-          <NuxtLink>
-            Signaler un problème
-          </NuxtLink>
-        </div>
       </MenuItem>
       <MenuItem>
         <NuxtLink
           data-cy="user-menu-logout-link"
-          class="flex items-center justify-start w-full space-x-2 text-sm text-gray-700 cursor-pointer"
+          class="flex items-center justify-start px-4 py-2 text-sm text-gray-700 hover:bg-red-100 hover:text-red-800"
           @click="onToggleLogout"
         >
           <ArrowLeftOnRectangleIconOutline class="h-6 text-gray-500" />

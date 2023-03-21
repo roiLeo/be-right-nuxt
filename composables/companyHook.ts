@@ -52,6 +52,13 @@ export default function userHook() {
       subscriptionStore.addMany([company.subscription])
     }
 
+    if (company.users && company.users.length > 0) {
+      const missingUsers = company.users.filter(user => !userStore.isAlreadyInStore(user.id))
+      if (missingUsers.length > 0) {
+        userStore.addMany(missingUsers)
+      }
+    }
+
     addCompany(company)
   }
 
