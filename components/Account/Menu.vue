@@ -1,6 +1,6 @@
 <template>
 <aside class="px-2 py-6 sm:px-6 lg:col-span-3 lg:py-0 lg:px-0">
-  <nav class="space-y-1">
+  <nav class="sticky space-y-1 top-20">
     <NuxtLink
       v-for="item in subNavigation"
       :key="item.name"
