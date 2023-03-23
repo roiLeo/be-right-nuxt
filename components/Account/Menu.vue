@@ -26,6 +26,7 @@ import {
   BellIcon,
   CogIcon,
   CreditCardIcon,
+  TagIcon,
   UserCircleIcon,
   UserGroupIcon,
 } from '@heroicons/vue/24/outline'
@@ -37,5 +38,6 @@ const subNavigation = [
   { label: 'Utilisateurs', name: 'mon-compte-utilisateurs', icon: UserGroupIcon },
   { label: 'Notifications', name: 'mon-compte-notifications', icon: BellIcon },
   { label: 'Plan & Billing', name: 'mon-compte-plan-billing', icon: CreditCardIcon },
+  { label: 'Badges', name: 'mon-compte-badges', icon: TagIcon },
 ]
 </script>

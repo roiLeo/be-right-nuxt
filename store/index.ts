@@ -2,6 +2,7 @@
 export * from './address'
 export * from './answer'
 export * from './auth'
+export * from './badge'
 export * from './company'
 export * from './employee'
 export * from './event'
