@@ -17,13 +17,13 @@
 
   <div class="text-wrapper">
     <p>
-      En conséquence de quoi et conformément aux dispositions relatives au droit à l’image, j’autorise <span class="field-bold">{{ user.companyName }}</span> à fixer, reproduire et communiquer au public les photographies prises dans le cadre de la présente.
+      En conséquence de quoi et conformément aux dispositions relatives au droit à l’image, j’autorise <span class="field-bold">{{ company.name }}</span> à fixer, reproduire et communiquer au public les photographies prises dans le cadre de la présente.
     </p>
   </div>
 
   <div class="text-wrapper">
     <p>
-      Les photographies pourront être exploitées et utilisées par <span class="field-bold">{{ user.companyName }}</span> sous toute forme et tous supports*, dans le monde entier (en effet, dès lors qu’il y a une publication sur un réseau social, elle est disponible dans le monde entier), pendant une durée de 8 ans (cela vous protège pour éviter que votre image ne soit utilisée indéfiniment), intégralement ou par extraits et notamment :
+      Les photographies pourront être exploitées et utilisées par <span class="field-bold">{{ company.name }}</span> sous toute forme et tous supports*, dans le monde entier (en effet, dès lors qu’il y a une publication sur un réseau social, elle est disponible dans le monde entier), pendant une durée de 8 ans (cela vous protège pour éviter que votre image ne soit utilisée indéfiniment), intégralement ou par extraits et notamment :
     </p>
   </div>
 
@@ -34,7 +34,7 @@
   </div>
 
   <div class="text-wrapper">
-    <p>Le bénéficiaire de l’autorisation <span class="field-bold">{{ user.companyName }}</span> s’interdit expressément de procéder à une exploitation des photographies susceptibles de porter atteinte à la vie privée ou à la réputation, et d’utiliser les photographies de la présente, dans tout support à caractère pornographique, raciste, xénophobe ou toute autre exploitation préjudiciable. (Ce paragraphe a également pour objectif de vous protéger des utilisations non désirées de votre image)</p>
+    <p>Le bénéficiaire de l’autorisation <span class="field-bold">{{ company.name }}</span> s’interdit expressément de procéder à une exploitation des photographies susceptibles de porter atteinte à la vie privée ou à la réputation, et d’utiliser les photographies de la présente, dans tout support à caractère pornographique, raciste, xénophobe ou toute autre exploitation préjudiciable. (Ce paragraphe a également pour objectif de vous protéger des utilisations non désirées de votre image)</p>
   </div>
 
   <div class="text-wrapper">
@@ -67,7 +67,7 @@
         </p>
       </div>
       <div>
-        <p>Nom et prénom du représentant {{ user.companyName }} :</p>
+        <p>Nom et prénom du représentant {{ company.name }} :</p>
         <p class="field-bold">
           {{ user.firstName }} {{ user.lastName }}
         </p>
@@ -83,13 +83,16 @@ import {
   ModalNameEnum,
   useAddressStore,
   useAnswerStore,
+  useCompanyStore,
   useEmployeeStore,
   useEventStore,
   useUiStore,
   useUserStore,
 } from '~~/store'
+import { RoleEnum } from '~~/types'
 
 const employeeStore = useEmployeeStore()
+const companyStore = useCompanyStore()
 const eventStore = useEventStore()
 const addressStore = useAddressStore()
 const userStore = useUserStore()
@@ -101,9 +104,10 @@ const answerId = parseInt(route.params.id.toString())
 const answer = answerStore.getOne(answerId)
 const employee = employeeStore.getOne(answer.employeeId)
 const event = eventStore.getOne(answer.eventId)
-const user = userStore.getOne(event.createdByUserId)
+const company = companyStore.getOne(event.companyId)
+const user = userStore.getWhere(user => company.userIds.includes(user.id) && user.roles === RoleEnum.OWNER)
 const partner = userStore.getOne(event.partnerId)
-const userAddress = addressStore.getOne(user.addressId)
+const userAddress = addressStore.getOne(company.addressId)
 const employeeAddress = addressStore.getOne(employee.addressId)
 
 const answerTemplate = ref<null | HTMLElement>(null)

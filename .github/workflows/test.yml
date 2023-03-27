@@ -37,6 +37,9 @@ jobs:
       - name: 📖 Lint
         run: nr lint
 
+      - name: ☑️ Type checking
+        run: nr type:check
+
       - name: 🏗 Build
         run: nr build
 

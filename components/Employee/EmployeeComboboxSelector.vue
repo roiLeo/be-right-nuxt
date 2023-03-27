@@ -25,7 +25,7 @@
     >
       <ComboboxInput
         class="w-full py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 border-none focus:ring-0"
-        :display-value="(emp) => getEmployeeFullname(emp)"
+        :display-value="(emp: any) => getEmployeeFullname(emp)"
         @change="query = $event.target.value"
       />
       <ComboboxButton class="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -113,7 +113,7 @@
         :key="index"
         class="flex items-center h-8 px-2 py-2 mt-2 mr-2 space-x-2 bg-blue-200 rounded-md text-blue-dark"
       >
-        <span>{{ getEmployeeFullname(defaultValues.find(emp => emp.id === value)) }}</span>
+        <span>{{ getEmployeeFullname(defaultValues.find(emp => emp.id === value as unknown as number)!) }}</span>
         <button
           type="button"
           @click.prevent="onRemoveValue(index)"
@@ -170,7 +170,9 @@ const {
   handleBlur,
   handleChange,
   meta,
-} = useField<Record<string, any>[]>(name, undefined, { })
+} = useField<Field>(name, undefined, { })
+
+type Field = EmployeeType[] | number[]
 
 const { getEmployeeFullname } = employeeHook()
 const query = ref('')
@@ -200,7 +202,7 @@ function onRemoveValue(index: number) {
 }
 
 function filterAlReadyInGroup(employees: EmployeeType[]) {
-  const employeesAlReadyInGroup = inputValue.value.map(emp => emp.id)
+  const employeesAlReadyInGroup = inputValue.value.map((emp: any) => emp.id)
   return employees.filter(emp => !employeesAlReadyInGroup.includes(emp.id))
 }
 

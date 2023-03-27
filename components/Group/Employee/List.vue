@@ -30,7 +30,7 @@
                   class="absolute w-4 h-4 -mt-2 text-indigo-600 border-gray-300 rounded left-4 top-1/2 focus:ring-indigo-600"
                   :checked="indeterminate || selectedPeople.length === employees.length"
                   :indeterminate="indeterminate"
-                  @change="selectedPeople = $event.target?.checked ? employees.map((p) => p.id) : []"
+                  @change="toggleAll"
                 >
               </th>
               <th
@@ -153,6 +153,13 @@ const indeterminate = computed(() =>
   selectedPeople.value.length > 0
     && selectedPeople.value.length
     < employees.value.length)
+
+function toggleAll(event: any) {
+  if (event.target?.checked) {
+    selectedPeople.value = employees.value.map(p => p.id)
+  }
+  selectedPeople.value = []
+}
 
 async function removeManyRecipient() {
   if (selectedPeople.value.length > 0 && props.group?.id) {

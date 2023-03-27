@@ -32,7 +32,7 @@
             {{ getUserfullName(employeeCreator) }}
           </p>
           <p class="text-sm text-gray-500 truncate">
-            {{ employeeCreator.companyName }}
+            {{ employeeCreator.company?.name }}
           </p>
         </NuxtLink>
       </div>

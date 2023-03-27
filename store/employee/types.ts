@@ -1,7 +1,8 @@
 import type { State } from '@malolebrin/pinia-entity-store'
 import type { Group } from '../group'
 import type { Company } from '../company'
-import type { AddressType, AnswerType, FileType } from '@/types'
+import type { AnswerType } from '../answer/types'
+import type { AddressType, FileType } from '@/types'
 import type { BaseEntity } from '@/types/globals'
 
 export interface EmployeeType extends BaseEntity {

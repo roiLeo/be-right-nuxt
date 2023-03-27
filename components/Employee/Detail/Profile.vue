@@ -176,7 +176,7 @@ const authStore = useAuthStore()
 const userStore = useUserStore()
 const addressStore = useAddressStore()
 const { setUiModal } = useUiStore()
-const employeeCreator = computed(() => userStore.getOne(props.employee?.createdByUserId))
+const employeeCreator = computed(() => userStore.getOne(userStore.getAuthUserId))
 const employeeAddress = computed(() => addressStore.getOne(props.employee?.addressId))
 
 const { getEmployeeFullname } = employeeHook()

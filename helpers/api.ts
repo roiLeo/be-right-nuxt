@@ -10,10 +10,10 @@ type WithoutId<T> = Omit<T, 'id'>
 
 interface ApiMethods {
   get: <T>(path: string) => Promise<FetchWrapperResponse<T>>
-  post: <T>(path: string, data?: T) => Promise<FetchWrapperResponse<T>>
-  patch: <T>(path: string, data: Partial<T>) => Promise<FetchWrapperResponse<T>>
-  put: <T>(path: string, data: Partial<T>) => Promise<FetchWrapperResponse<T>>
-  delete: <T>(path: string, data?: T) => Promise<FetchWrapperResponse<T>>
+  post: <T>(path: string, data?: any) => Promise<FetchWrapperResponse<T>>
+  patch: <T>(path: string, data: any) => Promise<FetchWrapperResponse<T>>
+  put: <T>(path: string, data: any) => Promise<FetchWrapperResponse<T>>
+  delete: <T>(path: string, data?: any) => Promise<FetchWrapperResponse<T>>
 }
 
 interface FetchWrapperResponse<T> {
@@ -98,21 +98,21 @@ export class FetchWrapper implements ApiMethods {
     })
   }
 
-  async post<T>(path: string, data?: WithoutId<T>, isFileRequest?: boolean): Promise<FetchWrapperResponse<T>> {
+  async post<T>(path: string, data?: any, isFileRequest?: boolean): Promise<FetchWrapperResponse<T>> {
     return this.http<T>(this.getPath(path), {
       method: FetchMethods.POST,
       body: data,
     }, isFileRequest)
   }
 
-  async patch<T>(path: string, data: Partial<T>): Promise<FetchWrapperResponse<T>> {
+  async patch<T>(path: string, data: any): Promise<FetchWrapperResponse<T>> {
     return this.http<T>(this.getPath(path), {
       method: FetchMethods.PATCH,
       body: data,
     })
   }
 
-  async put<T>(path: string, data: Partial<T>): Promise<FetchWrapperResponse<T>> {
+  async put<T>(path: string, data: any): Promise<FetchWrapperResponse<T>> {
     return this.http<T>(this.getPath(path), {
       method: FetchMethods.PUT,
       body: data,

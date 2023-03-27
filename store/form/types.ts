@@ -8,10 +8,11 @@ export interface BaseEventFormType {
   employeeIds: number[]
 }
 
-export type PhotographerCreatePayload = Pick<UserType, 'companyName' | 'firstName' | 'lastName' | 'email'>
+export type PhotographerCreatePayload = Pick<UserType, 'firstName' | 'lastName' | 'email'>
 
 export interface BasePhotographerForm extends PhotographerCreatePayload {
   photographerId: number | null
+  companyName: string | null
 }
 
 export type BaseAddressCreationForm = Omit<AddressTypeCreate, 'userId' | 'eventId' | 'employeeId'>

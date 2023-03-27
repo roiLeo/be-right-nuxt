@@ -11,6 +11,7 @@
     "lint:fix": "eslint . --fix",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
+    "type:check": "nuxi typecheck",
     "test:e2e:run": "start-server-and-test preview http://localhost:3000 cy:run",
     "test:e2e:dev": "start-server-and-test dev http://localhost:3000 cy:open",
     "runHeaded": "node .output/server/index.mjs & ./node_modules/.bin/cypress run --headed --browser chrome "
