@@ -1,13 +1,8 @@
 <template>
 <NuxtLink
   class="relative overflow-hidden lg:flex-1"
-  :class="[
-    stepIdx === stepsLength - 1 ? 'cursor-not-allowed' : '',
-  ]"
   :to="{
-    query: {
-      step: stepIdx === stepsLength - 1 ? $route.query.step : step.query,
-    },
+    name: step.pathName,
   }"
 >
   <div
@@ -23,7 +18,7 @@
         aria-hidden="true"
       />
       <span
-        class="flex items-start px-2 py-2 text-sm font-medium lg:px-4"
+        class="flex items-start px-2 py-2 text-sm font-medium lg:py-4 lg:px-4"
         :class="[stepIdx !== 0 ? 'lg:pl-7' : '']"
       >
         <span class="flex-shrink-0">
@@ -103,6 +98,7 @@ interface Props {
     name: string
     description: string
     query: string
+    pathName: string
   }
   stepIdx: number
   stepsLength: number

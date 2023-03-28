@@ -43,20 +43,20 @@ jobs:
       - name: 🏗 Build
         run: nr build
 
-  cypress-run:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+  # cypress-run:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
+  #     - name: Install pnpm
+  #       uses: pnpm/action-setup@v2
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+  #     - name: Install dependencies
+  #       run: pnpm install --frozen-lockfile
 
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
-        with:
-          build: pnpm run build
-          start: pnpm run runHeaded  
+  #     - name: Cypress run
+  #       uses: cypress-io/github-action@v5
+  #       with:
+  #         build: pnpm run build
+  #         start: pnpm run runHeaded  

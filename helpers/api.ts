@@ -6,8 +6,6 @@ enum FetchMethods {
   DELETE = 'delete',
 }
 
-type WithoutId<T> = Omit<T, 'id'>
-
 interface ApiMethods {
   get: <T>(path: string) => Promise<FetchWrapperResponse<T>>
   post: <T>(path: string, data?: any) => Promise<FetchWrapperResponse<T>>

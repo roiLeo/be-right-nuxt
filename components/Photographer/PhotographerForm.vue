@@ -57,6 +57,7 @@ import type { InferType } from 'yup'
 import { object, string } from 'yup'
 import type { UserType, VeeValidateValues } from '@/types'
 import { useFormStore, useUiStore, useUserStore } from '~~/store'
+import { RouteNames } from '~~/helpers/routes'
 
 interface IForm extends InferType<typeof schema> {}
 
@@ -110,8 +111,7 @@ async function submit(form: VeeValidateValues) {
   } else {
     setPhotographerForm(formValues)
     router.push({
-      name: 'evenement-create',
-      query: { step: 'paiement' },
+      name: RouteNames.CREATE_EVENT_STEP_3,
     })
     emit('submitted', formValues as UserType)
   }

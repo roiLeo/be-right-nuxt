@@ -28,7 +28,7 @@
 
   <div class="flex items-center justify-center mt-6">
     <BaseButton
-      :disabled="!meta.valid || !meta.dirty || isSubmitting"
+      :disabled="!meta.valid || isSubmitting"
       :is-loading="uiStore.getUIIsLoading || isSubmitting"
       type="submit"
     >

@@ -26,7 +26,7 @@
         class="flex items-center py-4 pl-4 pr-3 space-x-2 text-sm font-medium text-gray-900 truncate whitespace-nowrap sm:pl-6"
       >
         <p>{{ noEventMessage }}</p>
-        <BaseButton :href="{ name: 'evenement-create' }">
+        <BaseButton :href="{ name: RouteNames.CREATE_EVENT_STEP_1 }">
           Créer un événement
         </BaseButton>
       </div>
@@ -44,6 +44,7 @@
 
 <script setup lang="ts">
 import type { EventType } from '@/types'
+import { RouteNames } from '~~/helpers/routes'
 import { useAuthStore, useTableStore } from '~~/store'
 
 interface Props {

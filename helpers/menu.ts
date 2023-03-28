@@ -9,6 +9,7 @@ import {
   UserGroupIcon,
   UsersIcon,
 } from '@heroicons/vue/24/outline'
+import { RouteNames } from './routes'
 
 export const MENU_ITEMS = [
   {
@@ -50,13 +51,13 @@ export const MENU_ITEMS = [
   {
     label: 'Créer un événement',
     icon: PlusIcon,
-    linkName: 'evenement-create',
+    linkName: RouteNames.CREATE_EVENT_STEP_1,
     isAdmin: true,
   },
   {
     label: 'Créer un destinataire',
     icon: PlusIcon,
-    linkName: 'destinataire-create',
+    linkName: RouteNames.EMPLOYEE_CREATE,
     isAdmin: true,
   },
   // {
@@ -100,13 +101,13 @@ export const MENU_ITEMS = [
   {
     label: 'Créer un événement',
     icon: PlusIcon,
-    linkName: 'evenement-create',
+    linkName: RouteNames.CREATE_EVENT_STEP_1,
     isAdmin: false,
   },
   {
     label: 'Créer un destinataire',
     icon: PlusIcon,
-    linkName: 'destinataire-create',
+    linkName: RouteNames.EMPLOYEE_CREATE,
     isAdmin: false,
   },
   {
