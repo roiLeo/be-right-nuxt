@@ -87,7 +87,7 @@ export class FetchWrapper implements ApiMethods {
   }
 
   private getPath(path: string): string {
-    return `${this.baseUrl}${path}`
+    return `${this.baseUrl}/${path}`
   }
 
   async get<T>(path: string): Promise<FetchWrapperResponse<T>> {
