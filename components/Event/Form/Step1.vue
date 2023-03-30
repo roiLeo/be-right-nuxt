@@ -84,7 +84,7 @@
 
   <div class="flex items-center justify-center col-span-3 mt-6">
     <BaseButton
-      :disabled="!meta.valid || !meta.dirty"
+      :disabled="!meta.valid"
       :is-loading="uiStore.getUIIsLoading || isSubmitting"
       type="submit"
     >
@@ -111,6 +111,7 @@ import {
   useFormStore,
   useUiStore,
 } from '~~/store'
+import { RouteNames } from '~~/helpers/routes'
 
 interface Props {
   eventId?: number | null
@@ -201,8 +202,7 @@ async function submit(form: VeeValidateValues) {
     setEventForm(payload.event)
     setAddressForm(payload.address)
     router.push({
-      name: 'evenement-create',
-      query: { step: 'destinataires' },
+      name: RouteNames.CREATE_EVENT_STEP_2,
     })
   }
 

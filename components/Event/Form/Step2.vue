@@ -15,7 +15,7 @@
   />
   <div class="flex items-center justify-center mt-6 md:col-span-3">
     <BaseButton
-      :disabled="!meta.valid || !meta.dirty"
+      :disabled="!meta.valid"
       :is-loading="uiStore.getUIIsLoading || isSubmitting"
       type="submit"
     >
@@ -39,6 +39,8 @@ import {
   useUserStore,
 } from '~~/store'
 import type { VeeValidateValues } from '~~/types'
+
+const emit = defineEmits(['submitEmployees'])
 
 const employeeStore = useEmployeeStore()
 const uiStore = useUiStore()
@@ -71,10 +73,7 @@ const defaultValues = computed(() => {
 async function submit(form: VeeValidateValues) {
   IncLoading()
   setEmployeeIds(form.employees)
-  router.push({
-    name: 'evenement-create',
-    query: { step: 'photographer' },
-  })
+  emit('submitEmployees')
   DecLoading()
   resetUiModalState()
 }

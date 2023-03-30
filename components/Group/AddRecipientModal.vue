@@ -34,7 +34,7 @@
         >
           <ComboboxInput
             class="w-full py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 border-none focus:ring-0"
-            :display-value="(emp) => getEmployeeFullname(emp)"
+            :display-value="(emp: any) => getEmployeeFullname(emp)"
             @change="query = $event.target.value"
           />
           <ComboboxButton

@@ -81,7 +81,7 @@ const props = withDefaults(defineProps<Props>(), {
 const fileInput = ref<HTMLInputElement | null>(null)
 const fileName = ref<null | string>(props.fileName || null)
 
-function onChange(handleChange: () => void) {
+function onChange(handleChange: any) {
   if (fileInput.value?.files) {
     const url = fileInput.value.files[0].name
     fileName.value = url

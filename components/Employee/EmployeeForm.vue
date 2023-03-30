@@ -167,13 +167,6 @@ const { getUserfullName } = userHook()
 
 const router = useRouter()
 
-const userIdField = computed(() => {
-  if (authStore.isAuthUserAdmin) {
-    return props.employee?.createdByUserId || null
-  }
-  return userStore.getAuthUserId
-})
-
 const schema = object({
   email: string().email('vous devez entrer in email valide').required('L\'adresse email est requise'),
   firstName: string().required('Le prénom est requis'),
@@ -197,7 +190,6 @@ const initialValues = {
   postalCode: props.address?.postalCode || '',
   city: props.address?.city || '',
   country: props.address?.country || 'France',
-  userId: userIdField.value,
 }
 
 async function submit(form: VeeValidateValues) {
@@ -211,14 +203,11 @@ async function submit(form: VeeValidateValues) {
   } as EmployeeType
 
   if (props.mode === ModalModeEnum.CREATE) {
-    if (props.eventId) {
-      const createdByUserId = eventStore.getOne(props.eventId)?.createdByUserId
+    if (props.eventId && userStore.getAuthUser?.companyId) {
       await postManyForEvent([employeeToPost],
-        props.eventId, createdByUserId)
+        props.eventId, userStore.getAuthUser?.companyId)
     } else {
       if (userStore.getAuthUserId) {
-        const createdByUserId = authStore.isAuthUserAdmin ? form.userId! : userStore.getAuthUserId
-
         const address = {
           addressLine: form.addressLine,
           addressLine2: form.addressLine2,
@@ -227,11 +216,11 @@ async function submit(form: VeeValidateValues) {
           country: form.country,
         } as AddressType
 
-        await postOneEmployee(employeeToPost, address, createdByUserId)
+        await postOneEmployee(employeeToPost, address)
       }
     }
   } else if (props.mode === ModalModeEnum.EDIT && props.employee) {
-    await patchOne(props.employee.id, { ...employeeToPost, createdByUserId: props.employee.createdByUserId })
+    await patchOne(props.employee.id, { ...employeeToPost })
 
     if (props.address) {
       await patchOneAddress(props.address.id, {

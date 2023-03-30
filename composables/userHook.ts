@@ -2,7 +2,6 @@ import { hasOwnProperty } from '@antfu/utils'
 import { RoleEnum } from '@/types'
 import type {
   PaginatedResponse,
-  PhotographerCreatePayload,
   UserType,
 } from '@/types'
 import {
@@ -10,6 +9,7 @@ import {
   useUiStore,
   useUserStore,
 } from '~~/store'
+import type { PhotographerCreatePayload } from '~~/store/form/types'
 
 export default function userHook() {
   const { $toast, $api } = useNuxtApp()

@@ -29,7 +29,7 @@
               class="absolute w-4 h-4 -mt-2 text-indigo-600 border-gray-300 rounded left-4 top-1/2 focus:ring-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
               :checked="indeterminate || selectedPeople.length === usersSorted.length"
               :indeterminate="indeterminate"
-              @change="selectedPeople = $event.target?.checked ? usersSorted.map((p) => p.id) : []"
+              @change="selectAll"
             >
           </th>
           <th
@@ -157,6 +157,13 @@ const getButtonTitle = (Role: RoleEnum) => computed(() => {
   }
   return Role === RoleEnum.OWNER ? 'Changer le rôle pour Utilisateur' : 'Changer le rôle pour Propriétaire'
 })
+
+function selectAll(event: any) {
+  if (event.target?.checked) {
+    selectedPeople.value = usersSorted.value.map(p => p.id)
+  }
+  selectedPeople.value = []
+}
 
 function createNewUser() {
   setUiModal({

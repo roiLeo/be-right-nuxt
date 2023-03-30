@@ -74,6 +74,11 @@ export const useEventStore = defineStore('events', {
       }
     },
 
+    setOneActive(id: number) {
+      if (!this.entities.active.includes(id))
+        this.entities.active.push(id)
+    },
+
     // actions common to all entities
     resetState() {
       this.$state = defaultEventState()

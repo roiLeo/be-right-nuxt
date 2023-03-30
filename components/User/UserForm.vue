@@ -129,9 +129,9 @@ async function submit(form: VeeValidateValues) {
   IncLoading()
 
   if (props.user) {
-    await patchOne(props.user.id, form)
+    await patchOne(props.user.id, form as UserType)
   } else {
-    await createNewUser(form)
+    await createNewUser(form as UserType)
   }
   resetUiModalState()
   router.push({

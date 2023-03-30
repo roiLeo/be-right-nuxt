@@ -58,6 +58,7 @@
 
 <script setup lang="ts">
 import { MENU_ITEMS } from '@/helpers/menu'
+import { RouteNames } from '~~/helpers/routes'
 import { useUiStore } from '~~/store'
 
 const router = useRouter()
@@ -73,13 +74,13 @@ const getOutsideMenuRouteLabel = computed(() => {
     const formatedRouteName = route.name.toString().split('.').splice(1).join('.')
 
     switch (formatedRouteName) {
-      case 'evenement-show-id':
+      case RouteNames.SHOW_EVENT_ID:
         return 'Détail de l\'événement'
       case 'evenement-edit-id':
         return 'Modifier l\'événement'
       case 'evenement-archives':
         return 'Événements supprimés'
-      case 'evenement-create':
+      case RouteNames.CREATE_EVENT_STEP_1:
         return 'Créer un événement'
 
       case 'groupe-creation':

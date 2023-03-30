@@ -58,7 +58,7 @@
       </div>
       <EmployeeCreator
         v-if="authStore.isAuthUserAdmin"
-        :employee-creator="userStore.getOne(event.createdByUserId)"
+        :employee-creator="userStore.getOne(companyStore.getOne(event.companyId))"
       />
     </div>
   </div>
@@ -67,7 +67,13 @@
 
 <script setup lang="ts">
 import dayjs from 'dayjs'
-import { useAddressStore, useAuthStore, useUiStore, useUserStore } from '~~/store'
+import {
+  useAddressStore,
+  useAuthStore,
+  useCompanyStore,
+  useUiStore,
+  useUserStore,
+} from '~~/store'
 import type { EventType } from '~~/types'
 import { ModalModeEnum, ModalNameEnum } from '@/types'
 
@@ -80,6 +86,7 @@ const props = defineProps<Props>()
 const addressStore = useAddressStore()
 const userStore = useUserStore()
 const authStore = useAuthStore()
+const companyStore = useCompanyStore()
 const { setUiModal } = useUiStore()
 
 const { $toFormat } = useNuxtApp()
