@@ -30,9 +30,14 @@
 
   <aside class="order-first border-r border-gray-200 md:flex-shrink-0 xl:flex xl:flex-col w-96">
     <div class="px-6 pt-6 pb-4">
-      <h2 class="text-lg font-medium text-gray-900">
-        {{ authStore.isAuthUserAdmin ? 'Liste de vos destinataires' : 'Liste des destinataires' }}
-      </h2>
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-medium text-gray-900">
+          {{ authStore.isAuthUserAdmin ? 'Liste des destinataires' : 'Liste de vos destinataires' }}
+        </h2>
+        <p class="text-gray-500">
+          {{ filteredEmployee.length === employees.length ? filteredEmployee.length : `${filteredEmployee.length}/${employees.length}` }}
+        </p>
+      </div>
       <form
         class="flex mt-6 space-x-4"
       >
@@ -109,7 +114,6 @@ const employees = computed(() => alphabetical(employeeStore.getAllArray) as Empl
 
 const query = ref('')
 const state = reactive({
-  timeout: 0,
   isLoading: false,
   activeEmployee: employees.value[0]?.id || null,
   isActiveEmployeeDirty: false,
