@@ -12,7 +12,7 @@
     </div>
 
     <EmployeeEventTableItem
-      v-for="event in events"
+      v-for="event in sortedEvents"
       v-else
       :key="event.id"
       :event="event"
@@ -31,8 +31,13 @@ interface Props {
   employeeId: number
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   noEventMessage: 'Aucun événement',
   events: () => [],
 })
+const { isBefore } = dateHook()
+
+const sortedEvents = computed(() => [...props.events]
+  .sort((a, b) => isBefore(a.start, b.start) ? 1 : isBefore(a.start, b.start) ? -1 : -2),
+)
 </script>
