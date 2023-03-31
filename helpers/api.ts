@@ -43,6 +43,10 @@ export class FetchWrapper implements ApiMethods {
     this.redirect = init.redirect
   }
 
+  setCredentials(token: string) {
+    this.token = token
+  }
+
   private buildBody(body: BodyInit | null | undefined, isFileRequest?: boolean) {
     if (!body) {
       return null
