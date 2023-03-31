@@ -42,11 +42,10 @@
             class="sr-only"
           >Recherche</label>
           <BaseInput
-            v-model="state.search"
             type="text"
             name="employee"
             placeholder="Recherchez"
-            @keyup="searchEntity($event)"
+            @keyup="query = $event.target.value"
           />
         </div>
       </form>
@@ -100,18 +99,16 @@ import type { EmployeeType } from '@/types'
 import {
   useAuthStore,
   useEmployeeStore,
-  useTableStore,
 } from '~~/store'
 
-const { setSearch } = useTableStore()
 const authStore = useAuthStore()
 const employeeStore = useEmployeeStore()
 const route = useRoute()
 
 const employees = computed(() => alphabetical(employeeStore.getAllArray) as EmployeeType[])
 
+const query = ref('')
 const state = reactive({
-  search: '',
   timeout: 0,
   isLoading: false,
   activeEmployee: employees.value[0]?.id || null,
@@ -131,8 +128,23 @@ const activeEmployee = computed(() => {
   return null
 })
 
+const filteredEmployee = computed(() =>
+  query.value === ''
+    ? employees.value
+    : employees.value.filter(person =>
+      person.lastName
+        .toLowerCase()
+        .replace(/\s+/g, '')
+        .includes(query.value.toLowerCase().replace(/\s+/g, ''))
+      || person.firstName
+        .toLowerCase()
+        .replace(/\s+/g, '')
+        .includes(query.value.toLowerCase().replace(/\s+/g, '')),
+    ),
+)
+
 const alphabeticalAmployeeList = computed(() => {
-  return employees.value.reduce((acc: Record<string, EmployeeType[]>, employee: EmployeeType) => {
+  return filteredEmployee.value.reduce((acc: Record<string, EmployeeType[]>, employee: EmployeeType) => {
     const letter = employee.lastName[0].toUpperCase()
     if (!acc[letter]) {
       acc[letter] = []
@@ -141,13 +153,6 @@ const alphabeticalAmployeeList = computed(() => {
     return acc
   }, {})
 })
-
-function searchEntity(event: KeyboardEvent) {
-  clearTimeout(state.timeout)
-  state.timeout = window.setTimeout(() => {
-    setSearch(state.search)
-  }, 500)
-}
 
 function setActiveEmployee(employee: EmployeeType) {
   state.isLoading = true
