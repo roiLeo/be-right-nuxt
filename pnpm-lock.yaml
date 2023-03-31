@@ -27,7 +27,7 @@ specifiers:
   tailwindcss: ^3.2.7
   typescript: ^5.0.0
   unplugin-vue-components: ^0.24.1
-  v-calendar: 3.0.2
+  v-calendar: 3.0.3
   vee-validate: ^4.8.1
   vue-toastification: 2.0.0-rc.5
   yup: ^1.0.2
@@ -40,7 +40,7 @@ dependencies:
   jsonwebtoken: 9.0.0
   pinia: 2.0.33_typescript@5.0.2
   rollup-plugin-visualizer: 5.9.0
-  v-calendar: 3.0.2_@popperjs+core@2.11.6
+  v-calendar: 3.0.3_@popperjs+core@2.11.6
   vee-validate: 4.8.1
   vue-toastification: 2.0.0-rc.5
   yup: 1.0.2
@@ -8065,8 +8065,8 @@ packages:
     hasBin: true
     dev: true
 
-  /v-calendar/3.0.2_@popperjs+core@2.11.6:
-    resolution: {integrity: sha512-1rlfT8dNqevP/Akl3/rbNB5e/6vjzANzMuFGz5INZ69rZFB1l0zsBrrzjk/j/fSvnfxBGYqj6QCK9zLfgQUY5Q==}
+  /v-calendar/3.0.3_@popperjs+core@2.11.6:
+    resolution: {integrity: sha512-Skpp/nMoFqFadm94aWj0oOfazoux5T5Ug3/pbRbdolkoDrnVcL7Ronw1/SGFRUPGOwnLdYwhKPhrhSE1segW6w==}
     peerDependencies:
       '@popperjs/core': ^2.0.0
       vue: ^3.2.0

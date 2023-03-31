@@ -24,7 +24,7 @@
     "jsonwebtoken": "^9.0.0",
     "pinia": "^2.0.33",
     "rollup-plugin-visualizer": "^5.9.0",
-    "v-calendar": "3.0.2",
+    "v-calendar": "3.0.3",
     "vee-validate": "^4.8.1",
     "vue-toastification": "2.0.0-rc.5",
     "yup": "^1.0.2"
