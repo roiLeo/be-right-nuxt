@@ -43,6 +43,10 @@ export class FetchWrapper implements ApiMethods {
     this.redirect = init.redirect
   }
 
+  setCredentials(token: string) {
+    this.token = token
+  }
+
   private buildBody(body: BodyInit | null | undefined, isFileRequest?: boolean) {
     if (!body) {
       return null
@@ -87,7 +91,7 @@ export class FetchWrapper implements ApiMethods {
   }
 
   private getPath(path: string): string {
-    return `${this.baseUrl}/${path}`
+    return `${this.baseUrl}${path}`
   }
 
   async get<T>(path: string): Promise<FetchWrapperResponse<T>> {

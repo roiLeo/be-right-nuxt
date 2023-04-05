@@ -30,9 +30,14 @@
 
   <aside class="order-first border-r border-gray-200 md:flex-shrink-0 xl:flex xl:flex-col w-96">
     <div class="px-6 pt-6 pb-4">
-      <h2 class="text-lg font-medium text-gray-900">
-        {{ authStore.isAuthUserAdmin ? 'Liste de vos destinataires' : 'Liste des destinataires' }}
-      </h2>
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-medium text-gray-900">
+          {{ authStore.isAuthUserAdmin ? 'Liste des destinataires' : 'Liste de vos destinataires' }}
+        </h2>
+        <p class="text-gray-500">
+          {{ filteredEmployee.length === employees.length ? filteredEmployee.length : `${filteredEmployee.length}/${employees.length}` }}
+        </p>
+      </div>
       <form
         class="flex mt-6 space-x-4"
       >
@@ -42,11 +47,10 @@
             class="sr-only"
           >Recherche</label>
           <BaseInput
-            v-model="state.search"
             type="text"
             name="employee"
             placeholder="Recherchez"
-            @keyup="searchEntity($event)"
+            @keyup="query = $event.target.value"
           />
         </div>
       </form>
@@ -100,19 +104,16 @@ import type { EmployeeType } from '@/types'
 import {
   useAuthStore,
   useEmployeeStore,
-  useTableStore,
 } from '~~/store'
 
-const { setSearch } = useTableStore()
 const authStore = useAuthStore()
 const employeeStore = useEmployeeStore()
 const route = useRoute()
 
 const employees = computed(() => alphabetical(employeeStore.getAllArray) as EmployeeType[])
 
+const query = ref('')
 const state = reactive({
-  search: '',
-  timeout: 0,
   isLoading: false,
   activeEmployee: employees.value[0]?.id || null,
   isActiveEmployeeDirty: false,
@@ -131,8 +132,23 @@ const activeEmployee = computed(() => {
   return null
 })
 
+const filteredEmployee = computed(() =>
+  query.value === ''
+    ? employees.value
+    : employees.value.filter(person =>
+      person.lastName
+        .toLowerCase()
+        .replace(/\s+/g, '')
+        .includes(query.value.toLowerCase().replace(/\s+/g, ''))
+      || person.firstName
+        .toLowerCase()
+        .replace(/\s+/g, '')
+        .includes(query.value.toLowerCase().replace(/\s+/g, '')),
+    ),
+)
+
 const alphabeticalAmployeeList = computed(() => {
-  return employees.value.reduce((acc: Record<string, EmployeeType[]>, employee: EmployeeType) => {
+  return filteredEmployee.value.reduce((acc: Record<string, EmployeeType[]>, employee: EmployeeType) => {
     const letter = employee.lastName[0].toUpperCase()
     if (!acc[letter]) {
       acc[letter] = []
@@ -141,13 +157,6 @@ const alphabeticalAmployeeList = computed(() => {
     return acc
   }, {})
 })
-
-function searchEntity(event: KeyboardEvent) {
-  clearTimeout(state.timeout)
-  state.timeout = window.setTimeout(() => {
-    setSearch(state.search)
-  }, 500)
-}
 
 function setActiveEmployee(employee: EmployeeType) {
   state.isLoading = true

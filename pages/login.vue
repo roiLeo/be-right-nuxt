@@ -103,6 +103,8 @@ async function submitLogin(form: VeeValidateValues) {
     if (data) {
       const { user, company } = data
       if (user?.token && company) {
+        $api().setCredentials(user.token)
+
         storeCompanyEntities(company)
         storeUsersEntities(user, false)
         cookieToken.value = user.token

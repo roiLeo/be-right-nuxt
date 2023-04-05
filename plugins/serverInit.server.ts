@@ -19,7 +19,7 @@ export default defineNuxtPlugin(async () => {
   const cookieToken = useCookie('userToken')
 
   if (cookieToken.value && apiUrl && !authStore.getIsLoggedIn) {
-    const response = await fetch(`${apiUrl}/user/token`, {
+    const response = await fetch(`${apiUrl}user/token`, {
       method: 'post',
       headers: {
         'Accept': 'application/json',

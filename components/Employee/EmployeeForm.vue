@@ -129,11 +129,11 @@
 </template>
 
 <script setup lang="ts">
-import { number, object, string } from 'yup'
+import { object, string } from 'yup'
 import { Form } from 'vee-validate'
 import type { AddressType, EmployeeType, VeeValidateValues } from '@/types'
 import { ModalModeEnum } from '@/types'
-import { useAuthStore, useEventStore, useUiStore, useUserStore } from '~~/store'
+import { useAuthStore, useUiStore, useUserStore } from '~~/store'
 
 interface Props {
   employee?: EmployeeType | null
@@ -156,7 +156,6 @@ const emit = defineEmits<{
 }>()
 
 const userStore = useUserStore()
-const eventStore = useEventStore()
 const authStore = useAuthStore()
 const uiStore = useUiStore()
 const { IncLoading, DecLoading } = uiStore
@@ -177,7 +176,6 @@ const schema = object({
   postalCode: string().required('Le code postal est requis'),
   city: string().required('La ville est requise'),
   country: string().required('Le pays est requis'),
-  userId: number().required('L\'identifiant de l\'utilisateur est requis'),
 })
 
 const initialValues = {

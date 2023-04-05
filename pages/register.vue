@@ -164,6 +164,7 @@ async function submitregister(form: VeeValidateValues) {
           storeUsersEntities(user, false)
           cookieToken.value = user.token
           const decode = jwtDecode(user.token)
+          $api().setCredentials(user.token)
 
           if (decode) {
             setJWTasUser(decode)
