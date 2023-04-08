@@ -15,10 +15,10 @@ describe('Login spec', () => {
     cy.url().should('include', '/register')
   })
 
-  it('links redirect on forgot-password page', () => {
-    cy.get('#forgot-password-link').contains('Mot de passe oublié')
-    cy.get('#forgot-password-link').click()
-    cy.url().should('include', '/forgot-password')
+  it('links redirect on mot-de-passe-oublie page', () => {
+    cy.get('#mot-de-passe-oublie-link').contains('Mot de passe oublié')
+    cy.get('#mot-de-passe-oublie-link').click()
+    cy.url().should('include', '/mot-de-passe-oublie')
   })
 
   it('form login render correct data', () => {

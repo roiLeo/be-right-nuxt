@@ -113,6 +113,7 @@ import type { UserType, VeeValidateValues } from '@/types'
 import { RoleEnum } from '@/types'
 import type { Company } from '~~/store'
 import { useAuthStore, useUiStore } from '~~/store'
+import { passwordRegex } from '~/helpers/regex'
 
 const { $toast, $api } = useNuxtApp()
 const router = useRouter()
@@ -126,7 +127,13 @@ const { IncLoading, DecLoading } = uiStore
 const schema = object({
   companyName: string().required('Nom de l\'entreprise est requis').label('Nom de l\'entreprise'),
   email: string().email('vous devez entrer in email valide').required().label('Adresse email'),
-  password: string().required('Le mot de passe est requis').label('Mot de passe'),
+  password: string()
+    .min(8, 'Le mot de passe doit contenir au moins 8 caratères')
+    .required('Le mot de passe est requis')
+    .matches(
+      passwordRegex,
+      'Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial',
+    ),
   firstName: string().required('Le prénom est requis').label('Prénom'),
   lastName: string().required('le nom est requis').label('Nom'),
   roles: string().oneOf([RoleEnum.PHOTOGRAPHER, RoleEnum.OWNER]),

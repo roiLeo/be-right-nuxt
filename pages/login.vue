@@ -46,9 +46,9 @@
         S'inscrire
       </NuxtLink>
       <NuxtLink
-        id="forgot-password-link"
+        id="mot-de-passe-oublie-link"
         class="LinkClass"
-        :to="{ name: 'forgot-password' }"
+        :to="{ name: RouteNames.FORGOT_PASSWORD }"
       >
         Mot de passe oublié
       </NuxtLink>
@@ -69,6 +69,7 @@ import { Form } from 'vee-validate'
 import type { UserType, VeeValidateValues, WithoutId } from '@/types'
 import type { Company } from '~~/store'
 import { useAuthStore, useUiStore } from '~~/store'
+import { RouteNames } from '~/helpers/routes'
 
 const { storeUsersEntities, getUserfullName } = userHook()
 const { storeCompanyEntities } = companyHook()
@@ -116,7 +117,7 @@ async function submitLogin(form: VeeValidateValues) {
         }
         $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
         router.replace({
-          name: 'evenement',
+          name: RouteNames.LIST_EVENT,
         })
       }
     }

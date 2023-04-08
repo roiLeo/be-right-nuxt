@@ -9,3 +9,8 @@ export interface JWTDecodedType {
   roles: RoleEnum[]
   subscription: SubscriptionEnum
 }
+
+export interface ResetPasswordData {
+  isSuccess: boolean
+  message: string
+}
