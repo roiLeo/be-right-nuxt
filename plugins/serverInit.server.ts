@@ -1,20 +1,15 @@
 import { verify } from 'jsonwebtoken'
+import { getApiUrl } from '~/helpers/apiUrl'
 import { useAuthStore } from '~~/store'
 import type { JWTDecodedType } from '~~/types'
 
 export default defineNuxtPlugin(async () => {
-  let apiUrl: string | null = null
+  const apiUrl = getApiUrl()
   const { storeUsersEntities } = userHook()
   const { storeCompanyEntities } = companyHook()
   // const { isJWTUserAdmin } = authHook()
   const authStore = useAuthStore()
   const { setJWTasUser, setToken } = authStore
-
-  if (process.env.NODE_ENV === 'development' && process.env.VITE_DEV_API_URL) {
-    apiUrl = process.env.VITE_DEV_API_URL
-  } else if (process.env.NODE_ENV === 'production' && process.env.VITE_DEV_API_URL) {
-    apiUrl = process.env.VITE_DEV_API_URL
-  }
 
   const cookieToken = useCookie('userToken')
 
