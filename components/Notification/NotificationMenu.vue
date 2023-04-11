@@ -6,7 +6,9 @@
   <div>
     <MenuButton
       class="flex items-center flex-shrink-0 p-4"
+      :class="{ areAllRead: 'cursor-not-allowed ' }"
       data-cy="user-menu-button"
+      :disabled="areAllRead"
     >
       <NotificationBellBubbleIcon
         :has-red-bubble="hasAtLeastOneNotRead"
@@ -37,7 +39,6 @@
             v-for="notif in notifications"
             :key="notif.id"
             :notification="notif"
-            :event="getEventNotif(notif).value"
           />
         </template>
         <div v-else>
@@ -60,8 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import type { NotificationType } from '~~/store'
-import { useEventStore, useNotificationsStore } from '~~/store'
+import { useNotificationsStore } from '~~/store'
 
 interface Props {
   isInHeader?: boolean
@@ -72,19 +72,13 @@ withDefaults(defineProps<Props>(), {
 })
 
 const notificationStore = useNotificationsStore()
-const eventStore = useEventStore()
 const { patchAsRead } = notificationHook()
 
 const notifications = computed(() => notificationStore.getAllSorted)
-const hasAtLeastOneNotRead = computed(() => notifications.value.some(notif => !notif.readAt))
-const newNotificationNb = computed(() => notifications.value.filter(notif => !notif.readAt)?.length)
+const hasAtLeastOneNotRead = computed(() => notifications.value.some(notif => noNull(notif.readAt) && noUndefined(notif.readAt)))
+const newNotificationNb = computed(() => notifications.value.filter(notif => noNull(notif.readAt) && noUndefined(notif.readAt))?.length)
 const areAllRead = computed(() =>
   notifications.value.every(notif => noNull(notif.readAt) && noUndefined(notif.readAt)))
-const getEventNotif = (notif: NotificationType) => computed(() => {
-  if (notif.eventNotification?.eventId) {
-    return eventStore.getOne(notif.eventNotification?.eventId)
-  }
-})
 
 async function markAllAsRead() {
   const noReadNotificationIds = notifications.value

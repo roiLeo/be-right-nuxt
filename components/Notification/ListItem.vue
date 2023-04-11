@@ -5,14 +5,25 @@
   <div class="flex justify-between w-full p-2">
     <div class="flex items-center">
       <div
-        v-if="!notification.readAt"
+        v-if="noNull(notification.readAt) && noUndefined(notification.readAt)"
         class="w-2 h-2 mr-2 bg-purple-500 rounded-full"
       />
       <div>
-        <p class="text-sm">
+        <p
+          v-if="getEventNotif"
+          class="text-sm"
+        >
           {{ getNotifTranslation({
             type: notification.type,
-            eventName: event?.name,
+            eventName: getEventNotif.name,
+          }) }}
+        </p>
+        <p
+          v-else
+          class="text-sm"
+        >
+          {{ getNotifTranslation({
+            type: notification.type,
           }) }}
         </p>
         <p class="mt-1 text-xs text-gray-400 font-font-extralight">
@@ -30,17 +41,25 @@
 </template>
 
 <script setup lang="ts">
-import type { EventType, NotificationType } from '~~/store'
+import type { NotificationType } from '~~/store'
+import { useEventStore } from '~~/store'
 
 interface Props {
   notification: NotificationType
-  event: EventType
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const {
   getNotifTranslation,
   getDateDisplayedNotification,
 } = notificationHook()
+
+const eventStore = useEventStore()
+
+const getEventNotif = computed(() => {
+  if (props.notification.eventNotification?.eventId) {
+    return eventStore.getOne(props.notification.eventNotification?.eventId)
+  }
+})
 </script>

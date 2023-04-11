@@ -25,7 +25,7 @@ export default function notificationHook() {
   const eventStore = useEventStore()
   const answerStore = useAnswerStore()
   const notificationStore = useNotificationsStore()
-  const { addMany: addManyNotifications, updateMany } = notificationStore
+  const { addMany: addManyNotifications, updateManyNotifications } = notificationStore
 
   const { fetchMany: fetchManyAnswers } = answerHook()
   const { fetchMany: fetchManyEvents } = eventHook()
@@ -67,6 +67,9 @@ export default function notificationHook() {
       case NotificationTypeEnum.ANSWER_RESPONSE_REFUSED:
         return eventName ? `Réponse "${eventName}" refusée` : 'Réponse refusée'
 
+      case NotificationTypeEnum.EMPLOYEE_CREATED:
+        return eventName ? `Destinataire "${eventName}" Créé` : 'Destinataire créé'
+
       default:
         break
     }
@@ -97,7 +100,7 @@ export default function notificationHook() {
         const { success, data } = await $api().patch<NotificationType[]>(`notifications/readMany?ids=${notificationIds.join(',')}`, [])
 
         if (data?.length) {
-          updateMany(data)
+          updateManyNotifications(data)
         }
         if (success) {
           $toast.success('Notifications marquées comme lues')

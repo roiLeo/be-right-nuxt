@@ -61,5 +61,9 @@ function CloseResetModalState() {
 
 onMounted(async () => {
   await fetchUserNotificationsAndRelations()
+  setInterval(async () => {
+    // Invoke function every 10 minutes
+    await fetchUserNotificationsAndRelations()
+  }, 600000)
 })
 </script>

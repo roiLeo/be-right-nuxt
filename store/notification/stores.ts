@@ -47,7 +47,7 @@ export const useNotificationsStore = defineStore('notification', {
     getAllSorted: state => {
       return Object.values(state.entities.byId).sort((a, b) => {
         if (!a.readAt || !b.readAt) {
-          return -1
+          return 2
         }
         return dayjs(a.readAt).isAfter(b.readAt) ? 1 : -1
       })
@@ -61,6 +61,17 @@ export const useNotificationsStore = defineStore('notification', {
       notifs.forEach(notif => {
         this.entities.byId[notif.id] = { ...notif, $isDirty: false }
         this.entities.allIds.push(notif.id)
+      })
+    },
+
+    updateManyNotifications(notifs: NotificationType[]) {
+      notifs.forEach(notif => {
+        if (this.entities.byId[notif.id]) {
+          this.entities.byId[notif.id] = {
+            ...this.entities.byId[notif.id],
+            ...notif,
+          }
+        }
       })
     },
   },
