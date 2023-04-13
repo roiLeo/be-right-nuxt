@@ -47,8 +47,10 @@
     v-else
     class="flex items-center mt-2 text-sm text-gray-500"
   >
-    <!-- TODO send email to employee again -->
-    <BaseButton disabled>
+    <BaseButton
+      :disabled="uiStore.getUIIsLoading"
+      @click="raise"
+    >
       <template #icon>
         <EnvelopeIconOutline
           class="text-gray-200"
@@ -58,11 +60,20 @@
       Relancer
     </BaseButton>
   </p>
+
+  <BaseMessage
+    v-if="responseMessage"
+    :type="isGreenMessage ? 'success' : 'danger'"
+  >
+    {{ responseMessage }}
+  </BaseMessage>
 </div>
 </template>
 
 <script setup lang="ts">
+import BaseMessage from '../Base/BaseMessage.vue'
 import type { AnswerType } from '~~/store'
+import { useUiStore } from '~~/store'
 
 interface Props {
   answer: AnswerType
@@ -76,4 +87,18 @@ const hasBeenAnswered = computed(() =>
   && noNull(props.answer.signedAt)
   && noUndefined(props.answer.signedAt),
 )
+
+const uiStore = useUiStore()
+const { raiseAnswer } = answerHook()
+const responseMessage = ref<null | string>(null)
+const isGreenMessage = ref(false)
+
+async function raise() {
+  const response = await raiseAnswer(props.answer.id)
+  if (response) {
+    const { message, isSuccess } = response
+    responseMessage.value = message || null
+    isGreenMessage.value = isSuccess
+  }
+}
 </script>

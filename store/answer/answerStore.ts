@@ -39,6 +39,15 @@ export const useAnswerStore = defineStore('answers', {
       })
     },
 
+    updateOneAnswer(id: number, data: Partial<AnswerType>) {
+      if (this.entities.byId[id] !== null || this.entities.byId[id] !== undefined) {
+        this.entities.byId[id] = {
+          ...this.entities.byId[id],
+          ...data,
+        }
+      }
+    },
+
     resetState() {
       this.$state = defaultAnswerState()
     },

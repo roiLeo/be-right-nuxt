@@ -14,4 +14,8 @@ export enum RouteNames {
 
   // EMPLOYEE
   EMPLOYEE_CREATE = 'destinataire-create',
+
+  // AUTH
+  FORGOT_PASSWORD = 'mot-de-passe-oublie',
+  LOGIN = 'login',
 }
