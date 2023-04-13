@@ -13,3 +13,8 @@ export interface Loginpayload {
   email: string
   password: string
 }
+
+export interface ActionResponse {
+  message: string
+  isSuccess: boolean
+}

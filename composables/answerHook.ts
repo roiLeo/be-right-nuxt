@@ -1,11 +1,12 @@
 import { hasOwnProperty, uniq } from '@antfu/utils'
+import type { ActionResponse } from '~/types/Payload'
 import type { AnswerType, EmployeeType } from '~~/store'
 import { useAnswerStore, useUiStore } from '~~/store'
 
 export default function answerHook() {
   const { $toast, $api } = useNuxtApp()
   const answerStore = useAnswerStore()
-  const { addMany } = answerStore
+  const { addMany, updateOneAnswer } = answerStore
   const { IncLoading, DecLoading } = useUiStore()
 
   async function postMany(eventId: number, employeeIds: number[]) {
@@ -94,6 +95,31 @@ export default function answerHook() {
     DecLoading()
   }
 
+  async function raiseAnswer(id: number) {
+    IncLoading()
+    try {
+      if (id) {
+        const { data } = await $api().get<ActionResponse & { answer: AnswerType }>(`answer/raise/${id}`)
+        if (data) {
+          const { isSuccess, answer, message } = data
+
+          if (isSuccess) {
+            updateOneAnswer(id, answer)
+          }
+
+          return {
+            message,
+            isSuccess,
+          }
+        }
+      }
+    } catch (error) {
+      console.error(error)
+      $toast.error('Une erreur est survenue')
+    }
+    DecLoading()
+  }
+
   async function downloadAnswer({ answerId, employee, templateRef }: { answerId: number; employee: EmployeeType; templateRef: HTMLElement }) {
     await exportToPDF(`droit-image-${answerId}-${employee.firstName}-${employee.lastName}.pdf`, templateRef,
       {
@@ -121,6 +147,7 @@ export default function answerHook() {
     fetchManyAnswerForEvent,
     fetchManyAnswerForManyEvent,
     downloadAnswer,
+    raiseAnswer,
     areAnswersType,
   }
 }

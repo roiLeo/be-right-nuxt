@@ -8,7 +8,6 @@ export const useUiStore = defineStore(EntitiesEnum.UI, {
   state: () => ({ ...uiState }),
   getters: {
     getUIState: state => state,
-    getUiIsLoading: state => state.modal.isLoading,
     getUiModalState: state => state.modal,
     getUIIsLoading: state => state.isLoading > 0,
     getUiModalData: state => state.modal.data,
