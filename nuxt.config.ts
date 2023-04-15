@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     '@nuxtjs/eslint-module',
     '@pinia-plugin-persistedstate/nuxt',
     'nuxt-typed-router',
+    '@nuxtjs/html-validator',
   ],
 
   build: {
