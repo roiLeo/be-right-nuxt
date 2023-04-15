@@ -37,7 +37,7 @@ const { fetchMany } = groupHook()
 
 const route = useRoute()
 
-const groupId = parseInt(route.params.id.toString())
+const groupId = route.name === 'groupe-show-id' && parseInt(route.params.id.toString())
 
 onMounted(async () => {
   if (groupId && !groupStore.isAlreadyInStore(groupId)) {

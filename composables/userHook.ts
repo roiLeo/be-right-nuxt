@@ -19,8 +19,6 @@ export default function userHook() {
 
   const { IncLoading, DecLoading } = useUiStore()
 
-  const router = useRouter()
-
   async function fetchOne(userId: number) {
     try {
       IncLoading()
@@ -158,21 +156,6 @@ export default function userHook() {
 
   function isArrayUserType(users: any[]): users is UserType[] {
     return users?.every(isUserType)
-  }
-
-  /**
-   * redirection based on current user's role in store
-   */
-  function redirectBaseOneCurrentUserRole(user: UserType) {
-    if (user && router) {
-      if (user.roles === RoleEnum.ADMIN) {
-        router.push({ name: 'admin.events' })
-      } else {
-        router.push({ name: 'user.events' })
-      }
-    } else {
-      router.push({ name: 'login' })
-    }
   }
 
   async function postPhotographer(photographer: PhotographerCreatePayload) {

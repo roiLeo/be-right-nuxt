@@ -100,7 +100,7 @@ const answerStore = useAnswerStore()
 const route = useRoute()
 const { setUiModal } = useUiStore()
 
-const answerId = parseInt(route.params.id.toString())
+const answerId = route.name === 'evenement-answer-download-id' && parseInt(route.params.id.toString())
 const answer = answerStore.getOne(answerId)
 const employee = employeeStore.getOne(answer.employeeId)
 const event = eventStore.getOne(answer.eventId)

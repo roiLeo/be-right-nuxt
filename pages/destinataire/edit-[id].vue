@@ -25,7 +25,7 @@ const uiStore = useUiStore()
 const { fetchOne: fetchOneEvent } = employeeHook()
 const { fetchOne: fetchOneAddress } = addressHook()
 
-const employeeId = parseInt(route.params.id.toString())
+const employeeId = route.name === 'destinataire-edit-id' && parseInt(route.params.id.toString())
 
 const employee = computed(() => {
   if (employeeId) {
