@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '@sidebase/nuxt-pdf',
     '@nuxtjs/eslint-module',
     '@pinia-plugin-persistedstate/nuxt',
+    'nuxt-typed-router',
   ],
 
   build: {

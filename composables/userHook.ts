@@ -208,7 +208,6 @@ export default function userHook() {
     isUserType,
     patchOne,
     postPhotographer,
-    redirectBaseOneCurrentUserRole,
     storeUsersEntities,
   }
 }
