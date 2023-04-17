@@ -44,34 +44,6 @@ export default function notificationHook() {
     DecLoading()
   }
 
-  function getNotifTranslation({
-    type,
-    eventName,
-  }: {
-    type: NotificationTypeEnum
-    eventName?: string
-  }) {
-    switch (type) {
-      case NotificationTypeEnum.EVENT_CREATED:
-        return eventName ? `Événement "${eventName}" créé` : 'Événement créé'
-
-      case NotificationTypeEnum.EVENT_CLOSED:
-        return eventName ? `Événement "${eventName}" terminé` : 'Événement terminé'
-
-      case NotificationTypeEnum.EVENT_COMPLETED:
-        return eventName ? `Événement "${eventName}" complété` : 'Événement complété'
-
-      case NotificationTypeEnum.ANSWER_RESPONSE_ACCEPTED:
-        return eventName ? `Réponse "${eventName}" acceptée` : 'Réponse acceptée'
-
-      case NotificationTypeEnum.ANSWER_RESPONSE_REFUSED:
-        return eventName ? `Réponse "${eventName}" refusée` : 'Réponse refusée'
-
-      default:
-        break
-    }
-  }
-
   function getDateDisplayedNotification(notification: NotificationType) {
     const { readAt, createdAt } = notification
     const now = dayjs()
@@ -176,7 +148,6 @@ export default function notificationHook() {
   return {
     fetchUserNotifications,
     fetchUserNotificationsAndRelations,
-    getNotifTranslation,
     getDateDisplayedNotification,
     getTranslationNotificationType,
     patchAsRead,

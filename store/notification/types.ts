@@ -23,6 +23,8 @@ export interface EventNotificationType extends BaseEntity {
 
 export interface NotificationType extends BaseEntity {
   type: NotificationTypeEnum
+  title: string | null
+  description: string | null
   readAt: Date | null
   subscriber?: NotificationSubscriptionType
   subscriberId: number | null

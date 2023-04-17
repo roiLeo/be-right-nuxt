@@ -4,10 +4,7 @@
     {{ notification.id }}
   </td>
   <td class="py-4 pl-4 text-sm font-medium text-gray-900 truncate whitespace-nowrap">
-    {{ getNotifTranslation({
-      type: notification.type,
-      eventName: getEvent?.name,
-    }) }}
+    {{ notification.title }}
   </td>
   <td class="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
     {{ $toFormat(notification.createdAt, 'D/MM/YY') }}
@@ -42,7 +39,6 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { getNotifTranslation } = notificationHook()
 const eventStore = useEventStore()
 const answerStore = useAnswerStore()
 
