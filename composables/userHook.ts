@@ -171,9 +171,9 @@ export default function userHook() {
     }
   }
 
-  async function getPhotographerUserWorkedWith(userId: number) {
+  async function getPhotographerUserWorkedWith() {
     try {
-      const { data, success } = await $api().get<UserType[]>(`user/partners/${userId}`)
+      const { data, success } = await $api().get<UserType[]>('user/partners')
       if (data && success) {
         const partners = data.filter(user => !userStore.isAlreadyInStore(user.id))
         userStore.addMany(partners)

@@ -80,7 +80,7 @@ onMounted(async () => {
     if (missingsEmployeeIds?.length > 0) {
       await fetchMany(missingsEmployeeIds)
     }
-    await getPhotographerUserWorkedWith(companyStore.getAuthCompany?.id)
+    await getPhotographerUserWorkedWith()
   }
   DecLoading()
 })
