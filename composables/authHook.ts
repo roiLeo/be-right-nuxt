@@ -1,11 +1,20 @@
 // import { useCookies } from 'vue3-cookies'
-import type { JWTDecodedType, ValidationRequest } from '@/types'
+import { useJwt } from '@vueuse/integrations/useJwt'
+import type { JwtPayload } from 'jsonwebtoken'
+import type { ValidationRequest } from '@/types'
 import { RoleEnum } from '@/types'
 import {
+  useAddressStore,
+  useAnswerStore,
   useAuthStore,
+  useCompanyStore,
   useEmployeeStore,
   useEventStore,
   useFileStore,
+  useFormStore,
+  useGroupStore,
+  useNotificationsStore,
+  useNotificationsSubscriptionStore,
   useTableStore,
   useUiStore,
   useUserStore,
@@ -14,22 +23,35 @@ import {
 export default function authHook() {
   const { $toast, $api } = useNuxtApp()
 
+  const addressStore = useAddressStore()
+  const answerStore = useAnswerStore()
   const userStore = useUserStore()
+  const companyStore = useCompanyStore()
+  const notificationStore = useNotificationsStore()
+  const notificationSubscriptionStore = useNotificationsSubscriptionStore()
   const employeeStore = useEmployeeStore()
   const eventStore = useEventStore()
   const fileStore = useFileStore()
+  const formStore = useFormStore()
+  const groupStore = useGroupStore()
   const tableStore = useTableStore()
   const uiStore = useUiStore()
   const router = useRouter()
   const { resetAuthState } = useAuthStore()
 
   function logout() {
-    // api.deleteCredentials()
-    // TODO add deletecredentials functions
+    $api().deleteCredentials()
 
+    addressStore.resetState()
+    answerStore.resetState()
+    companyStore.$reset()
     employeeStore.resetState()
     eventStore.resetState()
     fileStore.resetState()
+    formStore.resetState()
+    groupStore.resetState()
+    notificationStore.$reset()
+    notificationSubscriptionStore.$reset()
     tableStore.resetTableState()
     uiStore.resetUIState()
     userStore.resetState()
@@ -48,20 +70,12 @@ export default function authHook() {
     return data
   }
 
-  function jwtDecode(jwt: any): JWTDecodedType | null {
-    if (typeof jwt !== 'string' && !(jwt instanceof String))
-      return null
-
-    const splitted = jwt.split('.')
-    if (splitted.length < 2)
-      return null
-
-    const obj1 = JSON.parse(window.atob(splitted[0]))
-    const obj2 = JSON.parse(window.atob(splitted[1]))
-    return Object.assign({}, obj1, obj2)
+  function jwtDecode(jwt: Ref<string>) {
+    const { payload } = useJwt(jwt)
+    return payload
   }
 
-  function isJWTUserAdmin(user: JWTDecodedType) {
+  function isJWTUserAdmin(user: JwtPayload) {
     return user?.roles.includes(RoleEnum.ADMIN)
   }
 

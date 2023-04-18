@@ -7,6 +7,8 @@ enum FetchMethods {
 }
 
 interface ApiMethods {
+  setCredentials: (token: string) => void
+  deleteCredentials: () => void
   get: <T>(path: string) => Promise<FetchWrapperResponse<T>>
   post: <T>(path: string, data?: any) => Promise<FetchWrapperResponse<T>>
   patch: <T>(path: string, data: any) => Promise<FetchWrapperResponse<T>>
@@ -45,6 +47,10 @@ export class FetchWrapper implements ApiMethods {
 
   setCredentials(token: string) {
     this.token = token
+  }
+
+  deleteCredentials() {
+    this.token = undefined
   }
 
   private buildBody(body: BodyInit | null | undefined, isFileRequest?: boolean) {

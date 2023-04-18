@@ -109,11 +109,11 @@ async function submitLogin(form: VeeValidateValues) {
         storeCompanyEntities(company)
         storeUsersEntities(user, false)
         cookieToken.value = user.token
-        const decode = jwtDecode(user.token)
+        const decode = jwtDecode(ref(user.token))
         setToken(user.token)
 
-        if (decode) {
-          setJWTasUser(decode)
+        if (decode.value) {
+          setJWTasUser(decode.value)
         }
         $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
         router.replace({

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { noNull, notUndefined } from '@antfu/utils'
+import type { JwtPayload } from 'jsonwebtoken'
 import { defaultAuthState, state } from './state'
-import type { JWTDecodedType } from '@/types'
 import { RoleEnum } from '@/types'
 
 export const useAuthStore = defineStore('auth', {
@@ -29,7 +29,7 @@ export const useAuthStore = defineStore('auth', {
   },
 
   actions: {
-    setJWTasUser(payload: JWTDecodedType) {
+    setJWTasUser(payload: JwtPayload) {
       this.user = payload
     },
 

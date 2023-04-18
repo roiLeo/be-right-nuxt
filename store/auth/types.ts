@@ -1,6 +1,6 @@
-import type { JWTDecodedType } from '@/types'
+import type { JwtPayload } from 'jsonwebtoken'
 
 export interface State {
-  user: null | JWTDecodedType
+  user: null | JwtPayload
   token: null | string
 }
