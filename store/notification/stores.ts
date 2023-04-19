@@ -63,5 +63,18 @@ export const useNotificationsStore = defineStore('notification', {
         this.entities.allIds.push(notif.id)
       })
     },
+
+    updateOneNotification(id: number, data: Partial<NotificationType>) {
+      if (this.entities.byId[id] !== null || this.entities.byId[id] !== undefined) {
+        this.entities.byId[id] = {
+          ...this.entities.byId[id],
+          ...data,
+        }
+      }
+    },
+
+    updateManyNotifications(notifs: NotificationType[]) {
+      notifs.forEach(notif => this.updateOneNotification(notif.id, notif))
+    },
   },
 })

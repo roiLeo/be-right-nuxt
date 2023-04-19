@@ -15,13 +15,16 @@
   </td>
   <td class="flex items-center justify-end py-4 pl-3 pr-4 space-x-2 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
     <BaseButton
-      :href="getLinkPath"
+      :to="getLinkPath"
     >
       Voir
     </BaseButton>
     <BaseButton
-      :disabled="noNull(notification.readAt)"
+      v-if="!notification.readAt"
       color="green"
+      :is-loading="uiStore.getUIIsLoading"
+      :disabled="uiStore.getUIIsLoading"
+      @click="patchAsRead([notification.id])"
     >
       Marquer comme vue
     </BaseButton>
@@ -30,8 +33,9 @@
 </template>
 
 <script setup lang="ts">
+import BaseButton from '~/components/Base/BaseButton.vue'
 import type { NotificationType } from '~~/store'
-import { useAnswerStore, useEventStore } from '~~/store'
+import { useAnswerStore, useUiStore } from '~~/store'
 
 interface Props {
   notification: NotificationType
@@ -39,8 +43,8 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const eventStore = useEventStore()
 const answerStore = useAnswerStore()
+const uiStore = useUiStore()
 
 const getLinkPath = computed(() => {
   if (props.notification.eventNotification?.eventId) {
@@ -64,13 +68,5 @@ const getLinkPath = computed(() => {
   }
 })
 
-const getEvent = computed(() => {
-  if (props.notification.eventNotification?.eventId) {
-    return eventStore.getOne(props.notification.eventNotification?.eventId)
-  }
-  if (props.notification.eventNotification?.answerId) {
-    const answer = answerStore.getOne(props.notification.eventNotification?.answerId)
-    return eventStore.getOne(answer?.eventId)
-  }
-})
+const { patchAsRead } = notificationHook()
 </script>

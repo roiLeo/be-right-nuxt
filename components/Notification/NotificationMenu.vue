@@ -88,7 +88,7 @@ const getEventNotif = (notif: NotificationType) => computed(() => {
 
 async function markAllAsRead() {
   const noReadNotificationIds = notifications.value
-    .filter(notif => noNull(notif.readAt) && noUndefined(notif.readAt))
+    .filter(notif => !notif.readAt)
     .map(notif => notif.id)
 
   if (noReadNotificationIds?.length > 0) {

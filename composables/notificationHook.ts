@@ -25,7 +25,7 @@ export default function notificationHook() {
   const eventStore = useEventStore()
   const answerStore = useAnswerStore()
   const notificationStore = useNotificationsStore()
-  const { addMany: addManyNotifications, updateMany } = notificationStore
+  const { addMany: addManyNotifications, updateManyNotifications } = notificationStore
 
   const { fetchMany: fetchManyAnswers } = answerHook()
   const { fetchMany: fetchManyEvents } = eventHook()
@@ -69,7 +69,7 @@ export default function notificationHook() {
         const { success, data } = await $api().patch<NotificationType[]>(`notifications/readMany?ids=${notificationIds.join(',')}`, [])
 
         if (data?.length) {
-          updateMany(data)
+          updateManyNotifications(data)
         }
         if (success) {
           $toast.success('Notifications marquées comme lues')
