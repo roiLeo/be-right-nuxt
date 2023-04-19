@@ -263,6 +263,7 @@ export default function eventHook() {
         .map(answer => answer.employeeId)).forEach(emp => missingAddressIds.push(emp.addressId))
 
       const uniqAddressIds = uniq(missingAddressIds).filter(id => !addressStore.isAlreadyInStore(id))
+
       if (uniqAddressIds?.length > 0) {
         await fetchManyAddress(uniqAddressIds)
       }
