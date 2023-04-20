@@ -26,6 +26,7 @@
     <BaseButton
       :disabled="!meta.valid || !meta.dirty || isSubmitting"
       type="submit"
+      title="S'abonner à la newletter"
       :is-loading="uiStore.getUIIsLoading || isSubmitting"
     >
       Prévenez-moi

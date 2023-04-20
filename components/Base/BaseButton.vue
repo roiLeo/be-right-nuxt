@@ -4,6 +4,8 @@
   v-bind="$attrs"
   :disabled="disabled"
   :aria-disabled="disabled"
+  :aria-label="title"
+  :title="title"
   :to="href"
   class="flex justify-center px-4 py-2 text-sm font-medium transition duration-300 ease-in-out transform border border-transparent rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 hover:-translate-y-1 hover:scale-105 font-link"
   :class="[
@@ -23,7 +25,7 @@
   >
     <slot name="icon" />
   </span>
-  <div
+  <span
     v-if="isLoading"
     class="flex items-center justify-center w-full h-full"
   >
@@ -47,7 +49,7 @@
         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
       />
     </svg>
-  </div>
+  </span>
   <template v-else>
     <slot />
   </template>
@@ -59,6 +61,8 @@
   :type="type"
   :disabled="disabled"
   :aria-disabled="disabled"
+  :aria-label="title"
+  :title="title"
   class="flex items-center justify-center px-4 py-2 text-sm font-medium transition duration-300 ease-in-out transform border border-transparent rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 hover:-translate-y-1 hover:scale-105"
   :class="[
     colorClasses,
@@ -70,15 +74,15 @@
   ]"
   @click="onClick($event)"
 >
-  <div
+  <span
     v-if="$slots.icon"
     class="w-6 h-6"
     :class="[!$slots.default ? '-mr-2' : 'mr-2']"
   >
     <slot name="icon" />
-  </div>
-  <div class="flex items-center justify-center">
-    <div
+  </span>
+  <span class="flex items-center justify-center">
+    <span
       v-if="isLoading"
       class="flex items-center justify-center w-full h-full"
     >
@@ -102,11 +106,11 @@
           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
         />
       </svg>
-    </div>
+    </span>
     <template v-else>
       <slot />
     </template>
-  </div>
+  </span>
 </component>
 </template>
 
@@ -138,6 +142,7 @@ interface Props {
   variant?: 'default' | 'social'
   color?: 'purple' | 'white' | 'red' | 'green' | 'blue'
   isLoading?: boolean
+  title?: string
 }
 
 const colorClasses = computed(() => {
