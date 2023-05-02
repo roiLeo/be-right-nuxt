@@ -149,10 +149,10 @@ const colorClasses = computed(() => {
   let textColorClass = 'text-white'
   let backgroundClass = `bg-${props.color}-500`
   if (props.color === 'purple') {
-    backgroundClass = 'bg-blue'
+    backgroundClass = 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600'
   }
 
-  if (props.color === 'white' || !['red', 'green'].includes(props.color)) {
+  if (props.color === 'white' || !['red', 'green', 'purple'].includes(props.color)) {
     textColorClass = 'text-blue'
     backgroundClass = 'bg-white'
   }

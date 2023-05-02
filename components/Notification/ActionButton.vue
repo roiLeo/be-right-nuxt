@@ -33,7 +33,6 @@
             @click="patchAsRead([notificationId])"
           >
             <PencilSquareIconOutline
-              :active="active"
               class="w-5 h-5 mr-2 text-violet-400"
               aria-hidden="true"
             />
@@ -51,7 +50,6 @@
             @click="patchAsRead([notificationId])"
           >
             <CheckBadgeIconOutline
-              :active="active"
               class="w-5 h-5 mr-2 text-green-400"
               aria-hidden="true"
             />

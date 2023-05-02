@@ -13,6 +13,7 @@
     :class="[getBorderClasses(errors, meta),
              { disabled: 'cursor-not-allowed' },
     ]"
+    :title="label || placeholder"
     @click.stop="onWrapperClick"
   >
     <input
