@@ -19,7 +19,7 @@ const { fetchEventWithRelations } = eventHook()
 
 const route = useRoute()
 
-const eventId = parseInt(route.params.id.toString())
+const eventId = route.name === 'evenement-show-id' && parseInt(route.params.id.toString())
 
 onMounted(async () => {
   if (eventId) {

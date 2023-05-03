@@ -1,11 +1,11 @@
 <template>
 <section class="py-8 bg-white dark:bg-blue-dark_bold DarkModeAnimation">
   <div class="container max-w-5xl m-8 mx-auto">
-    <h1
+    <h2
       class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800 dark:text-white"
     >
       <span class="text-red-light">Be right</span>, comment ça marche ?
-    </h1>
+    </h2>
     <div class="w-full mb-4 dark:hidden">
       <div class="w-64 h-1 py-0 mx-auto my-0 rounded-t opacity-25 gradient bg-red dark:bg-blue" />
     </div>

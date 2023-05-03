@@ -4,12 +4,12 @@
   class="py-8 DarkModeAnimation"
 >
   <div class="container px-2 pt-4 pb-12 mx-auto text-gray-800">
-    <h1
+    <h2
       class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800 dark:text-gray-50"
     >
       Choisissez votre
       <span class="text-red-light">Abonnement</span>
-    </h1>
+    </h2>
     <div class="w-full mb-4">
       <div class="w-64 h-1 py-0 mx-auto my-0 rounded-t opacity-25 gradient" />
     </div>

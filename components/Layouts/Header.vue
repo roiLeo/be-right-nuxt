@@ -56,9 +56,9 @@
         <div class="w-10 h-10 border-4 rounded-full border-red">
           <div class="w-4 h-4 m-2 rounded-full bg-red-light" />
         </div>
-        <h1 class="text-xl font-bold">
+        <p class="text-xl font-bold">
           Be Right
-        </h1>
+        </p>
       </NuxtLink>
 
       <Menu
@@ -111,6 +111,7 @@
               >
                 <BaseButton
                   :href="getButtonPath"
+                  :title="authStore.getIsLoggedIn ? 'Mon compte' : 'Commencer'"
                 >
                   {{ authStore.getIsLoggedIn ? 'Mon compte' : 'Commencer' }}
                 </BaseButton>

@@ -9,9 +9,9 @@
     alt="mokup"
   >
   <div class="flex flex-wrap pt-4 pb-12 mx-auto md:container">
-    <h1 class="w-full my-2 mb-6 text-5xl font-bold leading-tight text-gray-800 dark:text-white">
+    <h2 class="w-full my-2 mb-6 text-5xl font-bold leading-tight text-gray-800 dark:text-white">
       <span class="text-red-light">Be right</span>, qu'est ce que c'est ?
-    </h1>
+    </h2>
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
       <div
         class="w-full p-6 px-12 text-left duration-300 ease-in-out transform hover:-translate-y-2"

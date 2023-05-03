@@ -25,7 +25,7 @@ export default function notificationHook() {
   const eventStore = useEventStore()
   const answerStore = useAnswerStore()
   const notificationStore = useNotificationsStore()
-  const { addMany: addManyNotifications, updateMany } = notificationStore
+  const { addMany: addManyNotifications, updateManyNotifications } = notificationStore
 
   const { fetchMany: fetchManyAnswers } = answerHook()
   const { fetchMany: fetchManyEvents } = eventHook()
@@ -42,34 +42,6 @@ export default function notificationHook() {
       console.error(error)
     }
     DecLoading()
-  }
-
-  function getNotifTranslation({
-    type,
-    eventName,
-  }: {
-    type: NotificationTypeEnum
-    eventName?: string
-  }) {
-    switch (type) {
-      case NotificationTypeEnum.EVENT_CREATED:
-        return eventName ? `Événement "${eventName}" créé` : 'Événement créé'
-
-      case NotificationTypeEnum.EVENT_CLOSED:
-        return eventName ? `Événement "${eventName}" terminé` : 'Événement terminé'
-
-      case NotificationTypeEnum.EVENT_COMPLETED:
-        return eventName ? `Événement "${eventName}" complété` : 'Événement complété'
-
-      case NotificationTypeEnum.ANSWER_RESPONSE_ACCEPTED:
-        return eventName ? `Réponse "${eventName}" acceptée` : 'Réponse acceptée'
-
-      case NotificationTypeEnum.ANSWER_RESPONSE_REFUSED:
-        return eventName ? `Réponse "${eventName}" refusée` : 'Réponse refusée'
-
-      default:
-        break
-    }
   }
 
   function getDateDisplayedNotification(notification: NotificationType) {
@@ -97,7 +69,7 @@ export default function notificationHook() {
         const { success, data } = await $api().patch<NotificationType[]>(`notifications/readMany?ids=${notificationIds.join(',')}`, [])
 
         if (data?.length) {
-          updateMany(data)
+          updateManyNotifications(data)
         }
         if (success) {
           $toast.success('Notifications marquées comme lues')
@@ -176,7 +148,6 @@ export default function notificationHook() {
   return {
     fetchUserNotifications,
     fetchUserNotificationsAndRelations,
-    getNotifTranslation,
     getDateDisplayedNotification,
     getTranslationNotificationType,
     patchAsRead,

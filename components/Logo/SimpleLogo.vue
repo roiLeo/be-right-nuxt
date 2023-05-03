@@ -8,9 +8,9 @@
       <div class="w-4 h-4 rounded-full bg-red-light" />
     </div>
   </div>
-  <h1 class="ml-2 text-3xl font-bold text-black dark:text-white">
+  <p class="ml-2 text-3xl font-bold text-black dark:text-white">
     BeRight
-  </h1>
+  </p>
 </div>
 </template>
 

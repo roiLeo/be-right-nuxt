@@ -10,10 +10,7 @@
       />
       <div>
         <p class="text-sm">
-          {{ getNotifTranslation({
-            type: notification.type,
-            eventName: event?.name,
-          }) }}
+          {{ notification.title }}
         </p>
         <p class="mt-1 text-xs text-gray-400 font-font-extralight">
           {{ getDateDisplayedNotification(notification) }}
@@ -40,7 +37,6 @@ interface Props {
 defineProps<Props>()
 
 const {
-  getNotifTranslation,
   getDateDisplayedNotification,
 } = notificationHook()
 </script>

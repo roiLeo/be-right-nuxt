@@ -1,8 +1,23 @@
 <template>
-<NuxtLayout>
-  <NuxtPage />
-</NuxtLayout>
+<Html dir="ltr">
+  <Head>
+    <SeoKit />
+    <SchemaOrgPerson
+      name="Be Right"
+      image="/static/photographer.webp"
+    />
+  </Head>
+
+  <Body>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </Body>
+</Html>
 </template>
+
+<script setup lang="ts">
+</script>
 
 <style>
 .page-enter-active,.page-leave-active {

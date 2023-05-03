@@ -174,7 +174,6 @@ const { IncLoading, DecLoading, resetUiModalState } = uiStore
 const { postMany: postManyAnswers } = answerHook()
 const { patchOne: patchOneAddress, postOne: postOneAddress } = addressHook()
 const { patchOne: patchOneEvent } = eventHook()
-const { isUserType } = userHook()
 
 const isEditMode = computed(() => props.mode === ModalModeEnum.EDIT)
 const event = computed(() => props.eventId ? eventStore.getOne(props.eventId) : null)
@@ -253,7 +252,7 @@ async function submit(form: VeeValidateValues) {
     if (formValues.userId) {
       setEventForm(payload.event as Partial<BaseEventFormType>)
       router.push({
-        name: 'evenement-create',
+        name: 'evenement-creer',
         query: { step: 'address' },
       })
     }

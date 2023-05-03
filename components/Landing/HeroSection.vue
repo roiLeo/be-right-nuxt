@@ -15,6 +15,8 @@
         Commencez maintenant avec un mois gratuit.
       </p>
       <button
+        type="button"
+        title="commencer"
         class="hidden px-8 py-4 mx-auto my-6 font-bold text-gray-800 transition duration-300 ease-in-out transform bg-white rounded-full shadow-lg ms:block lg:mx-0 hover:underline focus:outline-none focus:shadow-outline hover:-translate-y-2 hover:scale-105"
         href="#Newsletter"
       >

@@ -1,6 +1,6 @@
+import type { JwtPayload } from 'jsonwebtoken'
 import { verify } from 'jsonwebtoken'
 import { useAuthStore } from '~~/store'
-import type { JWTDecodedType } from '~~/types'
 
 export default defineNuxtPlugin(async () => {
   let apiUrl: string | null = null
@@ -42,9 +42,9 @@ export default defineNuxtPlugin(async () => {
         setToken(user.token)
         storeUsersEntities(user, false)
 
-        const decoded = verify(user.token, process.env.JWT_SECRET) as JWTDecodedType
+        const decoded = verify(user.token, process.env.JWT_SECRET)
         if (decoded) {
-          setJWTasUser(decoded)
+          setJWTasUser(decoded as JwtPayload)
           const router = useRouter()
           const route = useRoute()
 

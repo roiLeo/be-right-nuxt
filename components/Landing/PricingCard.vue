@@ -34,6 +34,8 @@
   >
     <div class="flex items-center justify-center">
       <button
+        type="button"
+        title="Commencer"
         class="px-8 py-4 mx-auto my-6 font-bold text-black transition duration-300 ease-in-out transform rounded-full shadow-lg lg:mx-0 gradient DarlModeAnimation focus:outline-none focus:shadow-outline hover:scale-105"
         :class="[
           { 'bg-white': isDark },
