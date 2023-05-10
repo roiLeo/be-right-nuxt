@@ -3,7 +3,7 @@
   id="Newsletter"
   class="flex flex-col items-center py-6 mx-auto mb-8 space-y-4 text-center dark:bg-blue-dark dark:text-white DarkModeAnimation"
 >
-  <h3 class="text-3xl leading-tight">
+  <h3 class="text-2xl leading-tight md:text-3xl">
     Restez informé des dernières nouveautés!
   </h3>
   <h4 class="text-gray-500">

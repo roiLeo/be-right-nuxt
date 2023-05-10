@@ -66,7 +66,11 @@
         class="relative inline-block text-left md:hidden"
       >
         <div>
-          <MenuButton class="inline-flex justify-center w-full">
+          <MenuButton
+            as="button"
+            aria-label="Menu"
+            class="inline-flex justify-center w-full"
+          >
             <Bars3IconOutline class="h-16 text-gray-800 dark:text-gray-100" />
           </MenuButton>
         </div>

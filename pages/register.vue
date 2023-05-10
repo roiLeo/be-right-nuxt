@@ -1,26 +1,25 @@
 <template>
-<div class="container grid grid-cols-1 gap-4 px-8 py-8 md:container-lg md:grid-cols-2 lg:grid-cols-3">
-  <Form
-    v-slot="{ meta, isSubmitting }"
-    :validation-schema="schema"
-    :initial-values="initialValues"
-    class="flex flex-col items-center h-full lg:col-span-2"
-    @submit="submitregister"
-  >
-    <div class="mt-10 mb-6">
-      <h1 class="text-black dark:text-white">
-        Bienvenue sur
+<Form
+  v-slot="{ meta, isSubmitting }"
+  :validation-schema="schema"
+  :initial-values="initialValues"
+  class="container mx-auto md:grid md:gap-12 md:mt-16 md:grid-cols-2"
+  @submit="submitregister"
+>
+  <div class="flex flex-col mx-auto space-y-12 md:max-w-1/2">
+    <div class="mt-4 md:mt-0">
+      <h1 class="text-3xl font-bold leading-tight text-center text-gray-800 md:text-5xl md:text-left dark:text-white">
+        Inscription
       </h1>
-      <LogoSimpleLogo />
     </div>
 
-    <div class="container grid grid-cols-1 gap-6 text-left md:grid-cols-2">
+    <div class="px-4 space-y-4 text-left md:space-y-0 md:px-0 md:grid md:gap-6 md:grid-cols-2">
       <BaseRadio
         :id="RoleEnum.PHOTOGRAPHER"
         :value="RoleEnum.PHOTOGRAPHER"
         name="roles"
       >
-        je suis un photographe ou agence de photographie
+        je suis un photographe
       </BaseRadio>
       <BaseRadio
         :id="RoleEnum.OWNER"
@@ -30,7 +29,7 @@
         je suis une enteprise ou un particulier
       </BaseRadio>
 
-      <div class="col-span-2">
+      <div class="space-y-4 md:col-span-2">
         <BaseInput
           label="Nom de l'entreprise"
           name="companyName"
@@ -40,27 +39,29 @@
         />
       </div>
 
-      <BaseInput
-        class="col-span-2"
-        label="Prénom"
-        name="firstName"
-        type="text"
-        autocomplete="firstName"
-        is-required
-      />
+      <div class="space-y-4">
+        <BaseInput
+          label="Prénom"
+          name="firstName"
+          type="text"
+          autocomplete="firstName"
+          is-required
+        />
+      </div>
 
-      <BaseInput
-        class="col-span-2"
-        label="Nom"
-        name="lastName"
-        type="text"
-        autocomplete="lastName"
-        is-required
-      />
+      <div class="space-y-4">
+        <BaseInput
+          label="Nom"
+          name="lastName"
+          type="text"
+          autocomplete="lastName"
+          is-required
+        />
+      </div>
 
       <div class="col-span-2 space-y-4">
         <BaseInput
-          class="col-span-2"
+          class="md:col-span-2"
           label="Adresse email"
           name="email"
           type="email"
@@ -94,16 +95,17 @@
         </NuxtLink>
       </div>
     </div>
-  </Form>
-
-  <div class="items-center hidden md:flex">
-    <img
-      class="hidden object-cover w-2/3 max-w-5xl shadow-2xl TranslateUpAnimation cursor-none md:block"
-      src="/static/camera.webp"
-      alt="camera picture"
-    >
   </div>
-</div>
+
+  <nuxt-img
+    class="hidden object-cover max-w-5xl shadow-2xl lg:w-2/3 md:max-w-full md:block TranslateUpAnimation cursor-none"
+    src="/static/camera.webp"
+    width="1577"
+    height="1920"
+    sizes="xs:200px md:500px lg:1024"
+    alt="Objectif d'appareil photo"
+  />
+</Form>
 </template>
 
 <script setup lang="ts">
@@ -126,7 +128,7 @@ const { IncLoading, DecLoading } = uiStore
 
 const schema = object({
   companyName: string().required('Nom de l\'entreprise est requis').label('Nom de l\'entreprise'),
-  email: string().email('vous devez entrer in email valide').required().label('Adresse email'),
+  email: string().email('vous devez entrer in email valide').required('L\'adresse email est requise'),
   password: string()
     .min(8, 'Le mot de passe doit contenir au moins 8 caratères')
     .required('Le mot de passe est requis')

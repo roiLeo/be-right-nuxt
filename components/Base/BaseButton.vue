@@ -59,6 +59,7 @@
   v-else
   v-bind="$attrs"
   :type="type"
+  role="button"
   :disabled="disabled"
   :aria-disabled="disabled"
   :aria-label="title"
@@ -128,6 +129,7 @@ const props = withDefaults(defineProps<Props>(), {
   variant: 'default',
   href: null,
   isLoading: false,
+  title: 'Cliquez',
 })
 
 const emit = defineEmits<{

@@ -1,5 +1,8 @@
 <template>
-<Html dir="ltr">
+<Html
+  dir="ltr"
+  lang="fr"
+>
   <Head>
     <SeoKit />
     <SchemaOrgPerson
