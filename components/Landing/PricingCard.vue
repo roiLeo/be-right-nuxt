@@ -11,12 +11,12 @@
   >
     <div
       class="relative py-8 text-3xl font-bold text-left"
-      :class="{ 'text-blue': isDark }"
+      :class="{ 'text-white': isDark }"
     >
       {{ title }}
       <div
         v-if="nbFreeMonth"
-        class="absolute top-0 right-0 px-2 py-3 text-sm text-white rounded-b-lg bg-red-light"
+        class="absolute top-0 right-0 px-2 py-3 text-sm text-white bg-red-500 rounded-b-lg"
       >
         {{ nbFreeMonth }} mois gratuit
       </div>
@@ -33,17 +33,17 @@
     class="flex-none p-6 mt-auto rounded-t-none rounded-b"
   >
     <div class="flex items-center justify-center">
-      <button
+      <NuxtLink
         type="button"
         title="Commencer"
         class="px-8 py-4 mx-auto my-6 font-bold text-black transition duration-300 ease-in-out transform rounded-full shadow-lg lg:mx-0 gradient DarlModeAnimation focus:outline-none focus:shadow-outline hover:scale-105"
         :class="[
           { 'bg-white': isDark },
         ]"
-        href="#Newsletter"
+        :to="{ name: 'register' }"
       >
         Commencez
-      </button>
+      </NuxtLink>
     </div>
   </div>
 </div>

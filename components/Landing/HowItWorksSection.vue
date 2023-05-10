@@ -13,13 +13,14 @@
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
       <div class="p-4 md:p-0">
         <div class="hidden md:block">
-          <img
+          <nuxt-img
             class="w-24"
             src="/static/step1.svg"
-            alt="step1"
+            alt="étape 1"
             height="100px"
             width="100px"
-          >
+            sizes="xs:200px md:500px lg:1024"
+          />
         </div>
 
         <div class>
@@ -39,11 +40,14 @@
 
       <div class="p-4 md:p-0">
         <div class="hidden md:block">
-          <img
-            class="w-28"
+          <nuxt-img
+            class="w-24"
             src="/static/step2.svg"
-            alt="step2"
-          >
+            alt="étape 2"
+            height="100px"
+            width="100px"
+            sizes="xs:200px md:500px lg:1024"
+          />
         </div>
         <div class>
           <div class="p-2 align-middle">
@@ -63,11 +67,14 @@
 
       <div class="p-4 md:p-0">
         <div class="hidden md:block">
-          <img
-            class="w-28"
+          <nuxt-img
+            class="w-24"
             src="/static/step3.svg"
-            alt="step3"
-          >
+            alt="étape 3"
+            height="100px"
+            width="100px"
+            sizes="xs:200px md:500px lg:1024"
+          />
         </div>
         <div class>
           <div class="align-middle">
