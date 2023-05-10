@@ -1,12 +1,6 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
   "extends": "./.nuxt/tsconfig.json",
-  // "compilerOptions": {
-  //   "types": [
-  //     // "@nuxt/types",
-  //     "@nuxt/image"
-  //   ]
-  // },
   "exclude": [
     "node_modules"
   ]
