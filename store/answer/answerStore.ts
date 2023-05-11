@@ -19,6 +19,13 @@ export const useAnswerStore = defineStore('answers', {
     getManyByEmployeeId(state) {
       return (employeeId: number) => Object.values(state.entities.byId).filter(answer => answer.employeeId === employeeId)
     },
+
+    canAnswersBeDownload(state) {
+      return (eventId: number) => Object.values(state.entities.byId).filter(answer =>
+        answer.eventId === eventId
+        && answer.signedAt
+        && answer.hasSigned)?.length > 0
+    },
   },
 
   actions: {

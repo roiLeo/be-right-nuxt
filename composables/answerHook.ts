@@ -1,4 +1,5 @@
 import { hasOwnProperty, uniq } from '@antfu/utils'
+import dayjs from 'dayjs'
 import type { ActionResponse, ErrorResponse, ResponseAnswerSignature } from '~/types/Payload'
 import type { AnswerType, EmployeeType } from '~~/store'
 import { useAnswerStore, useUiStore } from '~~/store'
@@ -201,8 +202,17 @@ export default function answerHook() {
     DecLoading()
   }
 
+  function canAnswerBeRaise(answer: AnswerType): boolean {
+    if (answer.mailSendAt) {
+      const now = dayjs().subtract(5, 'day')
+      return dayjs(answer.mailSendAt).isBefore(now)
+    }
+    return true
+  }
+
   return {
     areAnswersType,
+    canAnswerBeRaise,
     downloadAnswer,
     fetchMany,
     fetchManyAnswerForEvent,
