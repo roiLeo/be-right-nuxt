@@ -26,4 +26,13 @@ export interface ErrorResponse {
   stack: string
 }
 
-export interface ResponseAnswerSignature { answer: AnswerType; event: EventType; employee: EmployeeType }
+export interface ResetPasswordData {
+  isSuccess: boolean
+  message: string
+}
+
+export interface ResponseAnswerSignature {
+  answer: AnswerType
+  event: EventType
+  employee: EmployeeType
+}

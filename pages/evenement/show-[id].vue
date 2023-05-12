@@ -10,8 +10,9 @@
 </template>
 
 <script setup lang="ts">
-import { useUiStore } from '~~/store'
+import { useEventStore, useUiStore } from '~~/store'
 
+const eventStore = useEventStore()
 const uiStore = useUiStore()
 const { IncLoading, DecLoading } = uiStore
 
@@ -27,6 +28,10 @@ onMounted(async () => {
     await fetchEventWithRelations(eventId)
     DecLoading()
   }
+})
+
+useHead({
+  title: eventStore.getOne(eventId).name || 'Voir événement',
 })
 
 definePageMeta({

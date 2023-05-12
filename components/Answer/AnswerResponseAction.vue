@@ -24,14 +24,12 @@
     </p>
 
     <BaseButton
-      :color="answer.hasSigned ? 'green' : 'red'"
+      v-if="$getApiUrl && answer.hasSigned"
+      color="green"
       class="ml-4"
-      :href="{
-        name: 'evenement-answer-download-id',
-        params: {
-          id: answer.id,
-        },
-      }"
+      :is-loading="uiStore.getUIIsLoading"
+      title="Télécharger"
+      :href="`${$getApiUrl}answer/download/?ids=${answer.id}`"
     >
       <template #icon>
         <ArrowDownTrayIconOutline
@@ -44,11 +42,13 @@
   </template>
 
   <p
-    v-else
+    v-else-if="canAnswerBeRaise(answer)"
     class="flex items-center mt-2 text-sm text-gray-500"
   >
     <BaseButton
       :disabled="uiStore.getUIIsLoading"
+      :is-loading="uiStore.getUIIsLoading"
+      title="Relancer"
       @click="raise"
     >
       <template #icon>
@@ -71,6 +71,7 @@
 </template>
 
 <script setup lang="ts">
+import BaseButton from '../Base/BaseButton.vue'
 import BaseMessage from '../Base/BaseMessage.vue'
 import type { AnswerType } from '~~/store'
 import { useUiStore } from '~~/store'
@@ -89,7 +90,7 @@ const hasBeenAnswered = computed(() =>
 )
 
 const uiStore = useUiStore()
-const { raiseAnswer } = answerHook()
+const { canAnswerBeRaise, raiseAnswer } = answerHook()
 const responseMessage = ref<null | string>(null)
 const isGreenMessage = ref(false)
 
