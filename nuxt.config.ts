@@ -66,11 +66,11 @@ export default defineNuxtConfig({
         'text-white',
       ],
     }],
+    '@tailvue/nuxt',
   ],
 
   build: {
     transpile: [
-      'vue-toastification',
       'v-calendar',
     ],
   },

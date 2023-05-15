@@ -9,6 +9,9 @@ delete colors.blueGray
 module.exports = {
   mode: 'jit',
   darkMode: 'class',
+  content: [
+    'node_modules/tailvue/dist/tailvue.es.js',
+  ],
   safelist: [
     ...(Object.keys(colors).reduce((acc, name) => {
       acc.push(`bg-${name}-50`)

@@ -20,7 +20,7 @@ export default function groupHook() {
       removeOne(id)
       $toast.success('Groupe à été supprimé avec succès')
     } catch (error) {
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
       console.error(error)
     }
     DecLoading()
@@ -35,7 +35,7 @@ export default function groupHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -54,7 +54,7 @@ export default function groupHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -68,7 +68,7 @@ export default function groupHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -93,7 +93,7 @@ export default function groupHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -109,7 +109,7 @@ export default function groupHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -127,7 +127,7 @@ export default function groupHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -154,7 +154,7 @@ export default function groupHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }

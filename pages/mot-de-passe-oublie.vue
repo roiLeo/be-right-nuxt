@@ -99,7 +99,7 @@ async function onSubmit(form: VeeValidateValues) {
     }
   } catch (error: any) {
     state.submissionErrors.push(error.response.data.error)
-    $toast.error('Une erreur est survenue')
+    $toast.danger('Une erreur est survenue')
   } finally {
     DecLoading()
   }

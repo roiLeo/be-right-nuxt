@@ -29,7 +29,7 @@ export default function newsletterHook() {
         return res.status
       }
     } catch (error) {
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
       console.error(error)
     }
     DecLoading()
@@ -53,7 +53,7 @@ export default function newsletterHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -66,7 +66,7 @@ export default function newsletterHook() {
       $toast.success('Newsletter item supprimé avec succès')
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }

@@ -29,7 +29,7 @@ export default function userHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
   }
 
@@ -68,7 +68,7 @@ export default function userHook() {
         userStore.addMany(data.data)
       }
     } catch (error) {
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
       console.error(error)
     }
     DecLoading()
@@ -81,7 +81,7 @@ export default function userHook() {
       userStore.deleteOne(id)
       $toast.success('Utilisateurs à été supprimé avec succès')
     } catch (error) {
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
       console.error(error)
     }
     DecLoading()
@@ -96,7 +96,7 @@ export default function userHook() {
         $toast.success('Utilisateur à été modifié avec succès')
       }
     } catch (error) {
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
       console.error(error)
     }
     DecLoading()
@@ -144,7 +144,7 @@ export default function userHook() {
         }
       }
     } catch (error) {
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
       console.error(error)
     }
     DecLoading()
@@ -166,7 +166,7 @@ export default function userHook() {
         return data
       }
     } catch (error) {
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
       console.error(error)
     }
   }
@@ -181,7 +181,7 @@ export default function userHook() {
       }
       return []
     } catch (error: any) {
-      $toast.error(error.error as string)
+      $toast.danger(error.error as string)
       console.error(error)
     }
   }

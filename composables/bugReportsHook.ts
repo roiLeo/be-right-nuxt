@@ -24,7 +24,7 @@ export default function bugReportsHook() {
   //     }
   //   } catch (error) {
   //     console.error(error)
-  //     $toast.error('Une erreur est survenue')
+  //     $toast.danger('Une erreur est survenue')
   //   }
   //   DecLoading()
   // }
@@ -44,7 +44,7 @@ export default function bugReportsHook() {
   //     return data
   //   } catch (error) {
   //     console.error(error)
-  //     $toast.error('Une erreur est survenue')
+  //     $toast.danger('Une erreur est survenue')
   //   }
   // }
 
