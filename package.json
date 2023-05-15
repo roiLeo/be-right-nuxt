@@ -26,9 +26,9 @@
     "jwt-decode": "^3.1.2",
     "pinia": "^2.0.33",
     "rollup-plugin-visualizer": "^5.9.0",
+    "tailvue": "^0.1.68",
     "v-calendar": "3.0.3",
     "vee-validate": "^4.8.1",
-    "vue-toastification": "2.0.0-rc.5",
     "yup": "^1.0.2"
   },
   "devDependencies": {
@@ -41,6 +41,7 @@
     "@nuxtjs/tailwindcss": "^6.4.1",
     "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
     "@sidebase/nuxt-pdf": "^0.1.1",
+    "@tailvue/nuxt": "^0.1.68",
     "@types/jsonwebtoken": "^9.0.1",
     "@vueuse/core": "^10.0.2",
     "@vueuse/nuxt": "^10.0.2",

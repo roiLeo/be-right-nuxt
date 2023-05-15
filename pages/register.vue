@@ -157,7 +157,7 @@ async function submitregister(form: VeeValidateValues) {
   const isEmailExist = await checkMailIsAlreadyExist(form.email)
 
   if (isEmailExist && !isEmailExist.success) {
-    $toast.error(isEmailExist.message)
+    $toast.danger(isEmailExist.message)
   } else {
     try {
       const { data } = await $api().post<{ user: UserType; company: Company }>('auth/signup', form)
@@ -185,7 +185,7 @@ async function submitregister(form: VeeValidateValues) {
         }
       }
     } catch (error) {
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
   }
   DecLoading()

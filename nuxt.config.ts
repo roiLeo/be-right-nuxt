@@ -16,6 +16,11 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'fr',
       },
+      link: [
+        { rel: 'apple-touch-icon', sizes: '76x76', href: 'static/apple-touch-icon.png' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: 'static/favicon-32x32.png' },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: 'static/favicon-16x16.png' },
+      ],
     },
     layoutTransition: {
       mode: 'out-in',
@@ -51,7 +56,8 @@ export default defineNuxtConfig({
     'nuxt-schema-org',
     '@nuxt/image-edge',
     ['nuxt-purgecss', {
-      enabled: true, // Always enable purgecss
+      // attention purgeCss enlève le style de vcalendar
+      enabled: false, // Always enable purgecss
       safelist: [
         ...(Object.keys(colors).reduce((acc: string[], name) => {
           acc.push(`bg-${name}-50`)
@@ -66,11 +72,11 @@ export default defineNuxtConfig({
         'text-white',
       ],
     }],
+    '@tailvue/nuxt',
   ],
 
   build: {
     transpile: [
-      'vue-toastification',
       'v-calendar',
     ],
   },

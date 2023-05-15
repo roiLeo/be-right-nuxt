@@ -127,7 +127,7 @@ async function checkDoubleAuth(form: VeeValidateValues) {
     }
   } catch (error) {
     console.error(error)
-    $toast.error('Une erreur est survenue')
+    $toast.danger('Une erreur est survenue')
   }
   DecLoading()
 }
@@ -147,7 +147,7 @@ onMounted(async () => {
       if (!success) {
         const error = data as ErrorResponse
         state.errorMessages.push(error.message)
-        $toast.error(error.message)
+        $toast.danger(error.message)
       }
       if (data) {
         const result = data as ResponseAnswerSignature

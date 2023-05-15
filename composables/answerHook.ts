@@ -20,10 +20,10 @@ export default function answerHook() {
         }
       } catch (error) {
         console.error(error)
-        $toast.error('Une erreur est survenue')
+        $toast.danger('Une erreur est survenue')
       }
     } else {
-      $toast.error('Veuillez sélectionner au moins un participant et un événement')
+      $toast.danger('Veuillez sélectionner au moins un participant et un événement')
     }
     DecLoading()
   }
@@ -48,7 +48,7 @@ export default function answerHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -69,7 +69,7 @@ export default function answerHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -91,7 +91,32 @@ export default function answerHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
+    }
+    DecLoading()
+  }
+
+  async function raiseAnswer(id: number) {
+    IncLoading()
+    try {
+      if (id) {
+        const { data } = await $api().get<ActionResponse & { answer: AnswerType }>(`answer/raise/${id}`)
+        if (data) {
+          const { isSuccess, answer, message } = data
+
+          if (isSuccess) {
+            updateOneAnswer(id, answer)
+          }
+
+          return {
+            message,
+            isSuccess,
+          }
+        }
+      }
+    } catch (error) {
+      console.error(error)
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -160,7 +185,7 @@ export default function answerHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
   }
 
@@ -197,7 +222,7 @@ export default function answerHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }

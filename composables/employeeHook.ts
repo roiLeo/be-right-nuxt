@@ -86,7 +86,7 @@ export default function employeeHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -101,7 +101,7 @@ export default function employeeHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -122,7 +122,7 @@ export default function employeeHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -137,7 +137,7 @@ export default function employeeHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -156,7 +156,7 @@ export default function employeeHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -169,7 +169,7 @@ export default function employeeHook() {
       $toast.success('Destinataire supprimé avec succès')
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -184,7 +184,7 @@ export default function employeeHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -207,7 +207,7 @@ export default function employeeHook() {
       return null
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
   }
 
@@ -228,7 +228,7 @@ export default function employeeHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }

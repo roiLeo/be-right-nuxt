@@ -111,7 +111,7 @@ export default function eventHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -131,7 +131,7 @@ export default function eventHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -146,7 +146,7 @@ export default function eventHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -180,7 +180,7 @@ export default function eventHook() {
       return undefined
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
   }
 
@@ -195,7 +195,7 @@ export default function eventHook() {
         }
       } catch (error) {
         console.error(error)
-        $toast.error('Une erreur est survenue')
+        $toast.danger('Une erreur est survenue')
       }
       DecLoading()
     }
@@ -211,7 +211,7 @@ export default function eventHook() {
       $toast.success('L\'événement a été supprimé avec succès')
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -293,7 +293,7 @@ export default function eventHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -313,7 +313,7 @@ export default function eventHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }

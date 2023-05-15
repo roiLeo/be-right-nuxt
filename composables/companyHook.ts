@@ -73,7 +73,7 @@ export default function userHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
   }
 
@@ -91,7 +91,7 @@ export default function userHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -110,7 +110,7 @@ export default function userHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -125,7 +125,7 @@ export default function userHook() {
       }
     } catch (error) {
       console.error(error)
-      $toast.error('Une erreur est survenue')
+      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
