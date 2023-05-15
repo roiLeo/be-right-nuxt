@@ -56,7 +56,8 @@ export default defineNuxtConfig({
     'nuxt-schema-org',
     '@nuxt/image-edge',
     ['nuxt-purgecss', {
-      enabled: true, // Always enable purgecss
+      // attention purgeCss enlève le style de vcalendar
+      enabled: false, // Always enable purgecss
       safelist: [
         ...(Object.keys(colors).reduce((acc: string[], name) => {
           acc.push(`bg-${name}-50`)
