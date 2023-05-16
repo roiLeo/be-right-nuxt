@@ -109,6 +109,7 @@ import {
 const authStore = useAuthStore()
 const employeeStore = useEmployeeStore()
 const route = useRoute()
+const { filteredEmployees } = employeeHook()
 
 const employees = computed(() => alphabetical(employeeStore.getAllArray) as EmployeeType[])
 
@@ -132,20 +133,7 @@ const activeEmployee = computed(() => {
   return null
 })
 
-const filteredEmployee = computed(() =>
-  query.value === ''
-    ? employees.value
-    : employees.value.filter(person =>
-      person.lastName
-        .toLowerCase()
-        .replace(/\s+/g, '')
-        .includes(query.value.toLowerCase().replace(/\s+/g, ''))
-      || person.firstName
-        .toLowerCase()
-        .replace(/\s+/g, '')
-        .includes(query.value.toLowerCase().replace(/\s+/g, '')),
-    ),
-)
+const filteredEmployee = computed(() => filteredEmployees(employees.value, query))
 
 const alphabeticalAmployeeList = computed(() => {
   return filteredEmployee.value.reduce((acc: Record<string, EmployeeType[]>, employee: EmployeeType) => {

@@ -1,6 +1,9 @@
 <template>
-<div class="md:grid md:grid-cols-2 md:gap-6">
-  <TabGroup as="div">
+<div class="h-full divide-x-2 md:grid md:grid-cols-2">
+  <TabGroup
+    as="div"
+    class="pl-2"
+  >
     <TabList
       class="flex items-center mt-2 -mb-px space-x-8 border-b border-gray-200"
       aria-label="Tabs"
@@ -56,7 +59,7 @@
     </TabPanels>
   </TabGroup>
 
-  <div class="h-full px-4 mt-4 space-y-2 shadow-lg lg:px-8">
+  <div class="h-full px-4 mt-4 space-y-2 lg:px-8">
     <h3 class="text-base font-semibold leading-7 text-center text-gray-800">
       {{ formStore.getEmployeeIds.length }} Destinataires choisis
     </h3>
@@ -91,7 +94,8 @@
             class="cursor-pointer"
             @click.prevent="removeEmployee(employee.id)"
           >
-            <XCircleIconSolid class="w-4 h-4 text-red-800" />
+
+            <XCircleIconSolid class="w-4 h-4 text-red-500" />
           </button>
           <span class="block font-medium truncate">
             {{ getEmployeeFullname(employee) }}
@@ -114,24 +118,11 @@ const uiStore = useUiStore()
 const formStore = useFormStore()
 const groupStore = useGroupStore()
 const { setEmployeeIds } = formStore
-const { getEmployeeFullname } = employeeHook()
+const { getEmployeeFullname, filteredEmployees } = employeeHook()
 
 const employees = computed(() => employeeStore.getMany(formStore.getEmployeeIds))
 
-const filteredEmployee = computed(() =>
-  query.value === ''
-    ? employees.value
-    : employees.value.filter(person =>
-      person.lastName
-        .toLowerCase()
-        .replace(/\s+/g, '')
-        .includes(query.value.toLowerCase().replace(/\s+/g, ''))
-      || person.firstName
-        .toLowerCase()
-        .replace(/\s+/g, '')
-        .includes(query.value.toLowerCase().replace(/\s+/g, '')),
-    ),
-)
+const filteredEmployee = computed(() => filteredEmployees(employees.value, query))
 
 function removeEmployee(employeeId: number) {
   setEmployeeIds(formStore.getEmployeeIds.filter(id => id !== employeeId))

@@ -187,23 +187,10 @@ function handle(e: unknown) {
 
 type Field = EmployeeType[] | number[]
 
-const { getEmployeeFullname } = employeeHook()
+const { getEmployeeFullname, filteredEmployees } = employeeHook()
 const query = ref('')
 
-const filteredEmployee = computed(() =>
-  query.value === ''
-    ? props.defaultValues
-    : props.defaultValues.filter(person =>
-      person.lastName
-        .toLowerCase()
-        .replace(/\s+/g, '')
-        .includes(query.value.toLowerCase().replace(/\s+/g, ''))
-      || person.firstName
-        .toLowerCase()
-        .replace(/\s+/g, '')
-        .includes(query.value.toLowerCase().replace(/\s+/g, '')),
-    ),
-)
+const filteredEmployee = computed(() => filteredEmployees(props.defaultValues, query))
 
 const areAllSelected = computed(() => filteredEmployee.value.length === Object.values(inputValue.value).length)
 const isSelected = (active: boolean, selected: boolean, id: number) => computed(() =>
