@@ -81,7 +81,7 @@
 <script setup lang="ts">
 import { Form } from 'vee-validate'
 import { array, number, object, string } from 'yup'
-import { useEmployeeStore, useUiStore } from '~~/store'
+import { useEmployeeStore, useUiStore, useUserStore } from '~~/store'
 import type { VeeValidateValues } from '~~/types'
 interface Props {
   isDebug?: boolean
@@ -93,6 +93,8 @@ const uiStore = useUiStore()
 const employeeStore = useEmployeeStore()
 
 const { postOne, postOneCSV } = groupHook()
+const { fetchOne } = companyHook()
+const userStore = useUserStore()
 
 const selected = ref<'list' | 'csv'>('list')
 
@@ -140,6 +142,10 @@ async function submit(form: VeeValidateValues) {
     formData.set('name', form.name)
     formData.set('description', form.description)
     await postOneCSV(formData)
+  }
+
+  if (userStore.getAuthUser?.companyId) {
+    await fetchOne(userStore.getAuthUser?.companyId)
   }
 
   router.push({

@@ -51,17 +51,20 @@ import {
   useAuthStore,
   useCompanyStore,
   useEmployeeStore,
+  useGroupStore,
   useUiStore,
 } from '~~/store'
 
 const employeeStore = useEmployeeStore()
 const authStore = useAuthStore()
 const companyStore = useCompanyStore()
+const groupStore = useGroupStore()
 const uiStore = useUiStore()
 const { resetUiModalState, IncLoading, DecLoading } = uiStore
 
 const { getPhotographerUserWorkedWith } = userHook()
-const { fetchMany } = employeeHook()
+const { fetchMany: fetchManyEmployees } = employeeHook()
+const { fetchMany: fetchManyGroups } = groupHook()
 
 const haveUserEmployees = computed(() => {
   if (!authStore.isAuthUserAdmin) {
@@ -78,9 +81,14 @@ onMounted(async () => {
     const missingsEmployeeIds = companyStore.getAuthCompany.employeeIds.filter(id => !employeeStore.isAlreadyInStore(id))
 
     if (missingsEmployeeIds?.length > 0) {
-      await fetchMany(missingsEmployeeIds)
+      await fetchManyEmployees(missingsEmployeeIds)
     }
     await getPhotographerUserWorkedWith()
+
+    const missingGroupIds = companyStore.getAuthCompany.groupIds.filter(id => !groupStore.isAlreadyInStore(id))
+    if (missingGroupIds.length > 0) {
+      await fetchManyGroups(missingGroupIds)
+    }
   }
   DecLoading()
 })

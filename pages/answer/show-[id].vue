@@ -104,35 +104,6 @@
   </BaseMessage>
 
   <BaseModal
-    v-if="state.isPreventModalActive"
-    :is-active="state.isPreventModalActive"
-    @close="closePreventModal"
-  >
-    <div class="px-4 py-2 sm:flex sm:items-start">
-      <div class="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
-        <ExclamationTriangleIconOutline
-          class="w-6 h-6 text-red-600"
-          aria-hidden="true"
-        />
-      </div>
-      <div class="mt-3 space-y-2 text-center sm:mt-0 sm:ml-4 sm:text-left">
-        <DialogTitle
-          as="h3"
-          class="text-lg font-medium leading-6 text-gray-900"
-        >
-          Instructions
-        </DialogTitle>
-        <div class="flex flex-col items-center mt-2 space-y-4">
-          <p>Lisez attentivement ce document avant de répondre.</p>
-          <BaseButton @click="closePreventModal">
-            OK! Merci
-          </BaseButton>
-        </div>
-      </div>
-    </div>
-  </BaseModal>
-
-  <BaseModal
     v-if="state.isFormModalActive"
     :is-active="state.isFormModalActive"
     @close="closeFormModal"
@@ -222,6 +193,7 @@ const answerStore = useAnswerStore()
 const eventStore = useEventStore()
 const employeeStore = useEmployeeStore()
 
+const { $modal, $toast } = useNuxtApp()
 const { isUserOwner, getUserfullName } = userHook()
 const { updateAnswerForEmployee } = answerHook()
 
@@ -230,7 +202,6 @@ interface State {
   answer: AnswerType | null
   event: EventType | null
   employee: EmployeeType | null
-  isPreventModalActive: boolean
   isFormModalActive: boolean
 }
 
@@ -239,7 +210,6 @@ const state = reactive<State>({
   answer: null,
   event: null,
   employee: null,
-  isPreventModalActive: true,
   isFormModalActive: false,
 })
 
@@ -268,15 +238,10 @@ async function submitAnswer(form: VeeValidateValues) {
     reason: form.reason || undefined,
   })
 
-  closePreventModal()
   closeFormModal()
   router.replace({
     name: 'answer-merci',
   })
-}
-
-function closePreventModal() {
-  state.isPreventModalActive = false
 }
 
 function closeFormModal() {
@@ -285,6 +250,18 @@ function closeFormModal() {
 
 onMounted(async () => {
   IncLoading()
+
+  $modal.show({
+    type: 'warning',
+    title: 'Instructions',
+    body: 'Lisez attentivement ce document avant de répondre.',
+    primary: {
+      label: 'OK! Merci',
+      theme: 'blue',
+      action: () => $toast.warning('Merci de votre attention'),
+    },
+  })
+
   const params = route.params as Record<string, number>
   const answerId = params?.id
   if (answerId) {

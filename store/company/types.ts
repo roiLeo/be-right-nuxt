@@ -1,3 +1,4 @@
+import type { Group } from '../group'
 import type {
   AddressType,
   BaseEntity,
@@ -22,6 +23,9 @@ export interface Company extends BaseEntity {
 
   events?: EventType[]
   eventIds: number[]
+
+  groups?: Group[]
+  groupIds: number[]
 
   employees?: EmployeeType[]
   employeeIds: number[]
