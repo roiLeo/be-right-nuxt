@@ -154,8 +154,8 @@ const {
 const { IncLoading, DecLoading } = useUiStore()
 const employeeStore = useEmployeeStore()
 const tableStore = useTableStore()
-const { setFilters, setSearch } = tableStore
-const { fetchAll, getEmployeeFullname } = employeeHook()
+const { setSearch } = tableStore
+const { fetchAll, getEmployeeFullname, filteredEmployees: searchEmployees } = employeeHook()
 
 const query = ref('')
 
@@ -185,16 +185,7 @@ function getBorderClasses() {
   return 'border-gray-400'
 }
 
-const filteredEmployees = computed(() =>
-  query.value === ''
-    ? employeeStore.getAllArray
-    : employeeStore.getWhereArray(person =>
-      getEmployeeFullname(person)
-        .toLowerCase()
-        .replace(/\s+/g, '')
-        .includes(query.value.toLowerCase().replace(/\s+/g, '')),
-    ),
-)
+const filteredEmployees = computed(() => searchEmployees(employeeStore.getAllArray, query))
 
 function getDisplayName(id: number) {
   if (id) {
@@ -204,6 +195,7 @@ function getDisplayName(id: number) {
   }
   return ''
 }
+
 function onRemoveValue(value: any) {
   const newValue = Object.values(inputValue.value).filter(val => val !== value)
   setValue(newValue)

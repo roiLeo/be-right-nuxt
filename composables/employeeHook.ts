@@ -242,6 +242,21 @@ export default function employeeHook() {
     return str
   }
 
+  function filteredEmployees(list: EmployeeType[], query: Ref<string>): EmployeeType[] {
+    return query.value === ''
+      ? list
+      : list.filter(person =>
+        person.lastName
+          .toLowerCase()
+          .replace(/\s+/g, '')
+          .includes(query.value.toLowerCase().replace(/\s+/g, ''))
+        || person.firstName
+          .toLowerCase()
+          .replace(/\s+/g, '')
+          .includes(query.value.toLowerCase().replace(/\s+/g, '')),
+      )
+  }
+
   return {
     deleteOne,
     fetchAll,
@@ -250,6 +265,7 @@ export default function employeeHook() {
     fetchMany,
     getEmployeeFullname,
     fetchEmployeesByEventId,
+    filteredEmployees,
     getEmployeeStatusColor,
     getEmployeeStatusSignature,
     patchOne,

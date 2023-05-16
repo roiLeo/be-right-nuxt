@@ -178,7 +178,7 @@ const uiStore = useUiStore()
 const employeeStore = useEmployeeStore()
 const groupStore = useGroupStore()
 const { resetUiModalState } = uiStore
-const { getEmployeeFullname } = employeeHook()
+const { getEmployeeFullname, filteredEmployees } = employeeHook()
 const { patchOne } = groupHook()
 
 const selected = ref<EmployeeType[]>([])
@@ -191,16 +191,7 @@ function filterAlReadyInGroup(employees: EmployeeType[]) {
   return employees.filter(emp => !employeesAlReadyInGroup.includes(emp.id))
 }
 
-const filteredEmployee = computed(() =>
-  query.value === ''
-    ? employeeStore.getAllArray
-    : employeeStore.getAllArray.filter(person =>
-      person.lastName
-        .toLowerCase()
-        .replace(/\s+/g, '')
-        .includes(query.value.toLowerCase().replace(/\s+/g, '')),
-    ),
-)
+const filteredEmployee = computed(() => filteredEmployees(employeeStore.getAllArray, query))
 
 const areAllSelected = computed(() => filteredEmployee.value.length === selected.value.length)
 

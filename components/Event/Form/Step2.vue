@@ -12,6 +12,8 @@
     value-key="id"
     wrapper-classes="md:col-span-2"
     is-required
+    hide-liste
+    @change="setEmployeeIds"
   />
   <div class="flex items-center justify-center mt-6 md:col-span-3">
     <BaseButton
@@ -47,7 +49,6 @@ const uiStore = useUiStore()
 const { IncLoading, DecLoading, resetUiModalState } = uiStore
 const authStore = useAuthStore()
 const userStore = useUserStore()
-const router = useRouter()
 const formStore = useFormStore()
 const { setEmployeeIds } = formStore
 
@@ -72,7 +73,6 @@ const defaultValues = computed(() => {
 
 async function submit(form: VeeValidateValues) {
   IncLoading()
-  setEmployeeIds(form.employees)
   emit('submitEmployees')
   DecLoading()
   resetUiModalState()

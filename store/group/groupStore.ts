@@ -9,6 +9,7 @@ export const useGroupStore = defineStore('group', {
   }),
   getters: {
     ...createGetters<Group>(groupState),
+    getNotEmptyGroups: state => Object.values(state.entities.byId).filter(group => group.employeeIds.length > 0),
   },
 
   actions: {

@@ -60,7 +60,11 @@ export default function userHook() {
       }
     }
 
-    addCompany(company)
+    if (companyStore.isAlreadyInStore(company.id)) {
+      updateOneCompany(company.id, company)
+    } else {
+      addCompany(company)
+    }
   }
 
   async function fetchOne(companyId: number) {

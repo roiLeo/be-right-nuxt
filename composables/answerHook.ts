@@ -121,31 +121,6 @@ export default function answerHook() {
     DecLoading()
   }
 
-  async function raiseAnswer(id: number) {
-    IncLoading()
-    try {
-      if (id) {
-        const { data } = await $api().get<ActionResponse & { answer: AnswerType }>(`answer/raise/${id}`)
-        if (data) {
-          const { isSuccess, answer, message } = data
-
-          if (isSuccess) {
-            updateOneAnswer(id, answer)
-          }
-
-          return {
-            message,
-            isSuccess,
-          }
-        }
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.error('Une erreur est survenue')
-    }
-    DecLoading()
-  }
-
   async function downloadAnswer({ answerId, employee, templateRef }: { answerId: number; employee: EmployeeType; templateRef: HTMLElement }) {
     await exportToPDF(`droit-image-${answerId}-${employee.firstName}-${employee.lastName}.pdf`, templateRef,
       {

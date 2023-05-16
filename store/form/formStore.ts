@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { uniq } from '@antfu/utils'
 import {
   baseAddressCreationForm,
   baseEventCreationForm,
@@ -107,6 +108,17 @@ export const useFormStore = defineStore('form', {
 
     setEmployeeIds(ids: number[]) {
       this.eventform.employeeIds = ids
+    },
+
+    mergeEmployeeIds(ids: number[]) {
+      this.eventform.employeeIds = uniq([
+        ...this.eventform.employeeIds,
+        ...ids,
+      ])
+    },
+
+    removeEmployeeIds(ids: number[]) {
+      this.eventform.employeeIds = this.eventform.employeeIds.filter(id => !ids.includes(id))
     },
 
     setPhotographerId(id: number) {

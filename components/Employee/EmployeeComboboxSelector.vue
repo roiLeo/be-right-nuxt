@@ -5,7 +5,7 @@
   v-model="inputValue"
   :name="name"
   :multiple="true"
-  @update:model-value="handleChange"
+  @update:model-value="handle"
   @blur="handleBlur"
 >
   <div :class="`relative mt-1 ${wrapperClasses}`">
@@ -107,7 +107,10 @@
       class="h-56"
     />
 
-    <div class="mt-4">
+    <div
+      v-if="!hideListe"
+      class="mt-4"
+    >
       <p
         v-for="(value, index) in Object.values(inputValue)"
         :key="index"
@@ -151,6 +154,7 @@ interface Props {
   disabled?: boolean
   label?: string
   wrapperClasses?: string
+  hideListe?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -160,6 +164,10 @@ const props = withDefaults(defineProps<Props>(), {
   label: 'Sélectionner des destinataires',
   wrapperClasses: '',
 })
+
+const emit = defineEmits<{
+  (e: 'change', ids: number[]): void
+}>()
 
 const name = toRef(props, 'name')
 
@@ -172,25 +180,17 @@ const {
   meta,
 } = useField<Field>(name, undefined, { })
 
+function handle(e: unknown) {
+  handleChange(e)
+  emit('change', inputValue.value as number[])
+}
+
 type Field = EmployeeType[] | number[]
 
-const { getEmployeeFullname } = employeeHook()
+const { getEmployeeFullname, filteredEmployees } = employeeHook()
 const query = ref('')
 
-const filteredEmployee = computed(() =>
-  query.value === ''
-    ? props.defaultValues
-    : props.defaultValues.filter(person =>
-      person.lastName
-        .toLowerCase()
-        .replace(/\s+/g, '')
-        .includes(query.value.toLowerCase().replace(/\s+/g, ''))
-      || person.firstName
-        .toLowerCase()
-        .replace(/\s+/g, '')
-        .includes(query.value.toLowerCase().replace(/\s+/g, '')),
-    ),
-)
+const filteredEmployee = computed(() => filteredEmployees(props.defaultValues, query))
 
 const areAllSelected = computed(() => filteredEmployee.value.length === Object.values(inputValue.value).length)
 const isSelected = (active: boolean, selected: boolean, id: number) => computed(() =>
