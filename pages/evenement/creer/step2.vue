@@ -94,7 +94,6 @@
             class="cursor-pointer"
             @click.prevent="removeEmployee(employee.id)"
           >
-
             <XCircleIconSolid class="w-4 h-4 text-red-500" />
           </button>
           <span class="block font-medium truncate">
