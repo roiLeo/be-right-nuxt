@@ -98,6 +98,7 @@
   </div>
 
   <nuxt-img
+    v-if="!$isMobile"
     class="hidden object-cover max-w-5xl shadow-2xl lg:w-2/3 md:max-w-full md:block TranslateUpAnimation cursor-none"
     src="/static/camera.webp"
     width="1577"
