@@ -46,6 +46,7 @@
 import type { EventType } from '@/types'
 import { RouteNames } from '~~/helpers/routes'
 import { useAuthStore, useTableStore } from '~~/store'
+import EventItem from '~/components/Event/Table/EventItem.vue'
 
 interface Props {
   noEventMessage?: string
