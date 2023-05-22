@@ -54,9 +54,8 @@
       </NuxtLink>
     </div>
   </div>
-
   <nuxt-img
-    v-if="!$isMobile"
+    v-if="$isTouch || $isDesktop"
     class="hidden object-cover w-2/3 max-w-5xl shadow-2xl TranslateUpAnimation cursor-none md:block"
     src="/static/camera.webp"
     width="1577"
