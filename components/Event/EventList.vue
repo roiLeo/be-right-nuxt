@@ -66,6 +66,7 @@ const state = reactive({
 })
 
 function searchEntity(event: KeyboardEvent) {
+  console.warn(event)
   clearTimeout(state.timeout)
   state.timeout = window.setTimeout(() => {
     setSearch(state.search)

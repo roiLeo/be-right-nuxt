@@ -162,7 +162,12 @@
 </template>
 
 <script setup lang="ts">
-import { useAddressStore, useAuthStore, useEventStore, useUiStore, useUserStore } from '~~/store'
+import {
+  useAddressStore,
+  useAuthStore,
+  useUiStore,
+  useUserStore,
+} from '~~/store'
 import type { EmployeeType } from '~~/types'
 import { ModalModeEnum, ModalNameEnum } from '~~/types'
 

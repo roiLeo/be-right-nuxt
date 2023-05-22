@@ -40,7 +40,6 @@ import {
   useUiStore,
   useUserStore,
 } from '~~/store'
-import type { VeeValidateValues } from '~~/types'
 
 const emit = defineEmits(['submitEmployees'])
 
@@ -71,7 +70,7 @@ const defaultValues = computed(() => {
   return []
 })
 
-async function submit(form: VeeValidateValues) {
+async function submit() {
   IncLoading()
   emit('submitEmployees')
   DecLoading()

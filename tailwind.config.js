@@ -1,4 +1,5 @@
 const colors = require('tailwindcss/colors')
+
 delete colors.lightBlue // Avoid warning during build.
 delete colors.warmGray
 delete colors.trueGray
