@@ -6,8 +6,8 @@ export default defineConfig({
     screenshotOnRunFailure: false,
     screenshotsFolder: false,
 
-    setupNodeEvents(on, config) {
-      // implement node event listeners here
-    },
+    // setupNodeEvents(on, config) {
+    //   implement node event listeners here
+    // },
   },
 })

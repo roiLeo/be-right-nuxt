@@ -56,7 +56,7 @@ import { Form } from 'vee-validate'
 import type { InferType } from 'yup'
 import { object, string } from 'yup'
 import type { UserType, VeeValidateValues } from '@/types'
-import { useFormStore, useUiStore, useUserStore } from '~~/store'
+import { useFormStore, useUiStore } from '~~/store'
 import { RouteNames } from '~~/helpers/routes'
 
 interface IForm extends InferType<typeof schema> {}

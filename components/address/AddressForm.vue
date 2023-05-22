@@ -62,6 +62,7 @@ import { object, string } from 'yup'
 import { Form } from 'vee-validate'
 import type { AddressType, VeeValidateValues } from '@/types'
 import { useUiStore } from '~~/store'
+
 interface IForm extends InferType<typeof schema> {}
 
 interface Props {

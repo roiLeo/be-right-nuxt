@@ -1,5 +1,5 @@
 import { hasOwnProperty } from '@antfu/utils'
-import type { Company, CreateNewUserPayload, UserType } from '~~/store'
+import type { Company, CreateNewUserPayload, MissingInfos, UserType } from '~~/store'
 import {
   useAddressStore,
   useCompanyStore,
@@ -141,10 +141,68 @@ export default function userHook() {
       && hasOwnProperty(arg, 'subscriptionId')
   }
 
+  const getMissingsInfos: ComputedRef<MissingInfos[]> = computed(() => {
+    const currentUser = userStore.getAuthUser
+    if (currentUser) {
+      const missingInfos = []
+      const currentCompany = companyStore.getOne(currentUser.companyId)
+      if (currentCompany) {
+        if (!currentCompany.addressId) {
+          missingInfos.push({
+            label: 'addresse de l\'entreprise',
+            link: {
+              name: 'mon-compte',
+            },
+          })
+        }
+
+        if (!currentCompany.siret) {
+          missingInfos.push({
+            label: 'Le siret de l\'entreprise',
+            link: {
+              name: 'mon-compte',
+            },
+          })
+        }
+
+        if (currentUser.notificationSubscriptionIds?.length < 1) {
+          missingInfos.push({
+            label: 'Configuration des notifications',
+            link: {
+              name: 'mon-compte-notifications',
+            },
+          })
+        }
+
+        if (currentCompany.employeeIds?.length === 0) {
+          missingInfos.push({
+            label: 'Créer vos premiers destinataires',
+            link: {
+              name: 'destinataire-create',
+            },
+          })
+        }
+
+        if (currentCompany.groupIds?.length === 0) {
+          missingInfos.push({
+            label: 'Créer vos premiers groupes de diffusions',
+            link: {
+              name: 'groupe-creation',
+            },
+          })
+        }
+        return missingInfos
+      }
+      return []
+    }
+    return []
+  })
+
   return {
     addOrRemoveOwner,
     createNewUser,
     fetchOne,
+    getMissingsInfos,
     isCompanyType,
     patchOne,
     storeCompanyEntities,

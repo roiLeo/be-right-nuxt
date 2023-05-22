@@ -48,7 +48,6 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
     'nuxt-headlessui',
-    '@sidebase/nuxt-pdf',
     '@nuxtjs/eslint-module',
     '@pinia-plugin-persistedstate/nuxt',
     'nuxt-typed-router',

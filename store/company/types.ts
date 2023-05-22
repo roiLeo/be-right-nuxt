@@ -36,3 +36,10 @@ export interface Company extends BaseEntity {
   files?: FileType[]
   filesIds: number[]
 }
+
+export interface MissingInfos {
+  label: string
+  link: {
+    name: any
+  }
+}

@@ -31,6 +31,8 @@
     :is-active="isModalActive(ModalNameEnum.DELETE_CONFIRM_GROUP).value"
     :group-id="uiStore.getUiModalState.data?.groupId"
   />
+
+  <UserMissingInfoModal v-if="getMissingsInfos" />
 </main>
 </template>
 
@@ -41,8 +43,8 @@ import { ModalNameEnum } from '~~/types'
 const uiStore = useUiStore()
 const { resetUiModalState } = uiStore
 const eventStore = useEventStore()
-
 const { fetchUserNotificationsAndRelations } = notificationHook()
+const { getMissingsInfos } = companyHook()
 
 const isModalActive = (modalName: ModalNameEnum) => computed(() =>
   uiStore.getUiModalState.isActive
