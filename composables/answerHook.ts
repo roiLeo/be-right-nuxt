@@ -1,7 +1,7 @@
 import { hasOwnProperty, uniq } from '@antfu/utils'
 import dayjs from 'dayjs'
 import type { ActionResponse, ErrorResponse, ResponseAnswerSignature } from '~/types/Payload'
-import type { AnswerType, EmployeeType } from '~~/store'
+import type { AnswerType } from '~~/store'
 import { useAnswerStore, useUiStore } from '~~/store'
 
 export default function answerHook() {
@@ -121,18 +121,6 @@ export default function answerHook() {
     DecLoading()
   }
 
-  async function downloadAnswer({ answerId, employee, templateRef }: { answerId: number; employee: EmployeeType; templateRef: HTMLElement }) {
-    await exportToPDF(`droit-image-${answerId}-${employee.firstName}-${employee.lastName}.pdf`, templateRef,
-      {
-        orientation: 'p',
-        unit: 'mm',
-        format: 'a4',
-        putOnlyUsedFonts: true,
-        floatPrecision: 16, // or "smart", default is 16
-      },
-    )
-  }
-
   function isAnswerType(obj: any): obj is AnswerType {
     return hasOwnProperty(obj, 'hasSigned') && hasOwnProperty(obj, 'eventId') && hasOwnProperty(obj, 'employeeId')
   }
@@ -213,7 +201,6 @@ export default function answerHook() {
   return {
     areAnswersType,
     canAnswerBeRaise,
-    downloadAnswer,
     fetchMany,
     fetchManyAnswerForEvent,
     fetchManyAnswerForManyEvent,
