@@ -43,8 +43,6 @@ import {
 
 const emit = defineEmits(['submitEmployees'])
 
-const emit = defineEmits(['submitEmployees'])
-
 const employeeStore = useEmployeeStore()
 const uiStore = useUiStore()
 const { IncLoading, DecLoading, resetUiModalState } = uiStore
