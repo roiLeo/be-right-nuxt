@@ -100,7 +100,7 @@
   <nuxt-img
     v-if="$isTouch || $isDesktop"
     class="hidden object-cover max-w-5xl shadow-2xl lg:w-2/3 md:max-w-full md:block TranslateUpAnimation cursor-none"
-    src="/static/camera.webp"
+    src="/camera.webp"
     width="1577"
     height="1920"
     sizes="xs:200px md:500px lg:1024"

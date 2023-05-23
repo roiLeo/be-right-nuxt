@@ -5,8 +5,8 @@
   <div
     v-else-if="state.errorMessages?.length === 0"
     class="h-full md:mb-0 md:min-h-full
-      bg-fixed bg-center bg-no-repeat bg-cover bg-[url('../../public/static/check-mobile.webp')]
-      xl:bg-[url('../../public/static/check-landscap.webp')]
+      bg-fixed bg-center bg-no-repeat bg-cover bg-[url('../../public/check-mobile.webp')]
+      xl:bg-[url('../../public/check-landscap.webp')]
     "
   >
     <div class="h-full px-6 pt-10 mx-auto py-14 sm:py-48 xl:py-52 backdrop-grayscale bg-black/40 xl:flex xl:justify-center">

@@ -26,7 +26,7 @@
     <div class="absolute inset-0 z-0 bg-transparent md:shadow-xl sm:z-50 sm:rounded-lg md:static">
       <nuxt-img
         class="z-0 w-full duration-300 ease-in-out transform opacity-50 sm:opacity-100 sm:rounded-lg sm:z-50 sm:hover:-translate-x-1"
-        src="/static/photographer.webp"
+        src="/photographer.webp"
         width="5674"
         height="3840"
         sizes="xs:200px md:500px lg:1024"

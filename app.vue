@@ -7,7 +7,7 @@
     <SeoKit />
     <SchemaOrgPerson
       name="Be Right"
-      image="/static/photographer.webp"
+      image="/photographer.webp"
     />
   </Head>
 
