@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 useHead({
-  title: 'Be Right',
+  title: 'Accueil',
   meta: [
     { name: 'description', content: 'Gérez enfin le droit à l\'image de vos clients facilement !' },
     { property: 'og:title', content: 'L\'outile de gestion de droit à \'image' },

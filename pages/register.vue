@@ -100,7 +100,7 @@
   <nuxt-img
     v-if="$isTouch || $isDesktop"
     class="hidden object-cover max-w-5xl shadow-2xl lg:w-2/3 md:max-w-full md:block TranslateUpAnimation cursor-none"
-    src="/camera.webp"
+    src="/static/camera.webp"
     width="1577"
     height="1920"
     sizes="xs:200px md:500px lg:1024"
@@ -191,4 +191,16 @@ async function submitregister(form: VeeValidateValues) {
   }
   DecLoading()
 }
+
+useHead({
+  title: 'S\'inscrire',
+  meta: [
+    { name: 'description', content: 'Inscrivez vous pour gérer vos droits à l\'image' },
+    { property: 'og:title', content: 'Inscription' },
+    { property: 'og:description', content: 'Inscrivez vous pour gérer vos droits à l\'image' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://be-right.co/register' },
+    { property: 'og:locale', content: 'fr_FR' },
+  ],
+})
 </script>
