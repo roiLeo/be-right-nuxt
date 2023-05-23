@@ -18,4 +18,8 @@ export enum RouteNames {
   // AUTH
   FORGOT_PASSWORD = 'mot-de-passe-oublie',
   LOGIN = 'login',
+
+  // GROUPS
+  GROUP_CREATE_CSV = 'groupe-creation-csv',
+  GROUP_CREATE = 'groupe-creation',
 }

@@ -21,39 +21,12 @@
     autocomplete="description"
   />
 
-  <div class="w-full mx-auto space-y-4 md:col-span-2">
-    <RadioGroup v-model="selected">
-      <RadioGroupLabel class="block mb-4 text-sm font-bold text-blue dark:text-gray-100">
-        Méthode d'ajout de destinatires
-      </RadioGroupLabel>
-      <div class="grid grid-cols-2 gap-2">
-        <GroupFormRadioOption
-          title="Choisir parmi mes destinataires"
-          description="Vous pouvez choisir parmis tous les destinataires préalablement créés."
-          value="list"
-        />
-        <GroupFormRadioOption
-          title="Importer une liste"
-          description="Vous pouvez importer des destinataires à partir un fichier CSV"
-          value="csv"
-        />
-      </div>
-    </RadioGroup>
-  </div>
-
   <EmployeeComboboxSelector
-    v-if="selected === 'list'"
     name="employeeIds"
     :default-values="employeeStore.getAllArray"
     value-key="id"
     wrapper-classes="md:col-span-2"
     is-required
-  />
-
-  <BaseInputFileButton
-    v-if="selected === 'csv'"
-    name="file"
-    class="md:col-span-2"
   />
 
   <BaseFormDebug
@@ -93,30 +66,18 @@ defineProps<Props>()
 const uiStore = useUiStore()
 const employeeStore = useEmployeeStore()
 
-const { postOne, postOneCSV } = groupHook()
+const { postOne } = groupHook()
 const { fetchOne } = companyHook()
 const userStore = useUserStore()
 
-const selected = ref<'list' | 'csv'>('list')
-
 const validationSchema = computed(() => {
-  if (selected.value === 'list') {
-    return object({
-      name: string().required('le nom de l\'événement est obligatoire'),
-      description: string().nullable(),
-      employeeIds: array(number())
-        .min(1, 'Sélectionnez au moins un destinataire')
-        .required('Les destinataires sont requis'),
-    })
-  }
-
-  if (selected.value === 'csv') {
-    return object({
-      name: string().required('le nom de l\'événement est obligatoire'),
-      description: string().nullable(),
-      file: string().required('Le fichier CSV est requis'),
-    })
-  }
+  return object({
+    name: string().required('le nom de l\'événement est obligatoire'),
+    description: string().nullable(),
+    employeeIds: array(number())
+      .min(1, 'Sélectionnez au moins un destinataire')
+      .required('Les destinataires sont requis'),
+  })
 })
 
 const initialValues = {
@@ -129,21 +90,11 @@ const initialValues = {
 async function submit(form: VeeValidateValues) {
   const router = useRouter()
 
-  if (selected.value === 'list') {
-    await postOne({
-      name: form.name,
-      description: form.description,
-      employeeIds: form.employeeIds,
-    })
-  }
-
-  if (selected.value === 'csv') {
-    const formData = new FormData()
-    formData.set('file', form.file, 'file')
-    formData.set('name', form.name)
-    formData.set('description', form.description)
-    await postOneCSV(formData)
-  }
+  await postOne({
+    name: form.name,
+    description: form.description,
+    employeeIds: form.employeeIds,
+  })
 
   if (userStore.getAuthUser?.companyId) {
     await fetchOne(userStore.getAuthUser?.companyId)

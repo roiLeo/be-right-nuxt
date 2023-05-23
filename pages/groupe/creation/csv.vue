@@ -1,12 +1,14 @@
 <template>
 <PageAuthWrapper>
   <div class="flex justify-center">
-    <GroupForm />
+    <GroupFormCSV />
   </div>
 </PageAuthWrapper>
 </template>
 
 <script setup lang="ts">
+import GroupFormCSV from '~~/components/Group/GroupFormCSV.vue'
+
 const { fetchUserGroupsAndRelations } = groupHook()
 
 onMounted(async () => {

@@ -111,7 +111,7 @@
           </NuxtLink>
         </nav>
       </div>
-      <!-- <DarkModeToggle /> -->
+
       <UserMenu />
     </div>
   </aside>
@@ -128,7 +128,7 @@ const authStore = useAuthStore()
 
 function getMenuItems() {
   if (authStore.isAuthUserAdmin) {
-    return MENU_ITEMS.filter(item => item.isAdmin)
+    return MENU_ITEMS
   }
   return MENU_ITEMS.filter(item => !item.isAdmin)
 }
