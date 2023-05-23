@@ -59,7 +59,7 @@
   <nuxt-img
     v-if="$isTouch || $isDesktop"
     class="hidden object-cover w-2/3 max-w-5xl shadow-2xl TranslateUpAnimation cursor-none md:block"
-    src="/camera.webp"
+    src="/static/camera.webp"
     width="1577"
     height="1920"
     sizes="xs:200px md:500px lg:1024"
@@ -129,4 +129,16 @@ async function submitLogin(form: VeeValidateValues) {
 }
 
 definePageMeta({ layout: 'default' })
+
+useHead({
+  title: 'Se connecter',
+  meta: [
+    { name: 'description', content: 'Connectez vous pour gérer vos droits à l\'image' },
+    { property: 'og:title', content: 'Inscription' },
+    { property: 'og:description', content: 'Connectez vous pour gérer vos droits à l\'image' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://be-right.co/login' },
+    { property: 'og:locale', content: 'fr_FR' },
+  ],
+})
 </script>

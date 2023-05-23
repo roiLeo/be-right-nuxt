@@ -50,8 +50,12 @@ export default defineNuxtConfig({
     'nuxt-headlessui',
     '@nuxtjs/eslint-module',
     '@pinia-plugin-persistedstate/nuxt',
-    'nuxt-typed-router',
-    '@nuxtjs/html-validator',
+    ['nuxt-typed-router', {
+      pathCheck: process.env.NODE_ENV !== 'production',
+    }],
+    ['@nuxtjs/html-validator', {
+      enabled: process.env.NODE_ENV !== 'production',
+    }],
     'nuxt-schema-org',
     '@nuxt/image-edge',
     ['nuxt-purgecss', {
