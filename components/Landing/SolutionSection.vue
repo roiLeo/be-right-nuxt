@@ -3,14 +3,14 @@
   id="Solution"
   class="relative w-full py-8 DarkModeAnimation"
 >
-  <nuxt-img
+  <img
     class="absolute right-0 hidden duration-500 ease-in-out transform md:inline hover:-translate-y-2 animate-fade-in-down"
     src="/mokup-phone.webp"
     alt="mokup"
     width="998"
     height="1148"
     sizes="xs:200px md:500px lg:1024"
-  />
+  >
 
   <div class="flex flex-wrap pt-4 pb-12 mx-auto md:container">
     <h2 class="w-full my-2 mb-6 text-3xl font-bold leading-tight text-center text-gray-800 md:text-left md:text-5xl dark:text-white">

@@ -39,14 +39,14 @@
           <div class="px-4 py-6 sm:px-6 lg:grid lg:grid-cols-12 lg:gap-x-8 lg:p-8">
             <div class="sm:flex lg:col-span-7">
               <div class="flex-shrink-0 w-full overflow-hidden rounded-lg aspect-w-1 aspect-h-1 sm:aspect-none sm:h-40 sm:w-40">
-                <nuxt-img
+                <img
                   class="object-cover object-center w-full h-full sm:h-full sm:w-full"
                   src="https://images.unsplash.com/photo-1565849904461-04a58ad377e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1036&q=80"
                   width="1036"
                   height="1381"
                   sizes="xs:200px md:500px lg:1024"
                   alt="Iphone qui prend une photo"
-                />
+                >
               </div>
 
               <div class="mt-6 sm:mt-0 sm:ml-6">
