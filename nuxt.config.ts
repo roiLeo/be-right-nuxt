@@ -106,5 +106,4 @@ export default defineNuxtConfig({
       visualizer() as PluginOption,
     ],
   },
-
 })
