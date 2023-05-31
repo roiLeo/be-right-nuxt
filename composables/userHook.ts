@@ -4,6 +4,7 @@ import type {
   PaginatedResponse,
   UserType,
 } from '@/types'
+import type { Company } from '~~/store'
 import {
   useNotificationsSubscriptionStore,
   useUiStore,
@@ -18,6 +19,22 @@ export default function userHook() {
   const notificationSubscriptionStore = useNotificationsSubscriptionStore()
 
   const { IncLoading, DecLoading } = useUiStore()
+
+  function isUserType(user: any): user is UserType {
+    return hasOwnProperty(user, 'id') && hasOwnProperty(user, 'token')
+  }
+
+  function isArrayUserType(users: any[]): users is UserType[] {
+    return users?.every(isUserType)
+  }
+
+  function isUserAdmin(user: UserType) {
+    return user?.roles === RoleEnum.ADMIN
+  }
+
+  function isUserOwner(user: UserType) {
+    return user?.roles === RoleEnum.OWNER
+  }
 
   async function fetchOne(userId: number) {
     try {
@@ -150,14 +167,6 @@ export default function userHook() {
     DecLoading()
   }
 
-  function isUserType(user: any): user is UserType {
-    return hasOwnProperty(user, 'id') && hasOwnProperty(user, 'token')
-  }
-
-  function isArrayUserType(users: any[]): users is UserType[] {
-    return users?.every(isUserType)
-  }
-
   async function postPhotographer(photographer: PhotographerCreatePayload) {
     try {
       const { data } = await $api().post<UserType>('user/photographer', photographer)
@@ -186,12 +195,20 @@ export default function userHook() {
     }
   }
 
-  function isUserAdmin(user: UserType) {
-    return user?.roles === RoleEnum.ADMIN
-  }
-
-  function isUserOwner(user: UserType) {
-    return user?.roles === RoleEnum.OWNER
+  async function postUserSignature(base64Signature: string, userId: number) {
+    IncLoading()
+    try {
+      const { data, success } = await $api().patch<{ user: UserType; company: Company }>(`user/signature/${userId}`, { signature: base64Signature })
+      if (data && success) {
+        const { user } = data
+        storeUsersEntities(user)
+        $toast.success('Signature enregistrée avec succès')
+      }
+    } catch (error: any) {
+      $toast.danger(error.error as string)
+      console.error(error)
+    }
+    DecLoading()
   }
 
   return {
@@ -208,6 +225,7 @@ export default function userHook() {
     isUserType,
     patchOne,
     postPhotographer,
+    postUserSignature,
     storeUsersEntities,
   }
 }

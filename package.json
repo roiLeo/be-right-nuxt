@@ -29,6 +29,7 @@
     "tailvue": "^0.1.68",
     "v-calendar": "3.0.3",
     "vee-validate": "^4.8.1",
+    "vue-signature-pad": "^3.0.2",
     "yup": "^1.0.2"
   },
   "devDependencies": {

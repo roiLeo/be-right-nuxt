@@ -158,12 +158,16 @@ export default function answerHook() {
     email,
     token,
     reason,
+    signature,
+    isSavedSignatureForNextTime,
   }: {
     answerId: number
     hasSigned: boolean
     email: string
     token: string
     reason?: string
+    signature: string
+    isSavedSignatureForNextTime: boolean
   }) {
     IncLoading()
     try {
@@ -173,6 +177,8 @@ export default function answerHook() {
           hasSigned,
           email,
           reason,
+          isSavedSignatureForNextTime,
+          signature,
         })
 
         if (answer) {

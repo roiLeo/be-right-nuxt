@@ -15,6 +15,7 @@ declare module '@vue/runtime-core' {
     ArrowLeftOnRectangleIconOutline: typeof import('@heroicons/vue/24/outline/esm/ArrowLeftOnRectangleIcon')['default']
     ArrowsUpDownIconOutline: typeof import('@heroicons/vue/24/outline/esm/ArrowsUpDownIcon')['default']
     ArrowUpTrayIconOutline: typeof import('@heroicons/vue/24/outline/esm/ArrowUpTrayIcon')['default']
+    ArrowUturnDownIconOutline: typeof import('@heroicons/vue/24/outline/esm/ArrowUturnDownIcon')['default']
     Bars3IconOutline: typeof import('@heroicons/vue/24/outline/esm/Bars3Icon')['default']
     CalculatorIconOutline: typeof import('@heroicons/vue/24/outline/esm/CalculatorIcon')['default']
     CalendarDaysIconOutline: typeof import('@heroicons/vue/24/outline/esm/CalendarDaysIcon')['default']
