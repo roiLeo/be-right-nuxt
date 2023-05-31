@@ -208,6 +208,10 @@ export default function answerHook() {
     return true
   }
 
+  function isAnswerSigned(answer: AnswerType): boolean {
+    return answer.signedAt !== null && answer.signedAt !== undefined
+  }
+
   return {
     areAnswersType,
     canAnswerBeRaise,
@@ -216,6 +220,7 @@ export default function answerHook() {
     fetchManyAnswerForManyEvent,
     filteringAnswersNotInStore,
     getAnswerForSignature,
+    isAnswerSigned,
     postMany,
     raiseAnswer,
     updateAnswerForEmployee,
