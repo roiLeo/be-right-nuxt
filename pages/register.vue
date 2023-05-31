@@ -100,7 +100,7 @@
   <nuxt-img
     v-if="$isTouch || $isDesktop"
     class="hidden object-cover max-w-5xl shadow-2xl lg:w-2/3 md:max-w-full md:block TranslateUpAnimation cursor-none"
-    src="/camera.webp"
+    src="https://images.unsplash.com/photo-1492146433370-dea32142adc3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
     width="1577"
     height="1920"
     sizes="xs:200px md:500px lg:1024"

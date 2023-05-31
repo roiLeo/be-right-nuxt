@@ -36,7 +36,7 @@
     "@antfu/eslint-config": "^0.39.0",
     "@antfu/utils": "^0.7.2",
     "@headlessui/vue": "^1.7.12",
-    "@nuxt/image-edge": "1.0.0-28059208.2abef1b",
+    "@nuxt/image-edge": "1.0.0-28092288.ed573bb",
     "@nuxtjs/eslint-module": "^4.0.2",
     "@nuxtjs/html-validator": "^1.2.5",
     "@nuxtjs/tailwindcss": "^6.4.1",
