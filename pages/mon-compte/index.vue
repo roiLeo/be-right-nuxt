@@ -4,12 +4,19 @@
     title="Mon profile"
     description="Vous pouvez modifier vos données personnelles"
   >
-    <div class="px-4 mt-6">
-      <UserForm :user="userStore.getAuthUser" />
+    <div
+      v-if="userStore.getAuthUser"
+      class="px-4 mt-6"
+    >
+      <UserForm
+        :user="userStore.getAuthUser"
+        hide-role-selector
+      />
     </div>
   </AccountBaseCard>
 
   <AccountBaseCard
+    v-if="companyStore.getAuthCompany"
     title="Mon entreprise"
     description="Vous pouvez modifier vos données entreprise"
   >
@@ -26,10 +33,26 @@
       <AddressForm :address="companyAddress" />
     </div>
   </AccountBaseCard>
+
+  <AccountBaseCard
+    title="Votre Signature"
+    description="Vous pouvez ajouter votre signature par default."
+  >
+    <div class="px-4 mt-6">
+      <SignatureForm
+        :signature="userStore.getAuthUser?.signature || undefined"
+        @save="saveUserSignature"
+      />
+    </div>
+  </AccountBaseCard>
 </div>
 </template>
 
 <script setup lang="ts">
+import SignatureForm from '~~/components/Signature/SignatureForm.vue'
+import UserForm from '~/components/User/UserForm.vue'
+import AccountBaseCard from '~~/components/Account/BaseCard.vue'
+import AccountCompanyForm from '~~/components/Account/CompanyForm.vue'
 import { useAddressStore, useCompanyStore, useUiStore, useUserStore } from '~~/store'
 
 const userStore = useUserStore()
@@ -45,6 +68,13 @@ const companyAddress = computed(() => {
 
 const { fetchOne: fetchOneAddress } = addressHook()
 const { fetchOne: fetchOneCompany } = companyHook()
+const { postUserSignature } = userHook()
+
+async function saveUserSignature(str: string) {
+  if (userStore.getAuthUserId) {
+    await postUserSignature(str, userStore.getAuthUserId)
+  }
+}
 
 onMounted(async () => {
   IncLoading()

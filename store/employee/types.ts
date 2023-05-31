@@ -14,6 +14,7 @@ export interface EmployeeType extends BaseEntity {
   bornAt: Date
   slug: string
   signedAt: Date
+  signature: null | string
 
   company?: null | Company
   companyId: number

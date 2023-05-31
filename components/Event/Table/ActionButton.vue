@@ -50,8 +50,8 @@
           :class="[
             active ? 'bg-purple-100 text-purple-800' : 'text-gray-900',
           ]"
+          @click="addEmployeeToEvent"
         >
-          <!-- @click="addEmployeeToEvent" -->
           <PlusCircleIconOutline
             class="w-5 h-5 mr-2 text-violet-800"
             aria-hidden="true"
@@ -59,7 +59,7 @@
           Ajouter un destinataire
         </button>
       </MenuItem>
-      <!-- TODO find UI-UX and code way to add existing or new Employee to event -->
+
       <MenuItem
         v-if="!isDeleted"
         v-slot="{ active }"
@@ -100,16 +100,16 @@ const { setUiModal } = uiStore
 
 const isDeleted = computed(() => noNull(props.event.deletedAt) && noUndefined(props.event.deletedAt))
 
-// function addEmployeeToEvent() {
-//   setUiModal({
-//     isActive: true,
-//     modalName: ModalNameEnum.ADD_EMPLOYEE,
-//     modalMode: ModalModeEnum.CREATE,
-//     data: {
-//       eventId: props.event.id,
-//     },
-//   })
-// }
+function addEmployeeToEvent() {
+  setUiModal({
+    isActive: true,
+    modalName: ModalNameEnum.ADD_EMPLOYEE,
+    modalMode: ModalModeEnum.CREATE,
+    data: {
+      eventId: props.event.id,
+    },
+  })
+}
 
 function deleteEvent() {
   setUiModal({

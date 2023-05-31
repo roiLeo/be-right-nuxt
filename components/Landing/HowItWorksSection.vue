@@ -15,7 +15,7 @@
         <div class="hidden md:block">
           <nuxt-img
             class="w-24"
-            src="/static/step1.svg"
+            src="/step1.svg"
             alt="étape 1"
             height="100px"
             width="100px"
@@ -42,7 +42,7 @@
         <div class="hidden md:block">
           <nuxt-img
             class="w-24"
-            src="/static/step2.svg"
+            src="/step2.svg"
             alt="étape 2"
             height="100px"
             width="100px"
@@ -69,7 +69,7 @@
         <div class="hidden md:block">
           <nuxt-img
             class="w-24"
-            src="/static/step3.svg"
+            src="/step3.svg"
             alt="étape 3"
             height="100px"
             width="100px"

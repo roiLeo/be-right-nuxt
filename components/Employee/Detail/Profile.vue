@@ -189,7 +189,7 @@ const { getEmployeeFullname } = employeeHook()
 function deleteOneEmployee() {
   setUiModal({
     isActive: true,
-    modalName: ModalNameEnum.ADD_EMPLOYEE,
+    modalName: ModalNameEnum.DELETE_EMPLOYEE,
     modalMode: ModalModeEnum.DELETE,
     data: {
       employee: props.employee,

@@ -65,17 +65,32 @@
         Fait à {{ state.employee.address?.city }}, le <span class="underline">{{ $toFormat(new Date(), 'DD/MM/YYYY') }}</span> en deux exemplaires
       </p>
       <div class="flex justify-between mt-2">
-        <div>
+        <div class="space-y-4">
           <p>Nom et prénom de la personne photographiée :</p>
           <p class="font-bold">
             {{ state.employee.firstName }} {{ state.employee.lastName }}
           </p>
+          <img
+            v-if="state.employee.signature"
+            class="object-contain w-20 max-h-96"
+            :src="state.employee.signature"
+            :alt="`Signature du représentant de ${state.employee.firstName} ${state.employee.lastName} `"
+          >
         </div>
-        <div v-if="user">
+        <div
+          v-if="user"
+          class="space-y-4"
+        >
           <p>Nom et prénom du représentant {{ state.event.company?.name }} :</p>
           <p class="font-bold">
             {{ getUserfullName(user) }}
           </p>
+          <img
+            v-if="user.signature"
+            class="object-contain w-20 max-h-96"
+            :src="user.signature"
+            :alt="`Signature du représentant de ${state.event.company?.name} `"
+          >
         </div>
       </div>
     </div>
@@ -126,7 +141,7 @@
           <Form
             v-slot="{ meta, values }"
             :validation-schema="schema"
-            :initial-values="{ hasSigned: null, reason: null }"
+            :initial-values="initialValues"
             class="space-y-2"
             @submit="submitAnswer"
           >
@@ -150,15 +165,33 @@
               </BaseRadio>
             </div>
 
+            <template v-if="values.hasSigned !== false">
+              <SignatureForm
+                :signature="state.employee?.signature || undefined"
+                height="250px"
+                save-button-label="valider la signature"
+                @save="setValue"
+              />
+
+              <BaseCheckbox
+                label="Sauvegarder cette signature pour la prochaine fois ?"
+                name="isSavedSignatureForNextTime"
+                :unchecked-value="false"
+                :value="true"
+                wrapper-classes="mt-4"
+              />
+            </template>
+
             <BaseTextarea
               v-if="values.hasSigned === false"
               label="Pourquoi ?"
               name="reason"
             />
+
             <div class="flex justify-center">
               <BaseButton
                 type="submit"
-                :disabled="!meta.dirty || !meta.valid"
+                :disabled="!signatureMeta.valid || !meta.dirty || !meta.valid"
                 :is-loading="uiStore.getUIIsLoading"
               >
                 {{ values.hasSigned ? 'Accepter' : 'Refuser' }}
@@ -173,7 +206,7 @@
 </template>
 
 <script setup lang="ts">
-import { Form } from 'vee-validate'
+import { Form, useField } from 'vee-validate'
 import { boolean, object, string } from 'yup'
 import BaseButton from '~/components/Base/BaseButton.vue'
 import BaseRadio from '~/components/Base/BaseRadio.vue'
@@ -184,16 +217,17 @@ import BaseTextarea from '~/components/Base/BaseTextarea.vue'
 import type { AnswerType, EmployeeType, EventType } from '~/store'
 import { useAnswerStore, useEmployeeStore, useEventStore, useUiStore } from '~/store'
 import type { VeeValidateValues } from '~/types'
+import SignatureForm from '~/components/Signature/SignatureForm.vue'
+import BaseCheckbox from '~/components/Base/BaseCheckbox.vue'
 
 const uiStore = useUiStore()
 const { IncLoading, DecLoading } = uiStore
 const route = useRoute()
-const router = useRouter()
 const answerStore = useAnswerStore()
 const eventStore = useEventStore()
 const employeeStore = useEmployeeStore()
 
-const { $modal, $toast } = useNuxtApp()
+const { $modal, $toast, $router } = useNuxtApp()
 const { isUserOwner, getUserfullName } = userHook()
 const { updateAnswerForEmployee } = answerHook()
 
@@ -217,8 +251,25 @@ const user = computed(() => state.event?.company?.users?.find(user => isUserOwne
 
 const schema = object({
   hasSigned: boolean().required('Vous devez répondre'),
+  isSavedSignatureForNextTime: boolean(),
   reason: string().nullable(),
 })
+
+const initialValues = { hasSigned: null, reason: null, signature: state.employee?.signature || undefined, isSavedSignatureForNextTime: false }
+
+function isRequired(value: string) {
+  if (value && value.trim()) {
+    return true
+  }
+
+  return 'La signature est requise'
+}
+
+const {
+  value: inputValue,
+  setValue,
+  meta: signatureMeta,
+} = useField<string>('signature', isRequired)
 
 async function submitAnswer(form: VeeValidateValues) {
   const { query } = route
@@ -236,10 +287,12 @@ async function submitAnswer(form: VeeValidateValues) {
     email: query.email as string,
     hasSigned: form.hasSigned,
     reason: form.reason || undefined,
+    isSavedSignatureForNextTime: form.isSavedSignatureForNextTime || false,
+    signature: inputValue.value,
   })
 
   closeFormModal()
-  router.replace({
+  $router.replace({
     name: 'answer-merci',
   })
 }

@@ -191,6 +191,15 @@ export default function userHook() {
             },
           })
         }
+
+        if (!currentUser.signature) {
+          missingInfos.push({
+            label: 'Créer votre signature par défault',
+            link: {
+              name: 'mon-compte',
+            },
+          })
+        }
         return missingInfos
       }
       return []
