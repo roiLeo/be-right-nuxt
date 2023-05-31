@@ -23,10 +23,13 @@
       </NuxtLink>
     </div>
 
-    <div class="absolute inset-0 z-0 bg-transparent md:shadow-xl sm:z-50 sm:rounded-lg md:static">
-      <nuxt-img
+    <div
+      v-if="$isDesktop || $isTouch"
+      class="absolute inset-0 z-0 bg-transparent md:shadow-xl sm:z-50 sm:rounded-lg md:static"
+    >
+      <nuxt-picture
         class="z-0 w-full duration-300 ease-in-out transform opacity-50 sm:opacity-100 sm:rounded-lg sm:z-50 sm:hover:-translate-x-1"
-        src="/photographer.webp"
+        src="https://images.unsplash.com/photo-1493863641943-9b68992a8d07?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1158&q=80"
         width="5674"
         height="3840"
         sizes="xs:200px md:500px lg:1024"
