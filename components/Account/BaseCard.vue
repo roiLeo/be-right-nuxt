@@ -1,5 +1,8 @@
 <template>
-<section :aria-labelledby="title">
+<section
+  :aria-labelledby="title"
+  class="overflow-visible"
+>
   <div class="shadow sm:overflow-hidden sm:rounded-md">
     <div class="py-6 bg-white">
       <div class="px-4 pb-6">

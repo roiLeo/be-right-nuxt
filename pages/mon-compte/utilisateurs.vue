@@ -11,6 +11,8 @@
 
 <script setup lang="ts">
 import { uniq } from '@antfu/utils'
+import AccountBaseCard from '~~/components/Account/BaseCard.vue'
+import AccountUserTableList from '~~/components/Account/UserTable/List.vue'
 import type { Company } from '~~/store'
 import { useCompanyStore, useUiStore, useUserStore } from '~~/store'
 

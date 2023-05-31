@@ -135,6 +135,8 @@ export default function userHook() {
         return 'Photographe'
       case RoleEnum.CUSTOMER:
         return 'Client'
+      default:
+        return 'Utilisateur'
     }
   }
 
