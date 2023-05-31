@@ -13,20 +13,26 @@
   />
 
   <EmployeeModal
-    v-if="isModalActive(ModalNameEnum.ADD_EMPLOYEE).value"
-    :is-active="isModalActive(ModalNameEnum.ADD_EMPLOYEE).value"
+    v-if="isModalActive(ModalNameEnum.DELETE_EMPLOYEE).value"
+    :is-active="isModalActive(ModalNameEnum.DELETE_EMPLOYEE).value"
     :mode="uiStore.getUiModalState.modalMode"
     :event-id="eventID"
     @close="CloseResetModalState"
   />
 
-  <GroupAddRecipientModal
+  <AddEmployeeToEventModal
+    v-if="isModalActive(ModalNameEnum.ADD_EMPLOYEE).value && eventID"
+    :is-active="isModalActive(ModalNameEnum.ADD_EMPLOYEE).value"
+    :event-id="eventID"
+  />
+
+  <AddRecipientModal
     v-if="isModalActive(ModalNameEnum.ADD_RECIPIENT_TO_GROUP).value"
     :is-active="isModalActive(ModalNameEnum.ADD_RECIPIENT_TO_GROUP).value"
     :group-id="uiStore.getUiModalState.data?.groupId"
   />
 
-  <GroupDeleteConfirmModal
+  <DeleteConfirmModal
     v-if="isModalActive(ModalNameEnum.DELETE_CONFIRM_GROUP).value"
     :is-active="isModalActive(ModalNameEnum.DELETE_CONFIRM_GROUP).value"
     :group-id="uiStore.getUiModalState.data?.groupId"
@@ -37,6 +43,9 @@
 </template>
 
 <script setup lang="ts">
+import AddEmployeeToEventModal from '~/components/Employee/AddEmployeeToEventModal.vue'
+import AddRecipientModal from '~/components/Group/AddRecipientModal.vue'
+import DeleteConfirmModal from '~/components/Group/DeleteConfirmModal.vue'
 import { useEventStore, useUiStore } from '~~/store'
 import { ModalNameEnum } from '~~/types'
 
