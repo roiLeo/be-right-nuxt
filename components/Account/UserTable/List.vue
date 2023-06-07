@@ -82,7 +82,7 @@
             <input
               v-model="selectedPeople"
               type="checkbox"
-              :disabled="isDisabled || userStore.getAuthUserId === person.id"
+              :disabled="isDisabled || userStore.getAuthUserId === person.id || isUserAdmin(person)"
               class="absolute w-4 h-4 -mt-2 text-indigo-600 border-gray-300 rounded left-4 top-1/2 focus:ring-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
               :value="person.id"
             >
@@ -102,7 +102,7 @@
           </td>
           <td class="py-4 pl-3 pr-2 text-sm font-medium text-right whitespace-nowrap sm:pr-3">
             <button
-              :disabled="isDisabled || userStore.getAuthUserId === person.id"
+              :disabled="isDisabled || userStore.getAuthUserId === person.id || isUserAdmin(person)"
               class="text-indigo-600 cursor-pointer hover:text-indigo-900 disabled:cursor-not-allowed disabled:opacity-50"
               :class="{ isDisabled: 'cursor-not-allowed opacity-50' }"
               :title="getButtonTitle(person.roles).value"
@@ -134,7 +134,7 @@ const { setUiModal } = uiStore
 const authStore = useAuthStore()
 const userStore = useUserStore()
 
-const { getUserfullName } = userHook()
+const { getUserfullName, isUserAdmin } = userHook()
 const { addOrRemoveOwner } = companyHook()
 
 const usersSorted = computed(() =>
@@ -160,7 +160,9 @@ const getButtonTitle = (Role: RoleEnum) => computed(() => {
 
 function selectAll(event: any) {
   if (event.target?.checked) {
-    selectedPeople.value = usersSorted.value.map(p => p.id)
+    selectedPeople.value = usersSorted.value
+      .filter(user => !isUserAdmin(user))
+      .map(p => p.id)
   }
   selectedPeople.value = []
 }

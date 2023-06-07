@@ -7,12 +7,12 @@ env:
   NODE_ENV: prod
 
 jobs:
-  test:
+  StyleGuides_checks:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node: [16.x, 18.x]
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [18.x]
+        os: [ubuntu-latest]
       fail-fast: false
 
     steps:
@@ -40,8 +40,36 @@ jobs:
       - name: ☑️ Type checking
         run: nr type:check
 
+  Build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node: [16.x, 18.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+      fail-fast: false
+
+    steps:
+      - name: ⬇️ Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+
+      - name: ⚙️ Set node ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+
+      - name: ⚙️ Setup
+        run: npm i -g @antfu/ni
+
+      - name: 🔧 Install
+        run: nci
+
       - name: 🏗 Build
         run: nr build
+
 
   # cypress-run:
   #   runs-on: ubuntu-latest
