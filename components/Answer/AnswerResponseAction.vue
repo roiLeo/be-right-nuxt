@@ -41,7 +41,10 @@
     </BaseButton>
   </template>
 
-  <p class="flex items-center mt-2 text-sm text-gray-500">
+  <p
+    v-else
+    class="flex items-center mt-2 text-sm text-gray-500"
+  >
     <BaseButton
       :disabled="uiStore.getUIIsLoading"
       :is-loading="uiStore.getUIIsLoading"
