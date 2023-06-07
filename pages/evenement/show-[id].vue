@@ -16,22 +16,10 @@ import { useEventStore, useUiStore } from '~~/store'
 
 const eventStore = useEventStore()
 const uiStore = useUiStore()
-const { IncLoading, DecLoading } = uiStore
-
-const { fetchEventWithRelations } = eventHook()
 
 const route = useRoute()
 
 const eventId = route.name === 'evenement-show-id' && parseInt(route.params.id.toString())
-
-onMounted(async () => {
-  if (eventId) {
-    IncLoading()
-    // TODO do this in middleware
-    await fetchEventWithRelations(eventId)
-    DecLoading()
-  }
-})
 
 useHead({
   title: eventStore.getOne(eventId)?.name || 'Voir événement',
@@ -40,6 +28,6 @@ useHead({
 definePageMeta({
   layout: 'auth',
   isAuth: true,
-  middleware: 'guards-middleware',
+  middleware: ['guards-middleware', 'event-middleware'],
 })
 </script>
