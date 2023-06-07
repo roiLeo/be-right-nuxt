@@ -1,7 +1,7 @@
 <template>
 <PageAuthWrapper>
   <EventDetails
-    v-if="!uiStore.isLoading"
+    v-if="!uiStore.isLoading && eventId"
     :event-id="eventId"
   />
 
@@ -10,6 +10,8 @@
 </template>
 
 <script setup lang="ts">
+import PageAuthWrapper from '~/components/Page/PageAuthWrapper.vue'
+import EventDetails from '~/components/Event/EventDetails.vue'
 import { useEventStore, useUiStore } from '~~/store'
 
 const eventStore = useEventStore()
@@ -25,13 +27,14 @@ const eventId = route.name === 'evenement-show-id' && parseInt(route.params.id.t
 onMounted(async () => {
   if (eventId) {
     IncLoading()
+    // TODO do this in middleware
     await fetchEventWithRelations(eventId)
     DecLoading()
   }
 })
 
 useHead({
-  title: eventStore.getOne(eventId).name || 'Voir événement',
+  title: eventStore.getOne(eventId)?.name || 'Voir événement',
 })
 
 definePageMeta({

@@ -1,6 +1,6 @@
 <template>
 <div class="h-full min-h-screen px-4 sm:px-6 lg:px-8">
-  <div
+  <!-- <div
     v-if="authStore.isAuthUserAdmin"
     class=" sm:flex-col lg:flex-row lg:items-center"
   >
@@ -14,7 +14,7 @@
       />
     </div>
     <EventTableFilters />
-  </div>
+  </div> -->
 
   <BaseTable>
     <template #header>

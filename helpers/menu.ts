@@ -11,41 +11,35 @@ import {
 } from '@heroicons/vue/24/outline'
 import { RouteNames } from './routes'
 
-export const MENU_ITEMS = [
+export const ADMIN_MENU_ITEMS = [
   {
-    label: 'Événements',
+    label: 'Tous les événements',
     icon: HomeIcon,
-    linkName: 'evenement',
+    linkName: 'admin-events',
     isAdmin: true,
   },
   {
     label: 'Utilisateurs',
     icon: UserGroupIcon,
-    linkName: 'user',
-    isAdmin: true,
-  },
-  {
-    label: 'Destinataires',
-    icon: UsersIcon,
-    linkName: 'destinataire',
+    linkName: 'admin-user',
     isAdmin: true,
   },
   // {
-  //   label: 'Fichiers',
-  //   icon: FolderOpenIcon,
-  //   // linkName: 'files',
+  //   label: 'Destinataires',
+  //   icon: UsersIcon,
+  //   linkName: 'admin-destinataire',
   //   isAdmin: true,
   // },
   {
     label: 'Bugs et Problèmes',
     icon: ExclamationCircleIcon,
-    linkName: 'bug',
+    linkName: 'admin-bug',
     isAdmin: true,
   },
   {
     label: 'Newsletter Statistiques',
     icon: ChartPieIcon,
-    linkName: 'newsletter',
+    linkName: 'admin-newsletter',
     isAdmin: true,
   },
   {
@@ -60,16 +54,11 @@ export const MENU_ITEMS = [
     linkName: RouteNames.EMPLOYEE_CREATE,
     isAdmin: true,
   },
-  // {
-  //   label: 'Créer un nouveau fichier',
-  //   icon: FolderPlusIcon,
-  //   // linkName: 'files.create',
-  //   isAdmin: true,
-  // },
+]
 
-  // user
+export const MENU_ITEMS = [
   {
-    label: 'Événements',
+    label: 'Mes événements',
     icon: HomeIcon,
     linkName: 'evenement',
     isAdmin: false,
@@ -116,10 +105,4 @@ export const MENU_ITEMS = [
     linkName: 'groupe-creation',
     isAdmin: false,
   },
-  // {
-  //   label: 'Créer un nouveau fichier',
-  //   icon: FolderPlusIcon,
-  //   // linkName: 'user.files.create-model',
-  //   isAdmin: false,
-  // },
 ]

@@ -1,6 +1,6 @@
 <template>
 <PageAuthWrapper>
-  Newsletter
+  Edit User
 </PageAuthWrapper>
 </template>
 
@@ -9,6 +9,6 @@ definePageMeta({
   layout: 'auth',
   isAuth: true,
   isAdmin: true,
-  middleware: 'guards-middleware',
+  middleware: ['guards-middleware'],
 })
 </script>
