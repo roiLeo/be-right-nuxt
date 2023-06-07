@@ -98,22 +98,12 @@ export default function eventHook() {
   }
 
   async function fetchAllEvents(url?: string) {
-    IncLoading()
-    try {
-      let finalUrl = 'event'
-      if (url) {
-        finalUrl += `${url}`
-      }
-      const { data } = await $api().get<PaginatedResponse<EventType>>(finalUrl)
-
-      if (data) {
-        storeEventRelationEntities(data.data)
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    let finalUrl = 'event'
+    if (url) {
+      finalUrl += `${url}`
     }
-    DecLoading()
+    const { data } = await $api().get<PaginatedResponse<EventType>>(finalUrl)
+    return data
   }
 
   async function fetchEventsByCompany() {

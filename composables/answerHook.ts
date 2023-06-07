@@ -65,6 +65,11 @@ export default function answerHook() {
           if (answersNotInStore.length > 0) {
             addMany(answersNotInStore)
           }
+
+          const answersToUpdate = answers.filter(answer => answerStore.isAlreadyInStore(answer.id))
+          if (answersToUpdate.length > 0) {
+            answersToUpdate.forEach(answer => updateOneAnswer(answer.id, answer))
+          }
         }
       }
     } catch (error) {

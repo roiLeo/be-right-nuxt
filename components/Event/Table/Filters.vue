@@ -44,19 +44,14 @@
 <script setup lang="ts">
 import type { EventStatusEnum } from '@/types'
 import { eventStatusArray } from '@/types'
-import { useTableStore } from '~~/store'
 
-const { setFilters } = useTableStore()
+const emit = defineEmits<{
+  (e: 'setFilter', status: EventStatusEnum | undefined): void
+}>()
 
 const filter = ref<undefined | EventStatusEnum>(undefined)
 
-watch(() => filter.value, newValue => {
-  if (newValue) {
-    setFilters({
-      status: newValue,
-    })
-  } else {
-    setFilters(null)
-  }
+watch(() => filter.value, val => {
+  emit('setFilter', val)
 })
 </script>

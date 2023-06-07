@@ -7,5 +7,12 @@
   <tbody class="divide-y divide-gray-200">
     <slot name="default" />
   </tbody>
+
+  <tfoot
+    v-if="$slots.footer"
+    class="divide-y divide-gray-300"
+  >
+    <slot name="footer" />
+  </tfoot>
 </table>
 </template>
