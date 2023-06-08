@@ -204,10 +204,6 @@ export default function answerHook() {
     return answer.signedAt !== null && answer.signedAt !== undefined
   }
 
-  function isAnswerSigned(answer: AnswerType): boolean {
-    return answer.signedAt !== null && answer.signedAt !== undefined
-  }
-
   return {
     areAnswersType,
     fetchMany,
