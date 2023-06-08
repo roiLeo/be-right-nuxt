@@ -27,16 +27,7 @@ onMounted(async () => {
 
   IncLoading()
   if (userId) {
-    // const eventIds = userStore.getAuthUser?.eventIds
-
-    // if (eventIds && eventIds.length > 0) {
-    //   const missingEventIds = eventIds.filter(id => !eventStore.isAlreadyInStore(id))
-    //   if (missingEventIds && missingEventIds?.length > 0) {
     await fetchDeleted()
-    // }
-
-    // await fetchManyAnswerForManyEvent(eventIds)
-    // }
   }
   DecLoading()
 })

@@ -58,24 +58,8 @@
             <div class="flex items-center flex-shrink-0 px-4">
               <LogoSimpleLogo class="text-white" />
             </div>
-            <nav class="px-2 mt-5 space-y-1">
-              <NuxtLink
-                v-for="(item, index) in getMenuItems()"
-                :key="index"
-                :to="{ name: item.linkName }"
-                class="flex items-center px-2 py-2 text-sm font-medium text-gray-600 rounded-md group dark:text-gray-300 hover:bg-gray-700 hover:text-white"
-                exact-active-class="active-nuxt-link"
-                :data-cy="`drawer-link-${item.linkName}`"
-                @click="closeDrawer"
-              >
-                <component
-                  :is="item.icon"
-                  class="flex-shrink-0 w-6 h-6 mr-3 text-gray-600 dark:text-gray-400 group-hover:text-gray-300"
-                  aria-hidden="true"
-                />
-                {{ item.label }}
-              </NuxtLink>
-            </nav>
+            <MenuAdmin v-if="authStore.isAuthUserAdmin" />
+            <MenuBasic v-else />
           </div>
         </div>
       </TransitionChild>
@@ -93,23 +77,8 @@
         <div class="flex items-center flex-shrink-0 px-4">
           <LogoSimpleLogo />
         </div>
-        <nav class="flex-1 mt-5 space-y-4">
-          <NuxtLink
-            v-for="(item, index) in getMenuItems()"
-            :key="index"
-            :to="{ name: item.linkName }"
-            exact-active-class="active-nuxt-link"
-            class="flex items-center px-2 py-2 text-sm font-medium text-gray-600 rounded-md group dark:text-gray-300 hover:bg-gray-700 hover:text-white"
-            @click="closeDrawer"
-          >
-            <component
-              :is="item.icon"
-              class="flex-shrink-0 w-6 h-6 mr-3 text-gray-600 dark:text-gray-400 group-hover:text-gray-300"
-              aria-hidden="true"
-            />
-            {{ item.label }}
-          </NuxtLink>
-        </nav>
+        <MenuAdmin v-if="authStore.isAuthUserAdmin" />
+        <MenuBasic v-else />
       </div>
       <!-- <DarkModeToggle /> -->
       <UserMenu />
@@ -119,19 +88,13 @@
 </template>
 
 <script setup lang="ts">
-import { MENU_ITEMS } from '@/helpers/menu'
+import MenuBasic from './MenuBasic.vue'
+import MenuAdmin from './MenuAdmin.vue'
 import { useAuthStore, useUiStore } from '~~/store'
 
 const uiStore = useUiStore()
-const { closeDrawer } = uiStore
 const authStore = useAuthStore()
-
-function getMenuItems() {
-  if (authStore.isAuthUserAdmin) {
-    return MENU_ITEMS.filter(item => item.isAdmin)
-  }
-  return MENU_ITEMS.filter(item => !item.isAdmin)
-}
+const { closeDrawer } = uiStore
 </script>
 
 <style scoped>

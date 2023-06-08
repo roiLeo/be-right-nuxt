@@ -1,5 +1,4 @@
 import { hasOwnProperty, uniq } from '@antfu/utils'
-import dayjs from 'dayjs'
 import type { ActionResponse, ErrorResponse, ResponseAnswerSignature } from '~/types/Payload'
 import type { AnswerType } from '~~/store'
 import { useAnswerStore, useUiStore } from '~~/store'
@@ -64,6 +63,11 @@ export default function answerHook() {
 
           if (answersNotInStore.length > 0) {
             addMany(answersNotInStore)
+          }
+
+          const answersToUpdate = answers.filter(answer => answerStore.isAlreadyInStore(answer.id))
+          if (answersToUpdate.length > 0) {
+            answersToUpdate.forEach(answer => updateOneAnswer(answer.id, answer))
           }
         }
       }
@@ -196,16 +200,8 @@ export default function answerHook() {
     DecLoading()
   }
 
-  function canAnswerBeRaise(answer: AnswerType): boolean {
-    const now = dayjs().subtract(5, 'day')
-    if (answer.mailSendAt) {
-      return dayjs(answer.mailSendAt).isBefore(now)
-    }
-
-    if (answer.createdAt) {
-      return dayjs(answer.createdAt).isBefore(now)
-    }
-    return true
+  function isAnswerSigned(answer: AnswerType): boolean {
+    return answer.signedAt !== null && answer.signedAt !== undefined
   }
 
   function isAnswerSigned(answer: AnswerType): boolean {
@@ -214,7 +210,6 @@ export default function answerHook() {
 
   return {
     areAnswersType,
-    canAnswerBeRaise,
     fetchMany,
     fetchManyAnswerForEvent,
     fetchManyAnswerForManyEvent,

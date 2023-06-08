@@ -1,10 +1,10 @@
 <template>
-<div class="flex items-center mt-4 sm:mt-0 sm:ml-16">
+<div class="flex items-center mt-4 sm:mt-0">
   <RadioGroup v-model="filter">
     <RadioGroupLabel class="sr-only">
       Choisissez votre filtre
     </RadioGroupLabel>
-    <div class="grid grid-cols-3 gap-3 sm:grid-cols-6">
+    <div class="flex items-center space-x-2">
       <RadioGroupOption
         v-for="status in eventStatusArray"
         :key="status"
@@ -37,26 +37,20 @@
       </RadioGroupOption>
     </div>
   </RadioGroup>
-  <!-- FIXME error in console with healdess UI -->
 </div>
 </template>
 
 <script setup lang="ts">
 import type { EventStatusEnum } from '@/types'
 import { eventStatusArray } from '@/types'
-import { useTableStore } from '~~/store'
 
-const { setFilters } = useTableStore()
+const emit = defineEmits<{
+  (e: 'setFilter', status: EventStatusEnum | undefined): void
+}>()
 
 const filter = ref<undefined | EventStatusEnum>(undefined)
 
-watch(() => filter.value, newValue => {
-  if (newValue) {
-    setFilters({
-      status: newValue,
-    })
-  } else {
-    setFilters(null)
-  }
+watch(() => filter.value, val => {
+  emit('setFilter', val)
 })
 </script>

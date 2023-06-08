@@ -118,6 +118,7 @@ const eventStore = useEventStore()
 const employeeStore = useEmployeeStore()
 // const fileStore = useFileStore()
 const answerStore = useAnswerStore()
+const { isAnswerSigned } = answerHook()
 
 const event = computed(() => eventStore.getOne(props.eventId))
 
@@ -125,8 +126,11 @@ const answers = computed(() => answerStore.getManyByEventId(props.eventId))
 const answersQueryIds = computed(() => answers.value.map(answer => answer.id)?.join(','))
 
 const employees = computed(() => {
-  const employeesIds = answers.value.map(answer => answer.employeeId)
-  return employeeStore.getWhereArray(emp => employeesIds.includes(emp.id))
+  const employeesIds = answers.value
+    .map(answer => answer.employeeId)
+  return employeeStore.getWhereArray(emp => employeesIds.includes(emp.id)).sort((a, b) => {
+    return isAnswerSigned(answers.value.find(answer => answer.employeeId === a.id)!) ? 1 : isAnswerSigned(answers.value.find(answer => answer.employeeId === b.id)!) ? 1 : -1
+  })
 })
 
 // const files = computed(() =>

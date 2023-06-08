@@ -42,7 +42,7 @@
   </template>
 
   <p
-    v-else-if="canAnswerBeRaise(answer)"
+    v-else
     class="flex items-center mt-2 text-sm text-gray-500"
   >
     <BaseButton
@@ -90,7 +90,7 @@ const hasBeenAnswered = computed(() =>
 )
 
 const uiStore = useUiStore()
-const { canAnswerBeRaise, raiseAnswer } = answerHook()
+const { raiseAnswer } = answerHook()
 const responseMessage = ref<null | string>(null)
 const isGreenMessage = ref(false)
 
