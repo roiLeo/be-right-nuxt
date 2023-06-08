@@ -81,6 +81,27 @@ export default function userHook() {
     }
   }
 
+  async function fetchMany(userIds: number[]) {
+    IncLoading()
+    try {
+      if (userIds.length > 0) {
+        const { data } = await $api().get<Company[]>(`employee/manyByIds?ids=${userIds.join(',')}`)
+
+        if (data && data.length > 0) {
+          const missingCompanies = data.filter(user => !companyStore.isAlreadyInStore(user.id))
+
+          if (missingCompanies.length > 0) {
+            companyStore.addMany(missingCompanies)
+          }
+        }
+      }
+    } catch (error) {
+      console.error(error)
+      $toast.danger('Une erreur est survenue')
+    }
+    DecLoading()
+  }
+
   async function addOrRemoveOwner(userId: number) {
     try {
       IncLoading()
@@ -211,6 +232,7 @@ export default function userHook() {
     addOrRemoveOwner,
     createNewUser,
     fetchOne,
+    fetchMany,
     getMissingsInfos,
     isCompanyType,
     patchOne,

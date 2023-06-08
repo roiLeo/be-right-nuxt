@@ -29,6 +29,9 @@ export const useUiStore = defineStore(EntitiesEnum.UI, {
     DecLoading() {
       this.isLoading--
     },
+    resetLoading() {
+      this.isLoading = 0
+    },
     setUiModal(options: ModalOptionsUi) {
       this.modal.modalName = options.modalName
       this.modal.isActive = options.isActive

@@ -9,7 +9,7 @@ export interface UserType extends BaseEntity {
   firstName: string
   lastName: string
   signature: string | null
-
+  loggedAt: Date | null
   apiKey: string
   roles: RoleEnum
 

@@ -257,6 +257,22 @@ export default function employeeHook() {
       )
   }
 
+  async function postOneForUser(
+    { employee, address, userId }: { employee: EmployeeType; address: AddressType; userId: number }) {
+    try {
+      const { data } = await $api().post<EmployeeType>('admin/employee', { employee, address, userId })
+
+      if (data) {
+        employeeStore.addMany([data])
+        $toast.success('Destinataire créé avec succès')
+      }
+      return null
+    } catch (error) {
+      console.error(error)
+      $toast.danger('Une erreur est survenue')
+    }
+  }
+
   return {
     deleteOne,
     fetchAll,
@@ -271,6 +287,7 @@ export default function employeeHook() {
     patchOne,
     postManyForEvent,
     postOne,
+    postOneForUser,
     storeEmployeeRelationsEntities,
   }
 }
