@@ -1,4 +1,3 @@
-// import { useCookies } from 'vue3-cookies'
 import { useJwt } from '@vueuse/integrations/useJwt'
 import type { JwtPayload } from 'jsonwebtoken'
 import type { ValidationRequest } from '@/types'
@@ -40,6 +39,8 @@ export default function authHook() {
   const { resetAuthState } = useAuthStore()
 
   function logout() {
+    const cookieToken = useCookie('userToken')
+    cookieToken.value = null
     $api().deleteCredentials()
 
     addressStore.resetState()
@@ -57,9 +58,6 @@ export default function authHook() {
     userStore.resetState()
 
     resetAuthState()
-
-    const cookieToken = useCookie('userToken')
-    cookieToken.value = null
 
     router.replace({ name: 'index' })
     $toast.success('Vous êtes déconnecté')

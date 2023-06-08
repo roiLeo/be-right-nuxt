@@ -1,10 +1,10 @@
 <template>
-<div class="flex items-center mt-4 sm:mt-0 sm:ml-16">
+<div class="flex items-center mt-4 sm:mt-0">
   <RadioGroup v-model="filter">
     <RadioGroupLabel class="sr-only">
       Choisissez votre filtre
     </RadioGroupLabel>
-    <div class="grid grid-cols-3 gap-3 sm:grid-cols-6">
+    <div class="flex items-center space-x-2">
       <RadioGroupOption
         v-for="status in eventStatusArray"
         :key="status"
@@ -37,7 +37,6 @@
       </RadioGroupOption>
     </div>
   </RadioGroup>
-  <!-- FIXME error in console with healdess UI -->
 </div>
 </template>
 

@@ -18,7 +18,7 @@
 
     @click="emit('pageChange', currentPage - 1)"
   >
-    <ChevronLeftIconOutline class="w-4 h-4" />
+    <ChevronLeftIcon class="w-4 h-4" />
   </NuxtLink>
 
   <NuxtLink
@@ -53,12 +53,17 @@
     }"
     @click="emit('pageChange', currentPage + 1)"
   >
-    <ChevronRightIconOutline class="w-4 h-4" />
+    <ChevronRightIcon class="w-4 h-4" />
   </NuxtLink>
 </div>
 </template>
 
 <script setup lang="ts">
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from '@heroicons/vue/24/solid'
+
 interface Props {
   totalPages: number
   currentPage: number

@@ -1,21 +1,5 @@
 <template>
 <div class="h-full min-h-screen px-4 sm:px-6 lg:px-8">
-  <!-- <div
-    v-if="authStore.isAuthUserAdmin"
-    class=" sm:flex-col lg:flex-row lg:items-center"
-  >
-    <div class="w-full mb-4 sm:flex-auto">
-      <BaseInput
-        v-model="state.search"
-        name="events"
-        type="text"
-        placeholder="Recherchez"
-        @keyup="searchEntity($event)"
-      />
-    </div>
-    <EventTableFilters />
-  </div> -->
-
   <BaseTable>
     <template #header>
       <EventTableHeader />
@@ -45,7 +29,6 @@
 <script setup lang="ts">
 import type { EventType } from '@/types'
 import { RouteNames } from '~~/helpers/routes'
-import { useAuthStore, useTableStore } from '~~/store'
 import EventItem from '~/components/Event/Table/EventItem.vue'
 
 interface Props {
@@ -57,20 +40,4 @@ withDefaults(defineProps<Props>(), {
   noEventMessage: 'Aucun événement enregistré!',
   events: () => [],
 })
-
-const { setSearch } = useTableStore()
-const authStore = useAuthStore()
-
-const state = reactive({
-  search: '',
-  timeout: 0,
-})
-
-function searchEntity(event: KeyboardEvent) {
-  console.warn(event)
-  clearTimeout(state.timeout)
-  state.timeout = window.setTimeout(() => {
-    setSearch(state.search)
-  }, 500)
-}
 </script>

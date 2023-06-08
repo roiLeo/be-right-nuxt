@@ -5,14 +5,14 @@ export default defineNuxtRouteMiddleware(to => {
   const authStore = useAuthStore()
 
   if (to.meta.isAuth && !authStore.getIsLoggedIn) {
-    $toast.denied('Vous n\'êtes pas connecté')
+    $toast?.denied('Vous n\'êtes pas connecté')
     return navigateTo({
       name: 'login',
     })
   }
 
   if (to.meta.isAdmin && !authStore.isAuthUserAdmin) {
-    $toast.denied('Vous n\'êtes pas Administrateur')
+    $toast?.denied('Vous n\'êtes pas Administrateur')
     return navigateTo({
       name: 'login',
     })
