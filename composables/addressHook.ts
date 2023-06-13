@@ -11,60 +11,40 @@ export default function addressHook() {
 
   async function fetchOne(id: number) {
     IncLoading()
-    try {
-      const { data: address } = await $api().get<AddressType>(`address/${id}`)
-      if (address) {
-        addOne(address)
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    const { data: address } = await $api().get<AddressType>(`address/${id}`)
+    if (address && isAddressType(address)) {
+      addOne(address)
     }
     DecLoading()
   }
 
   async function fetchMany(ids: number[]) {
     IncLoading()
-    try {
-      if (ids.length > 0) {
-        const { data } = await $api().get<AddressType[]>(`address/manyByIds?ids=${ids.join(',')}`)
+    if (ids.length > 0) {
+      const { data } = await $api().get<AddressType[]>(`address/manyByIds?ids=${ids.join(',')}`)
 
-        if (data && data.length > 0) {
-          addMany(data)
-        }
+      if (data && data.length > 0 && areAddressType(data)) {
+        addMany(data)
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
 
   async function postOne(payload: AddressPostPayload) {
     IncLoading()
-    try {
-      const { data: address } = await $api().post<AddressType>('address/', payload as unknown as WithoutId<AddressType>)
-      if (address) {
-        addOne(address)
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    const { data: address } = await $api().post<AddressType>('address/', payload as unknown as WithoutId<AddressType>)
+    if (address && isAddressType(address)) {
+      addOne(address)
     }
     DecLoading()
   }
 
   async function patchOne(id: number, payload: Partial<AddressType>) {
     IncLoading()
-    try {
-      const { data: address } = await $api().patch<AddressType>(`address/${id}`, { address: payload })
-      if (isAddressType(address)) {
-        updateOneAddress(id, address)
-        $toast.success('Adresse mise à jours')
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    const { data: address } = await $api().patch<AddressType>(`address/${id}`, { address: payload })
+    if (address && isAddressType(address)) {
+      updateOneAddress(id, address)
+      $toast.success('Adresse mise à jour')
     }
     DecLoading()
   }
@@ -74,6 +54,10 @@ export default function addressHook() {
       && hasOwnProperty(arg, 'postalCode')
       && hasOwnProperty(arg, 'city')
       && hasOwnProperty(arg, 'country')
+  }
+
+  function areAddressType(args: unknown[]): args is AddressType[] {
+    return args.every(arg => isAddressType(arg))
   }
 
   return {

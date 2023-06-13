@@ -30,65 +30,59 @@
         />
       </span>
     </ListboxButton>
-    <transition
-      leave-active-class="transition duration-100 ease-in"
-      leave-from-class="opacity-100"
-      leave-to-class="opacity-0"
+    <ListboxOptions
+      :multiple="true"
+      class="absolute z-10 w-full mt-2 overflow-auto bg-white border border-gray-500 rounded-md shadow-lg pt max-h-60 focus:outline-none"
     >
-      <ListboxOptions
-        :multiple="true"
-        class="absolute z-10 w-full mt-2 overflow-auto bg-white border border-gray-500 rounded-md shadow-lg pt max-h-60 focus:outline-none"
+      <ListboxOption
+        v-slot="{ active, selected, disabled }"
+        :value="values"
+        as="li"
+        @click="toggleSelectAll"
       >
-        <ListboxOption
-          v-slot="{ active, selected, disabled }"
-          :value="values"
-          as="li"
-          @click="toggleSelectAll"
+        <label
+          for="all"
+          class="relative flex items-start justify-start px-4 py-2 space-x-2 text-sm text-gray-900 cursor-pointer select-none"
+          :class="[
+            active ? 'bg-gray-200' : 'bg-white',
+            disabled ? 'opacity-50' : '',
+          ]"
         >
-          <label
-            for="all"
-            class="relative flex items-start justify-start px-4 py-2 space-x-2 text-sm text-gray-900 cursor-pointer select-none"
-            :class="[
-              active ? 'bg-gray-200' : 'bg-white',
-              disabled ? 'opacity-50' : '',
-            ]"
+          <input
+            name="all"
+            class="w-4 h-4 rounded border-green-600 mt-[2px] hover:border-green-700 checked:text-green-600 focus:ring-green-600 focus:border-green-600 focus:outline-none disabled:border-gray-600 disabled:text-gray-600"
+            type="checkbox"
+            :checked="selected"
           >
-            <input
-              name="all"
-              class="w-4 h-4 rounded border-green-600 mt-[2px] hover:border-green-700 checked:text-green-600 focus:ring-green-600 focus:border-green-600 focus:outline-none disabled:border-gray-600 disabled:text-gray-600"
-              type="checkbox"
-              :checked="selected"
-            >
-            <span>Sélectionner tout</span>
-          </label>
-        </ListboxOption>
-        <ListboxOption
-          v-for="value in values"
-          v-slot="{ active, selected, disabled }"
-          :key="value[valueKey]"
-          :value="value[valueKey]"
-          as="li"
+          <span>Sélectionner tout</span>
+        </label>
+      </ListboxOption>
+      <ListboxOption
+        v-for="value in values"
+        v-slot="{ active, selected, disabled }"
+        :key="value[valueKey]"
+        :value="value[valueKey]"
+        as="li"
+      >
+        <!-- :disabled="!inputValue?.includes(value[valueKey]) && inputValue.length >= max" -->
+        <label
+          :for="getDisplayName(value[valueKey])"
+          class="relative flex items-start justify-start px-4 py-2 space-x-2 text-sm text-gray-900 cursor-pointer select-none"
+          :class="[
+            active ? 'bg-gray-200' : 'bg-white',
+            disabled ? 'opacity-50' : '',
+          ]"
         >
-          <!-- :disabled="!inputValue?.includes(value[valueKey]) && inputValue.length >= max" -->
-          <label
-            :for="getDisplayName(value[valueKey])"
-            class="relative flex items-start justify-start px-4 py-2 space-x-2 text-sm text-gray-900 cursor-pointer select-none"
-            :class="[
-              active ? 'bg-gray-200' : 'bg-white',
-              disabled ? 'opacity-50' : '',
-            ]"
+          <input
+            :name="getDisplayName(value[valueKey])"
+            class="w-4 h-4 rounded border-green-600 mt-[2px] hover:border-green-700 checked:text-green-600 focus:ring-green-600 focus:border-green-600 focus:outline-none disabled:border-gray-600 disabled:text-gray-600"
+            type="checkbox"
+            :checked="selected"
           >
-            <input
-              :name="getDisplayName(value[valueKey])"
-              class="w-4 h-4 rounded border-green-600 mt-[2px] hover:border-green-700 checked:text-green-600 focus:ring-green-600 focus:border-green-600 focus:outline-none disabled:border-gray-600 disabled:text-gray-600"
-              type="checkbox"
-              :checked="selected"
-            >
-            <span>{{ getDisplayName(value[valueKey]) }}</span>
-          </label>
-        </ListboxOption>
-      </ListboxOptions>
-    </transition>
+          <span>{{ getDisplayName(value[valueKey]) }}</span>
+        </label>
+      </ListboxOption>
+    </ListboxOptions>
   </div>
   <p
     v-if="helpMessage && errors.length === 0"

@@ -25,9 +25,22 @@ useHead({
   title: eventStore.getOne(eventId)?.name || 'Voir événement',
 })
 
+onMounted(async () => {
+  const uiStore = useUiStore()
+  const { IncLoading, DecLoading } = uiStore
+
+  const { fetchEventWithRelations } = eventHook()
+
+  if (eventId) {
+    IncLoading()
+    await fetchEventWithRelations(eventId)
+    DecLoading()
+  }
+})
+
 definePageMeta({
   layout: 'auth',
   isAuth: true,
-  middleware: ['guards-middleware', 'event-middleware'],
+  middleware: ['guards-middleware'],
 })
 </script>

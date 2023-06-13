@@ -1,4 +1,4 @@
-import { uniq } from '@antfu/utils'
+import { hasOwnProperty, uniq } from '@antfu/utils'
 import type { Group, GroupCreationPayload } from '~~/store'
 import { ModalModeEnum, ModalNameEnum, useEmployeeStore, useUiStore } from '~~/store'
 import { useGroupStore } from '~~/store/group/groupStore'
@@ -14,61 +14,41 @@ export default function groupHook() {
   const { addMany, removeOne } = groupStore
 
   async function deleteGroup(id: number) {
-    try {
-      IncLoading()
-      await $api().delete(`group/${id}`)
-      removeOne(id)
-      $toast.success('Groupe à été supprimé avec succès')
-    } catch (error) {
-      $toast.danger('Une erreur est survenue')
-      console.error(error)
-    }
+    IncLoading()
+    await $api().delete(`group/${id}`)
+    removeOne(id)
+    $toast.success('Groupe à été supprimé avec succès')
     DecLoading()
   }
 
   async function fetchByUser() {
     IncLoading()
-    try {
-      const { data: groups } = await $api().get<Group[]>('group/user')
-      if (groups && groups.length > 0) {
-        addMany(groups)
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    const { data: groups } = await $api().get<Group[]>('group/user')
+    if (groups && groups.length > 0 && areGroupTypes(groups)) {
+      addMany(groups)
     }
     DecLoading()
   }
 
   async function fetchMany(ids: number[]) {
     IncLoading()
-    try {
-      if (ids.length > 0) {
-        const { data } = await $api().get<Group[]>(`group/manyByIds?ids=${ids.join(',')}`)
+    if (ids.length > 0) {
+      const { data } = await $api().get<Group[]>(`group/manyByIds?ids=${ids.join(',')}`)
 
-        if (data && data.length > 0) {
-          await fetchGroupRelations(data)
+      if (data && data.length > 0 && areGroupTypes(data)) {
+        await fetchGroupRelations(data)
 
-          addMany(data)
-        }
+        addMany(data)
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
 
   async function fetchByEmployeeId(id: number) {
     IncLoading()
-    try {
-      const { data: groups } = await $api().get<Group[]>(`group/employeeId/${id}`)
-      if (groups && groups.length > 0) {
-        addMany(groups)
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    const { data: groups } = await $api().get<Group[]>(`group/employeeId/${id}`)
+    if (groups && groups.length > 0 && areGroupTypes(groups)) {
+      addMany(groups)
     }
     DecLoading()
   }
@@ -76,85 +56,64 @@ export default function groupHook() {
   async function fetchUserGroupsAndRelations() {
     IncLoading()
     await fetchByUser()
-
     await fetchGroupRelations(groupStore.getAllArray)
     DecLoading()
   }
 
   async function postOne(group: GroupCreationPayload) {
     IncLoading()
-    try {
-      const { data } = await $api().post<Group>('group', {
-        group,
-      })
-      if (data) {
-        addMany([data])
-        $toast.success('Groupe créé avec succès')
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    const { data } = await $api().post<Group>('group', {
+      group,
+    })
+    if (data && isGroupType(data)) {
+      addMany([data])
+      $toast.success('Groupe créé avec succès')
     }
     DecLoading()
   }
 
   async function postOneCSV(dataForm: FormData) {
     IncLoading()
-    try {
-      const { data } = await $api().post<Group>('group/csv', dataForm, true)
+    const { data } = await $api().post<Group>('group/csv', dataForm, true)
 
-      if (data) {
-        addMany([data])
-        $toast.success('Groupe créé avec succès')
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    if (data && isGroupType(data)) {
+      addMany([data])
+      $toast.success('Groupe créé avec succès')
     }
     DecLoading()
   }
 
   async function patchOne(id: number, group: Partial<Group>) {
     IncLoading()
-    try {
-      const { data } = await $api().patch<Group>(`group/${id}`, {
-        group,
-      })
-      if (data) {
-        removeOne(id)
-        addMany([data])
-        $toast.success('Groupe modifié avec succès')
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    const { data } = await $api().patch<Group>(`group/${id}`, {
+      group,
+    })
+    if (data && isGroupType(data)) {
+      removeOne(id)
+      addMany([data])
+      $toast.success('Groupe modifié avec succès')
     }
     DecLoading()
   }
 
   async function removeRecipients(employeeIds: number[], groupId: number) {
     IncLoading()
-    try {
-      if (employeeIds?.length > 0 && groupId) {
-        const groupToUpdate = groupStore.getOne(groupId)
+    if (employeeIds?.length > 0 && groupId) {
+      const groupToUpdate = groupStore.getOne(groupId)
 
-        const payload: Group = {
-          ...groupToUpdate,
-          employeeIds: groupToUpdate.employeeIds.filter(id => !employeeIds.includes(id)),
-        }
-
-        const { data } = await $api().patch<Group>(`group/${groupId}`, {
-          group: payload,
-        })
-        if (data) {
-          removeOne(groupId)
-          addMany([data])
-          $toast.success('Groupe modifié avec succès')
-        }
+      const payload: Group = {
+        ...groupToUpdate,
+        employeeIds: groupToUpdate.employeeIds.filter(id => !employeeIds.includes(id)),
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+
+      const { data } = await $api().patch<Group>(`group/${groupId}`, {
+        group: payload,
+      })
+      if (data && isGroupType(data)) {
+        removeOne(groupId)
+        addMany([data])
+        $toast.success('Groupe modifié avec succès')
+      }
     }
     DecLoading()
   }
@@ -198,9 +157,21 @@ export default function groupHook() {
     })
   }
 
+  function isGroupType(obj: unknown): obj is Group {
+    return hasOwnProperty(obj, 'name')
+      && hasOwnProperty(obj, 'description')
+      && hasOwnProperty(obj, 'employeeIds')
+  }
+
+  function areGroupTypes(objs: unknown[]): objs is Group[] {
+    return objs.every(obj => isGroupType(obj))
+  }
+
   return {
+    areGroupTypes,
     deleteGroup,
     fetchByEmployeeId,
+    isGroupType,
     openAddRecipientModal,
     openDeleteConfirmModal,
     postOne,

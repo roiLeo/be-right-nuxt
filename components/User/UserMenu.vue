@@ -20,47 +20,38 @@
       </div>
     </MenuButton>
   </div>
-  <transition
-    enter-active-class="transition duration-100 ease-out"
-    enter-from-class="transform scale-95 opacity-0"
-    enter-to-class="transform scale-100 opacity-100"
-    leave-active-class="transition duration-75 ease-in"
-    leave-from-class="transform scale-100 opacity-100"
-    leave-to-class="transform scale-95 opacity-0"
+  <MenuItems
+    class="absolute w-48 py-1 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+    :class="[isInHeader ? 'origin-top-left -left-28' : 'origin-top-right -top-24']"
+    as="div"
   >
-    <MenuItems
-      class="absolute w-48 py-1 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-      :class="[isInHeader ? 'origin-top-left -left-28' : 'origin-top-right -top-24']"
+    <MenuItem
+      v-slot="{ active }"
       as="div"
     >
-      <MenuItem
-        v-slot="{ active }"
-        as="div"
+      <NuxtLink
+        :to="{ name: 'mon-compte', params: { id: userStore.getAuthUser?.id } }"
+        class="flex items-center justify-start px-4 py-2 space-x-2 text-sm text-gray-700 hover:bg-red-100 hover:text-red-800"
+        :class="[active ? 'bg-gray-100' : '']"
       >
-        <NuxtLink
-          :to="{ name: 'mon-compte', params: { id: userStore.getAuthUser?.id } }"
-          class="flex items-center justify-start px-4 py-2 space-x-2 text-sm text-gray-700 hover:bg-red-100 hover:text-red-800"
-          :class="[active ? 'bg-gray-100' : '']"
-        >
-          <UserCircleIconOutline
-            class="h-6 text-gray-500 hover:text-red-800"
-            :class="{ active: 'hover:text-red-800' }"
-          />
-          <span>Voir le profile</span>
-        </NuxtLink>
-      </MenuItem>
-      <MenuItem>
-        <NuxtLink
-          data-cy="user-menu-logout-link"
-          class="flex items-center justify-start px-4 py-2 text-sm text-gray-700 hover:bg-red-100 hover:text-red-800"
-          @click="onToggleLogout"
-        >
-          <ArrowLeftOnRectangleIconOutline class="h-6 text-gray-500" />
-          Se déconnecter
-        </NuxtLink>
-      </MenuItem>
-    </MenuItems>
-  </transition>
+        <UserCircleIconOutline
+          class="h-6 text-gray-500 hover:text-red-800"
+          :class="{ active: 'hover:text-red-800' }"
+        />
+        <span>Voir le profile</span>
+      </NuxtLink>
+    </MenuItem>
+    <MenuItem>
+      <NuxtLink
+        data-cy="user-menu-logout-link"
+        class="flex items-center justify-start px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-red-100 hover:text-red-800"
+        @click="onToggleLogout"
+      >
+        <ArrowLeftOnRectangleIconOutline class="h-6 text-gray-500" />
+        Se déconnecter
+      </NuxtLink>
+    </MenuItem>
+  </MenuItems>
 </Menu>
 </template>
 

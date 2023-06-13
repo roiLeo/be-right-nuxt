@@ -67,99 +67,78 @@ export default function userHook() {
     }
   }
 
-  async function fetchOne(companyId: number) {
-    try {
-      IncLoading()
-      const { data: company } = await $api().get<Company>(`company/${companyId}`)
+  function isCompanyType(arg: any): arg is Company {
+    return hasOwnProperty(arg, 'subscriptionLabel')
+      && hasOwnProperty(arg, 'siret')
+      && hasOwnProperty(arg, 'name')
+      && hasOwnProperty(arg, 'subscriptionId')
+  }
 
-      if (company) {
-        storeCompanyEntities(company)
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+  function areCompaniesTypes(args: unknown[]): args is Company[] {
+    return args.every(arg => isCompanyType(arg))
+  }
+
+  async function fetchOne(companyId: number) {
+    IncLoading()
+    const { data: company } = await $api().get<Company>(`company/${companyId}`)
+
+    if (company && isCompanyType(company)) {
+      storeCompanyEntities(company)
     }
   }
 
   async function fetchMany(userIds: number[]) {
     IncLoading()
-    try {
-      if (userIds.length > 0) {
-        const { data } = await $api().get<Company[]>(`employee/manyByIds?ids=${userIds.join(',')}`)
+    if (userIds.length > 0) {
+      const { data } = await $api().get<Company[]>(`employee/manyByIds?ids=${userIds.join(',')}`)
 
-        if (data && data.length > 0) {
-          const missingCompanies = data.filter(user => !companyStore.isAlreadyInStore(user.id))
+      if (data && data.length > 0 && areCompaniesTypes(data)) {
+        const missingCompanies = data.filter(user => !companyStore.isAlreadyInStore(user.id))
 
-          if (missingCompanies.length > 0) {
-            companyStore.addMany(missingCompanies)
-          }
+        if (missingCompanies.length > 0) {
+          companyStore.addMany(missingCompanies)
         }
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
 
   async function addOrRemoveOwner(userId: number) {
-    try {
-      IncLoading()
-      const { data } = await $api().patch<{ user: UserType; company: Company }>(`company/owners/${userId}`, {})
+    IncLoading()
+    const { data } = await $api().patch<{ user: UserType; company: Company }>(`company/owners/${userId}`, {})
 
-      if (data) {
-        const { user, company } = data
-        if (company) {
-          storeCompanyEntities(company)
-          userStore.updateOneUser(user.id, user)
-        }
+    if (data) {
+      const { user, company } = data
+      if (company && isCompanyType(company)) {
+        storeCompanyEntities(company)
+        userStore.updateOneUser(user.id, user)
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
 
   async function createNewUser(payload: CreateNewUserPayload) {
-    try {
-      IncLoading()
-      const { data } = await $api().post<{ user: UserType; company: Company }>('user', payload)
+    IncLoading()
+    const { data } = await $api().post<{ user: UserType; company: Company }>('user', payload)
 
-      if (data) {
-        const { user, company } = data
-        if (user) {
-          userStore.addOne(user)
-          companyStore.updateOneCompany(company.id, company)
-        }
+    if (data) {
+      const { user, company } = data
+      if (user && isCompanyType(company)) {
+        userStore.addOne(user)
+        companyStore.updateOneCompany(company.id, company)
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
 
   async function patchOne(companyId: number, company: Partial<Company>) {
     IncLoading()
-    try {
-      const { data } = await $api().patch<Company>(`company/${companyId}`, { company })
-      if (isCompanyType(data)) {
-        updateOneCompany(companyId, data)
-        $toast.success('Entreprise mise à jours')
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    const { data } = await $api().patch<Company>(`company/${companyId}`, { company })
+    if (isCompanyType(data)) {
+      updateOneCompany(companyId, data)
+      $toast.success('Entreprise mise à jours')
     }
     DecLoading()
-  }
-
-  function isCompanyType(arg: any): arg is Company {
-    return hasOwnProperty(arg, 'subscriptionLabel')
-      && hasOwnProperty(arg, 'siret')
-      && hasOwnProperty(arg, 'name')
-      && hasOwnProperty(arg, 'subscriptionId')
   }
 
   const getMissingsInfos: ComputedRef<MissingInfos[]> = computed(() => {

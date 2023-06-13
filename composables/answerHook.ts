@@ -12,14 +12,9 @@ export default function answerHook() {
   async function postMany(eventId: number, employeeIds: number[]) {
     IncLoading()
     if (eventId && employeeIds.length > 0) {
-      try {
-        const { data: answers } = await $api().post<AnswerType[]>('answer/many', { eventId, employeeIds })
-        if (answers && answers.length > 0) {
-          addMany(answers)
-        }
-      } catch (error) {
-        console.error(error)
-        $toast.danger('Une erreur est survenue')
+      const { data: answers } = await $api().post<AnswerType[]>('answer/many', { eventId, employeeIds })
+      if (answers && answers.length > 0 && areAnswersType(answers)) {
+        addMany(answers)
       }
     } else {
       $toast.danger('Veuillez sélectionner au moins un participant et un événement')
@@ -36,91 +31,71 @@ export default function answerHook() {
 
   async function fetchManyAnswerForEvent(eventId: number) {
     IncLoading()
-    try {
-      const { data: answers } = await $api().get<AnswerType[]>(`answer/event/${eventId}`)
+    const { data: answers } = await $api().get<AnswerType[]>(`answer/event/${eventId}`)
 
-      if (answers && answers.length > 0) {
-        const answersNotInStore = filteringAnswersNotInStore(answers)
-        if (answersNotInStore.length > 0) {
-          addMany(answersNotInStore)
-        }
+    if (answers && answers.length > 0 && areAnswersType(answers)) {
+      const answersNotInStore = filteringAnswersNotInStore(answers)
+      if (answersNotInStore.length > 0) {
+        addMany(answersNotInStore)
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
 
   async function fetchManyAnswerForManyEvent(eventIds: number[]) {
     IncLoading()
-    try {
-      if (eventIds?.length > 0) {
-        const { data: answers } = await $api().get<AnswerType[]>(`answer/event/manyByIds/?ids=${eventIds.join(',')}`)
+    if (eventIds?.length > 0) {
+      const { data: answers } = await $api().get<AnswerType[]>(`answer/event/manyByIds/?ids=${eventIds.join(',')}`)
 
-        if (answers && answers.length > 0) {
-          const answersNotInStore = filteringAnswersNotInStore(answers)
+      if (answers && answers.length > 0 && areAnswersType(answers)) {
+        const answersNotInStore = filteringAnswersNotInStore(answers)
 
-          if (answersNotInStore.length > 0) {
-            addMany(answersNotInStore)
-          }
+        if (answersNotInStore.length > 0) {
+          addMany(answersNotInStore)
+        }
 
-          const answersToUpdate = answers.filter(answer => answerStore.isAlreadyInStore(answer.id))
-          if (answersToUpdate.length > 0) {
-            answersToUpdate.forEach(answer => updateOneAnswer(answer.id, answer))
-          }
+        const answersToUpdate = answers.filter(answer => answerStore.isAlreadyInStore(answer.id))
+        if (answersToUpdate.length > 0) {
+          answersToUpdate.forEach(answer => updateOneAnswer(answer.id, answer))
         }
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
 
   async function fetchMany(ids: number[]) {
     IncLoading()
-    try {
-      const answerIds = ids?.length > 1 ? uniq(ids) : ids
-      if (answerIds?.length > 0) {
-        const { data: answers } = await $api().get<AnswerType[]>(`answer/manyByIds?ids=${answerIds.join(',')}`)
+    const answerIds = ids?.length > 1 ? uniq(ids) : ids
+    if (answerIds?.length > 0) {
+      const { data: answers } = await $api().get<AnswerType[]>(`answer/manyByIds?ids=${answerIds.join(',')}`)
 
-        if (answers && answers.length > 0) {
-          const answersNotInStore = filteringAnswersNotInStore(answers)
+      if (answers && answers.length > 0 && areAnswersType(answers)) {
+        const answersNotInStore = filteringAnswersNotInStore(answers)
 
-          if (answersNotInStore.length > 0) {
-            addMany(answersNotInStore)
-          }
+        if (answersNotInStore.length > 0) {
+          addMany(answersNotInStore)
         }
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
 
   async function raiseAnswer(id: number) {
     IncLoading()
-    try {
-      if (id) {
-        const { data } = await $api().get<ActionResponse & { answer: AnswerType }>(`answer/raise/${id}`)
-        if (data) {
-          const { isSuccess, answer, message } = data
+    if (id) {
+      const { data } = await $api().get<ActionResponse & { answer: AnswerType }>(`answer/raise/${id}`)
+      if (data) {
+        const { isSuccess, answer, message } = data
 
-          if (isSuccess) {
-            updateOneAnswer(id, answer)
-          }
+        if (isSuccess) {
+          updateOneAnswer(id, answer)
+        }
 
-          return {
-            message,
-            isSuccess,
-          }
+        return {
+          message,
+          isSuccess,
         }
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
@@ -134,25 +109,20 @@ export default function answerHook() {
   }
 
   async function getAnswerForSignature({ email, token }: { email: string; token: string }) {
-    try {
-      if (email && token) {
-        const { success, data } = await $api().post<
-          ErrorResponse | ResponseAnswerSignature>('answer/forSignature', { email, token })
+    if (email && token) {
+      const { success, data } = await $api().post<
+        ErrorResponse | ResponseAnswerSignature>('answer/forSignature', { email, token })
 
-        return {
-          success,
-          data,
-        }
-      }
       return {
-        success: false,
-        data: {
-          message: 'Paramètres manquants',
-        },
+        success,
+        data,
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    }
+    return {
+      success: false,
+      data: {
+        message: 'Paramètres manquants',
+      },
     }
   }
 
@@ -174,28 +144,23 @@ export default function answerHook() {
     isSavedSignatureForNextTime: boolean
   }) {
     IncLoading()
-    try {
-      if (answerId && email && token && noNull(hasSigned) && noUndefined(hasSigned)) {
-        const { data: answer } = await $api().patch<AnswerType>(`answer/signed/${answerId}`, {
-          token,
-          hasSigned,
-          email,
-          reason,
-          isSavedSignatureForNextTime,
-          signature,
-        })
+    if (answerId && email && token && noNull(hasSigned) && noUndefined(hasSigned)) {
+      const { data: answer } = await $api().patch<AnswerType>(`answer/signed/${answerId}`, {
+        token,
+        hasSigned,
+        email,
+        reason,
+        isSavedSignatureForNextTime,
+        signature,
+      })
 
-        if (answer) {
-          if (answerStore.isAlreadyInStore(answer.id)) {
-            updateOneAnswer(answer.id, answer)
-          } else {
-            addMany([answer])
-          }
+      if (answer && isAnswerType(answer)) {
+        if (answerStore.isAlreadyInStore(answer.id)) {
+          updateOneAnswer(answer.id, answer)
+        } else {
+          addMany([answer])
         }
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }

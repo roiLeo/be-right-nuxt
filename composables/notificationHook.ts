@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import isBetween from 'dayjs/plugin/isBetween'
-import { uniq } from '@antfu/utils'
+import { hasOwnProperty, uniq } from '@antfu/utils'
 import type { NotificationType } from '~~/store'
 import {
   NotificationTypeEnum,
@@ -30,16 +30,21 @@ export default function notificationHook() {
   const { fetchMany: fetchManyAnswers } = answerHook()
   const { fetchMany: fetchManyEvents } = eventHook()
 
+  function areNotificationTypes(args: unknown[]): args is NotificationType[] {
+    return args.every(arg =>
+      hasOwnProperty(arg, 'type')
+      && hasOwnProperty(arg, 'title')
+      && hasOwnProperty(arg, 'subscriberId')
+      && hasOwnProperty(arg, 'eventNotificationId'),
+    )
+  }
+
   async function fetchUserNotifications() {
     IncLoading()
-    try {
-      const { data } = await $api().get<NotificationType[]>('notifications')
+    const { data } = await $api().get<NotificationType[]>('notifications')
 
-      if (data && data.length > 0) {
-        addManyNotifications(data)
-      }
-    } catch (error) {
-      console.error(error)
+    if (data && data.length > 0) {
+      addManyNotifications(data)
     }
     DecLoading()
   }
@@ -64,20 +69,15 @@ export default function notificationHook() {
 
   async function patchAsRead(notificationIds: number[]) {
     IncLoading()
-    try {
-      if (notificationIds?.length) {
-        const { success, data } = await $api().patch<NotificationType[]>(`notifications/readMany?ids=${notificationIds.join(',')}`, [])
+    if (notificationIds?.length) {
+      const { success, data } = await $api().patch<NotificationType[]>(`notifications/readMany?ids=${notificationIds.join(',')}`, [])
 
-        if (data?.length) {
-          updateManyNotifications(data)
-        }
-        if (success) {
-          $toast.success('Notifications marquées comme lues')
-        }
+      if (data?.length && areNotificationTypes(data)) {
+        updateManyNotifications(data)
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+      if (success) {
+        $toast.success('Notifications marquées comme lues')
+      }
     }
     DecLoading()
   }
@@ -146,6 +146,7 @@ export default function notificationHook() {
   }
 
   return {
+    areNotificationTypes,
     fetchUserNotifications,
     fetchUserNotificationsAndRelations,
     getDateDisplayedNotification,

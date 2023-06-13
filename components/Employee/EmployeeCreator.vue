@@ -1,6 +1,6 @@
 <template>
 <div
-  v-if="employeeCreator"
+  v-if="employeeCreator && isOnlyForAdmin"
   class="max-w-5xl px-4 mx-auto sm:px-6 lg:px-8"
 >
   <h2 class="text-sm font-medium text-gray-500">
@@ -21,7 +21,7 @@
       <div class="flex-1 min-w-0">
         <NuxtLink
           v-if="employeeCreator.id"
-          :to="{ name: 'user-show-id', params: { id: employeeCreator.id } }"
+          :to="{ name: 'admin-user-show-id', params: { id: employeeCreator.id } }"
           class="focus:outline-none"
         >
           <span

@@ -10,7 +10,7 @@ import {
   useUiStore,
   useUserStore,
 } from '~~/store'
-import type { AddressType, EventCreatePayload, EventType, PaginatedResponse } from '~~/types'
+import type { AddressType, EventCreatePayload, EventType } from '~~/types'
 import { EventStatusEnum, getEventStatusTranslationEnum } from '~~/types'
 
 export default function eventHook() {
@@ -97,95 +97,76 @@ export default function eventHook() {
     })
   }
 
-  async function fetchAllEvents(url?: string) {
-    let finalUrl = 'event'
-    if (url) {
-      finalUrl += `${url}`
-    }
-    const { data } = await $api().get<PaginatedResponse<EventType>>(finalUrl)
-    return data
+  function isEventType(event: any): event is EventType {
+    return hasOwnProperty(event, 'start') && hasOwnProperty(event, 'end')
+  }
+
+  function areEventTypes(events: unknown[]): events is EventType[] {
+    return events.every(event => isEventType(event))
   }
 
   async function fetchEventsByCompany() {
     IncLoading()
-    try {
-      const { data } = await $api().get<EventType[]>('event/user')
+    const { data } = await $api().get<EventType[]>('event/user')
 
-      if (data) {
-        const missingIds = data.map((event: EventType) => event.id).filter(id => !eventStore.isAlreadyInStore(id))
+    if (data && areEventTypes(data)) {
+      const missingIds = data
+        .map((event: EventType) => event.id)
+        .filter(id => !eventStore.isAlreadyInStore(id))
 
-        if (missingIds.length > 0) {
-          const events = data.filter(event => missingIds.includes(event.id))
-          storeEventRelationEntities(events)
-        }
+      if (missingIds.length > 0) {
+        const events = data.filter(event => missingIds.includes(event.id))
+        storeEventRelationEntities(events)
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
 
   async function fetchOne(id: number) {
     IncLoading()
-    try {
-      const { data: event } = await $api().get<EventType>(`event/${id}`)
+    const { data: event } = await $api().get<EventType>(`event/${id}`)
 
-      if (event && !eventStore.isAlreadyInStore(event.id)) {
-        storeEventRelationEntities([event])
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    if (event && isEventType(event) && !eventStore.isAlreadyInStore(event.id)) {
+      storeEventRelationEntities([event])
     }
     DecLoading()
   }
 
   async function postOne(payload: EventCreatePayload): Promise<EventType | undefined> {
-    try {
-      const { data } = await $api().post<{
-        event: EventType
-        address: AddressType
-        answers: AnswerType[]
-      }>('event', payload)
+    const { data } = await $api().post<{
+      event: EventType
+      address: AddressType
+      answers: AnswerType[]
+    }>('event', payload)
 
-      if (data) {
-        const { event, address, answers } = data
+    if (data) {
+      const { event, address, answers } = data
 
-        if (isEventType(event)) {
-          eventStore.addMany([event])
-        }
-
-        if (isAddressType(address)) {
-          addressStore.addOne(address)
-        }
-
-        if (areAnswersType(answers)) {
-          answerStore.addMany(answers)
-        }
-
-        $toast.success('L\'événement a été créé avec succès')
-        return event
+      if (isEventType(event)) {
+        eventStore.addMany([event])
       }
-      return undefined
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+
+      if (isAddressType(address)) {
+        addressStore.addOne(address)
+      }
+
+      if (areAnswersType(answers)) {
+        answerStore.addMany(answers)
+      }
+
+      $toast?.success('L\'événement a été créé avec succès')
+      return event
     }
+    return undefined
   }
 
   async function patchOne(event: EventType) {
     if (event && event.id) {
       IncLoading()
-      try {
-        const { data } = await $api().patch<EventType>(`event/${event.id}`, event)
-        if (data && isEventType(data)) {
-          eventStore.updateOne(data.id, data)
-          $toast.success('L\'événement a été mis à jour avec succès')
-        }
-      } catch (error) {
-        console.error(error)
-        $toast.danger('Une erreur est survenue')
+      const { data } = await $api().patch<EventType>(`event/${event.id}`, event)
+      if (data && isEventType(data)) {
+        eventStore.updateOne(data.id, data)
+        $toast?.success('L\'événement a été mis à jour avec succès')
       }
       DecLoading()
     }
@@ -193,21 +174,12 @@ export default function eventHook() {
 
   async function deleteOne(id: number) {
     IncLoading()
-    try {
-      const { success } = await $api().delete(`event/${id}`)
-      if (success) {
-        deleteEventAndRelations(id)
-      }
-      $toast.success('L\'événement a été supprimé avec succès')
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    const { success } = await $api().delete(`event/${id}`)
+    if (success) {
+      deleteEventAndRelations(id)
     }
+    $toast?.success('L\'événement a été supprimé avec succès')
     DecLoading()
-  }
-
-  function isEventType(event: any): event is EventType {
-    return hasOwnProperty(event, 'start') && hasOwnProperty(event, 'end')
   }
 
   async function fetchEventWithRelations(eventId: number) {
@@ -272,45 +244,36 @@ export default function eventHook() {
 
   async function fetchMany(eventIds: number[]) {
     IncLoading()
-    try {
-      const ids = eventIds?.length > 1 ? uniq(eventIds) : eventIds
-      if (ids?.length > 0) {
-        const { data: events } = await $api().get<EventType[]>(`event/manyByIds?ids=${ids.join(',')}`)
+    const ids = eventIds?.length > 1 ? uniq(eventIds) : eventIds
+    if (ids?.length > 0) {
+      const { data: events } = await $api().get<EventType[]>(`event/manyByIds?ids=${ids.join(',')}`)
 
-        if (events && events.length > 0) {
-          storeEventRelationEntities(events)
-        }
+      if (events && events.length > 0 && areEventTypes(events)) {
+        storeEventRelationEntities(events)
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
 
   async function fetchDeleted() {
     IncLoading()
-    try {
-      const { data } = await $api().get<EventType[]>('event/deleted')
+    const { data } = await $api().get<EventType[]>('event/deleted')
 
-      if (data) {
-        const missingIds = data.map((event: EventType) => event.id).filter(id => !eventStore.isAlreadyInStore(id))
+    if (data && areEventTypes(data)) {
+      const missingIds = data
+        .map((event: EventType) => event.id)
+        .filter(id => !eventStore.isAlreadyInStore(id))
 
-        if (missingIds.length > 0) {
-          const events = data.filter(event => missingIds.includes(event.id))
-          storeEventRelationEntities(events)
-        }
+      if (missingIds.length > 0) {
+        const events = data.filter(event => missingIds.includes(event.id))
+        storeEventRelationEntities(events)
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
 
   return {
     deleteOne,
-    fetchAllEvents,
     fetchDeleted,
     fetchEventsByCompany,
     fetchOne,

@@ -1,3 +1,4 @@
+import { useAuthStore } from '~/store'
 import { useUiStore } from '~/store/ui'
 import type { TableHookState } from '~/types/TableHookTypes'
 import type { PaginatedResponse } from '~/types/globals'
@@ -6,6 +7,7 @@ export default function tableHook<T>(baseUrl: string, onFetched?: ((items: T[]) 
   const { $api, $router } = useNuxtApp()
   const uiStore = useUiStore()
   const { DecLoading, IncLoading } = uiStore
+  const authStore = useAuthStore()
 
   const query = ref('')
 
@@ -37,55 +39,56 @@ export default function tableHook<T>(baseUrl: string, onFetched?: ((items: T[]) 
 
   async function fetchTable() {
     IncLoading()
-    if (!state.isDirty) {
-      state.isDirty = true
-    }
+    if (authStore.getIsLoggedIn) {
+      if (!state.isDirty) {
+        state.isDirty = true
+      }
 
-    if ($router.currentRoute.value.query) {
-      state.currentPage = parseInt($router.currentRoute.value.query?.page?.toString() || '1')
-      state.limit = parseInt($router.currentRoute.value.query?.limit?.toString() || '20')
-      state.search = $router.currentRoute.value.query?.search?.toString() || ''
-    }
+      if ($router.currentRoute.value.query) {
+        state.currentPage = parseInt($router.currentRoute.value.query?.page?.toString() || '1')
+        state.limit = parseInt($router.currentRoute.value.query?.limit?.toString() || '20')
+        state.search = $router.currentRoute.value.query?.search?.toString() || ''
+      }
 
-    let url = `${baseUrl}/?limit=${state.limit}&page=${state.currentPage}`
+      let url = `${baseUrl}/?limit=${state.limit}&page=${state.currentPage}`
 
-    if (state.search) {
-      url += `&search=${state.search}`
-    }
+      if (state.search) {
+        url += `&search=${state.search}`
+      }
 
-    if (state.filters) {
-      url += `&${Object.keys(state.filters)
-        .map(field => {
-          let value = state.filters![field]
-          if (Array.isArray(value)) {
-            value = value.join(',')
-          }
-          // Don't create empty filters.
-          if (value.length) {
-            return `filters[${field}]=${value}`
-          }
-          return null
-        })
-        .filter((filter: string | null) => filter !== null)
-        .join('&')}`
-    }
+      if (state.filters) {
+        url += `&${Object.keys(state.filters)
+          .map(field => {
+            let value = state.filters![field]
+            if (Array.isArray(value)) {
+              value = value.join(',')
+            }
+            // Don't create empty filters.
+            if (value.length) {
+              return `filters[${field}]=${value}`
+            }
+            return null
+          })
+          .filter((filter: string | null) => filter !== null)
+          .join('&')}`
+      }
 
-    const { data } = await $api().get<PaginatedResponse<T>>(url)
+      const { data } = await $api().get<PaginatedResponse<T>>(url)
 
-    if (data) {
-      const { currentPage, data: items, limit, total, totalPages, order } = data
-      state.currentPage = currentPage || 0
-      state.items = items as any[] // FIXME better typing
-      state.limit = limit || 20
-      state.total = total || 0
-      state.totalPages = totalPages || 0
-      state.order = order
+      if (data) {
+        const { currentPage, data: items, limit, total, totalPages, order } = data
+        state.currentPage = currentPage || 0
+        state.items = items as any[] // FIXME better typing
+        state.limit = limit || 20
+        state.total = total || 0
+        state.totalPages = totalPages || 0
+        state.order = order
 
-      if (onFetched) {
-        await onFetched(state.items as T[])
+        if (onFetched) {
+          await onFetched(state.items as T[])
+        }
       }
     }
-
     DecLoading()
   }
 

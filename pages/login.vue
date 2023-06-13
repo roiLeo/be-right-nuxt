@@ -107,32 +107,27 @@ const { $toast, $api } = useNuxtApp()
 
 async function submitLogin(form: VeeValidateValues) {
   const cookieToken = useCookie('userToken')
-  try {
-    IncLoading()
-    const { data } = await $api().post<{ user: UserType; company: Company }>('user/login', form as WithoutId<UserType>)
-    if (data) {
-      const { user, company } = data
-      if (user?.token && company) {
-        $api().setCredentials(user.token)
+  IncLoading()
+  const { data } = await $api().post<{ user: UserType; company: Company }>('user/login', form as WithoutId<UserType>)
+  if (data) {
+    const { user, company } = data
+    if (user?.token && company) {
+      $api().setCredentials(user.token)
 
-        storeCompanyEntities(company)
-        storeUsersEntities(user, false)
-        cookieToken.value = user.token
-        const decode = jwtDecode(ref(user.token))
-        setToken(user.token)
+      storeCompanyEntities(company)
+      storeUsersEntities(user, false)
+      cookieToken.value = user.token
+      const decode = jwtDecode(ref(user.token))
+      setToken(user.token)
 
-        if (decode.value) {
-          setJWTasUser(decode.value)
-        }
-        $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
-        router.replace({
-          name: RouteNames.LIST_EVENT,
-        })
+      if (decode.value) {
+        setJWTasUser(decode.value)
       }
+      $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
+      router.replace({
+        name: RouteNames.LIST_EVENT,
+      })
     }
-  } catch (error) {
-    console.error(error)
-    $toast.danger('Une erreur est survenue')
   }
   DecLoading()
 }

@@ -13,11 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { useAddressStore, useAuthStore, useEmployeeStore, useUiStore } from '~~/store'
+import { useAddressStore, useEmployeeStore, useUiStore } from '~~/store'
 import { ModalModeEnum } from '@/types'
 
-const authStore = useAuthStore()
-const { fetchAll } = userHook()
 const route = useRoute()
 const employeeStore = useEmployeeStore()
 const addressStore = useAddressStore()
@@ -44,10 +42,6 @@ onMounted(async () => {
 
   if (employee.value?.addressId) {
     await fetchOneAddress(employee.value?.addressId)
-  }
-
-  if (authStore.isAuthUserAdmin) {
-    await fetchAll('?limit=9999')
   }
 })
 

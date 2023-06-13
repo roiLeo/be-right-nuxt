@@ -1,3 +1,6 @@
+import { hasOwnProperty } from '@antfu/utils'
+import type { NuxtError } from 'nuxt/app'
+
 enum FetchMethods {
   GET = 'get',
   POST = 'post',
@@ -24,6 +27,14 @@ interface FetchWrapperResponse<T> {
 }
 
 interface HeadersInterface extends Headers { }
+
+interface ResponseError {
+  error: {
+    status: number
+    message: string
+    stackTrace: string
+  }
+}
 
 interface FetchWrapperInit {
   baseUrl: string
@@ -79,20 +90,62 @@ export class FetchWrapper implements ApiMethods {
     })
   }
 
+  private isError(obj: any): obj is ResponseError {
+    return hasOwnProperty(obj, 'error')
+      && hasOwnProperty(obj.error, 'status')
+      && hasOwnProperty(obj.error, 'message')
+  }
+
   private async http<T>(url: string, config: RequestInit, isFileRequest?: boolean): Promise<FetchWrapperResponse<T>> {
-    const request = new Request(url, {
-      ...config,
-      headers: this.buildHeaders(config.headers, isFileRequest),
-      body: this.buildBody(config.body, isFileRequest),
-    })
+    const { $toast } = useNuxtApp()
+    try {
+      const request = new Request(url, {
+        ...config,
+        headers: this.buildHeaders(config.headers, isFileRequest),
+        body: this.buildBody(config.body, isFileRequest),
+      })
 
-    const response = await fetch(request)
+      const response = await fetch(request)
 
-    return {
-      success: response.ok,
-      status: response.status,
-      statusText: response.statusText,
-      data: config.method === FetchMethods.DELETE ? null : await response.json() as unknown as T,
+      let data = null
+
+      if (config.method !== FetchMethods.DELETE) {
+        data = await response.json() as unknown as T
+      }
+
+      if (this.isError(data)) {
+        const { status, message } = data.error
+        throw createError({ statusCode: status, statusMessage: message })
+      }
+
+      return {
+        success: response.ok,
+        status: response.status,
+        statusText: response.statusText,
+        data,
+      }
+    } catch (err: unknown) {
+      if (err) {
+        const error = err as NuxtError
+
+        const { message, statusCode } = error
+        $toast?.danger(message)
+        return {
+          success: false,
+          status: statusCode,
+          statusText: message,
+          data: null,
+        }
+      }
+
+      $toast.danger('Une erreur est survenue')
+
+      return {
+        success: false,
+        status: 500,
+        statusText: 'Une erreur est survenue',
+        data: null,
+      }
     }
   }
 
