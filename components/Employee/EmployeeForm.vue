@@ -133,7 +133,7 @@ import { object, string } from 'yup'
 import { Form } from 'vee-validate'
 import type { AddressType, EmployeeType, VeeValidateValues } from '@/types'
 import { ModalModeEnum } from '@/types'
-import { useAuthStore, useUiStore, useUserStore } from '~~/store'
+import { useAuthStore, useEmployeeStore, useUiStore, useUserStore } from '~~/store'
 
 interface Props {
   employee?: EmployeeType | null
@@ -157,6 +157,7 @@ const emit = defineEmits<{
 
 const userStore = useUserStore()
 const authStore = useAuthStore()
+const employeeStore = useEmployeeStore()
 const uiStore = useUiStore()
 const { IncLoading, DecLoading } = uiStore
 
@@ -230,8 +231,19 @@ async function submit(form: VeeValidateValues) {
       })
     }
   }
+
+  const employee = employeeStore.getWhereArray(emp =>
+    emp.email === employeeToPost.email
+    && emp.firstName === employeeToPost.firstName
+    && emp.lastName === employeeToPost.lastName
+    && emp.phone === employeeToPost.phone,
+  )[0]
+
   router.push({
     name: 'destinataire',
+    query: {
+      id: employee?.id,
+    },
   })
   emit('submit')
   DecLoading()
