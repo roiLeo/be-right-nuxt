@@ -156,7 +156,7 @@ const userStore = useUserStore()
 const uiStore = useUiStore()
 const { IncLoading, DecLoading, resetUiModalState } = uiStore
 const { getUserfullName } = userHook()
-const { postOneForUser } = employeeHook()
+const { postOneAdminForUser } = employeeHook()
 
 const user = computed(() => userStore.getOne(props.userId))
 const schema = object({
@@ -199,7 +199,8 @@ async function submit(form: VeeValidateValues) {
     userId: formValues.userId,
   } as { employee: EmployeeType; address: AddressType; userId: number }
 
-  await postOneForUser(payload)
+  await postOneAdminForUser(payload)
+  // TODO Refacto this component with employee form
   close()
   DecLoading()
 }

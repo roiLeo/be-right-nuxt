@@ -42,3 +42,5 @@ export interface PaginatedResponse<T> {
 }
 
 export type WithoutId<T> = Omit<T, 'id'>
+
+export type InputEventTarget = Event & { target: HTMLInputElement }

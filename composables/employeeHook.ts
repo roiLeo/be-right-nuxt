@@ -226,7 +226,7 @@ export default function employeeHook() {
       )
   }
 
-  async function postOneForUser(
+  async function postOneAdminForUser(
     { employee, address, userId }: { employee: EmployeeType; address: AddressType; userId: number }) {
     const { data } = await $api().post<EmployeeType>('admin/employee', { employee, address, userId })
 
@@ -252,7 +252,7 @@ export default function employeeHook() {
     patchOne,
     postManyForEvent,
     postOne,
-    postOneForUser,
+    postOneAdminForUser,
     storeEmployeeRelationsEntities,
   }
 }

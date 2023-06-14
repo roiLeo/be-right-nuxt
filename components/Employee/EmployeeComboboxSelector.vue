@@ -200,7 +200,7 @@ const filteredEmployee = computed(() => filteredEmployees(props.defaultValues, q
 
 const areAllSelected = computed(() => filteredEmployee.value.length === Object.values(inputValue.value).length)
 const isSelected = (active: boolean, selected: boolean, id: number) => computed(() =>
-  active || selected || Object.values(inputValue).includes(id),
+  active || selected || Object.values(inputValue.value).includes(id),
 )
 
 function onRemoveValue(index: number) {

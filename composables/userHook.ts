@@ -35,6 +35,21 @@ export default function userHook() {
     return user?.roles === RoleEnum.OWNER
   }
 
+  function filteredUsers(list: UserType[], query: Ref<string>): UserType[] {
+    return query.value === ''
+      ? list
+      : list.filter(person =>
+        person.lastName
+          .toLowerCase()
+          .replace(/\s+/g, '')
+          .includes(query.value.toLowerCase().replace(/\s+/g, ''))
+        || person.firstName
+          .toLowerCase()
+          .replace(/\s+/g, '')
+          .includes(query.value.toLowerCase().replace(/\s+/g, '')),
+      )
+  }
+
   async function fetchOne(userId: number) {
     IncLoading()
     const { data: user } = await $api().get<UserType>(`user/${userId}`)
@@ -161,6 +176,7 @@ export default function userHook() {
     deleteUser,
     fetchMany,
     fetchOne,
+    filteredUsers,
     getPhotographerUserWorkedWith,
     getRoleTranslation,
     getUserfullName,

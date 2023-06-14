@@ -1,7 +1,7 @@
 <template>
 <div class="w-full h-full px-4 mt-4">
   <Form
-    v-slot="{ meta, isSubmitting, values, errors }"
+    v-slot="{ meta, isSubmitting, errors }"
     :validation-schema="schema"
     :initial-values="initialValues"
     class="grid grid-cols-2 gap-4"
@@ -82,20 +82,17 @@
       v-if="authStore.isAuthUserAdmin && mode !== ModalModeEnum.EDIT"
       class="space-y-2 md:col-span-2"
     >
-      <BaseSelect
-        label="Id de l'utilisateur"
-        name="userId"
-        placeholder="Choisissez un utilisateur"
-        :display-value="getUserfullName(userStore.getOne(values.userId))"
-        is-required
-      >
-        <BaseOption
-          v-for="user in userStore.getAllArray"
-          :key="user.id"
-          :value="user.id"
-          :name="getUserfullName(user)"
+      <template v-if="state.isDirty">
+        <UserCombobox
+          is-required
+          :default-values="state.items"
+          name="userId"
+          label="Id de l'utilisateur"
+          value-key="id"
+          is-multiple
+          @search="setSearchEntity"
         />
-      </BaseSelect>
+      </template>
     </div>
 
     <div
@@ -129,9 +126,12 @@
 </template>
 
 <script setup lang="ts">
-import { object, string } from 'yup'
+import { number, object, string } from 'yup'
 import { Form } from 'vee-validate'
-import type { AddressType, EmployeeType, VeeValidateValues } from '@/types'
+import BaseButton from '../Base/BaseButton.vue'
+import BaseInput from '../Base/BaseInput.vue'
+import UserCombobox from '../User/UserCombobox.vue'
+import type { AddressType, EmployeeType, UserType, VeeValidateValues } from '@/types'
 import { ModalModeEnum } from '@/types'
 import { useAuthStore, useEmployeeStore, useUiStore, useUserStore } from '~~/store'
 
@@ -161,23 +161,50 @@ const employeeStore = useEmployeeStore()
 const uiStore = useUiStore()
 const { IncLoading, DecLoading } = uiStore
 
-const { patchOne, postOne: postOneEmployee, postManyForEvent } = employeeHook()
+const {
+  patchOne,
+  postOne: postOneEmployee,
+  postManyForEvent,
+  postOneAdminForUser,
+} = employeeHook()
 const { patchOne: patchOneAddress } = addressHook()
-const { getUserfullName } = userHook()
+
+const {
+  state,
+  searchEntity,
+} = tableHook<UserType>('admin/user')
+
+function setSearchEntity(str: string) {
+  state.search = str
+  searchEntity()
+}
 
 const router = useRouter()
 
-const schema = object({
-  email: string().email('vous devez entrer in email valide').required('L\'adresse email est requise'),
-  firstName: string().required('Le prénom est requis'),
-  lastName: string().required('Le nom est requis'),
-  phone: string().required('Le numéro de téléphone est requis'),
-  addressLine: string().required('L\'adresse est requise'),
-  addressLine2: string().nullable(),
-  postalCode: string().required('Le code postal est requis'),
-  city: string().required('La ville est requise'),
-  country: string().required('Le pays est requis'),
-})
+const schema = (authStore.isAuthUserAdmin && props.mode === ModalModeEnum.CREATE)
+  ? object({
+    email: string().email('vous devez entrer in email valide').required('L\'adresse email est requise'),
+    firstName: string().required('Le prénom est requis'),
+    lastName: string().required('Le nom est requis'),
+    phone: string().required('Le numéro de téléphone est requis'),
+    addressLine: string().required('L\'adresse est requise'),
+    addressLine2: string().nullable(),
+    postalCode: string().required('Le code postal est requis'),
+    city: string().required('La ville est requise'),
+    country: string().required('Le pays est requis'),
+    userId: number().required('L\'identifiant de l\'utilisateur est requis'),
+  })
+  : object({
+    email: string().email('vous devez entrer in email valide').required('L\'adresse email est requise'),
+    firstName: string().required('Le prénom est requis'),
+    lastName: string().required('Le nom est requis'),
+    phone: string().required('Le numéro de téléphone est requis'),
+    addressLine: string().required('L\'adresse est requise'),
+    addressLine2: string().nullable(),
+    postalCode: string().required('Le code postal est requis'),
+    city: string().required('La ville est requise'),
+    country: string().required('Le pays est requis'),
+  })
 
 const initialValues = {
   email: props.employee?.email || '',
@@ -189,6 +216,7 @@ const initialValues = {
   postalCode: props.address?.postalCode || '',
   city: props.address?.city || '',
   country: props.address?.country || 'France',
+  userId: null,
 }
 
 async function submit(form: VeeValidateValues) {
@@ -206,15 +234,21 @@ async function submit(form: VeeValidateValues) {
       await postManyForEvent([employeeToPost],
         props.eventId, userStore.getAuthUser?.companyId)
     } else {
-      if (userStore.getAuthUserId) {
-        const address = {
-          addressLine: form.addressLine,
-          addressLine2: form.addressLine2,
-          postalCode: form.postalCode,
-          city: form.city,
-          country: form.country,
-        } as AddressType
+      const address = {
+        addressLine: form.addressLine,
+        addressLine2: form.addressLine2,
+        postalCode: form.postalCode,
+        city: form.city,
+        country: form.country,
+      } as AddressType
 
+      if (authStore.isAuthUserAdmin) {
+        await postOneAdminForUser({
+          employee: employeeToPost,
+          address,
+          userId: form.userId,
+        })
+      } else {
         await postOneEmployee(employeeToPost, address)
       }
     }
