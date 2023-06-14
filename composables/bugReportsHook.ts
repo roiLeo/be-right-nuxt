@@ -8,27 +8,6 @@ export default function bugReportsHook() {
   // const bugStore = useBugStore()
   // const { IncLoading, DecLoading } = useUiStore()
 
-  // async function fetchAll(url?: string) {
-  //   IncLoading()
-  //   try {
-  //     let finalUrl = 'bugreport'
-  //     if (url) {
-  //       finalUrl += `${url}`
-  //     }
-  //     const { data } = await $api().get<PaginatedResponse<BugReportType>>(finalUrl)
-  //     if (data) {
-  //       const bugs = data.data.filter(bug => !bugStore.isAlreadyInStore(bug.id))
-  //       if (bugs.length > 0) {
-  //         bugStore.createMany(bugs)
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error(error)
-  //     $toast.danger('Une erreur est survenue')
-  //   }
-  //   DecLoading()
-  // }
-
   // function getBugReportTypeTranslation(type: BugReportTypeEnum) {
   //   return BugReportTypeTranslation[type]
   // }

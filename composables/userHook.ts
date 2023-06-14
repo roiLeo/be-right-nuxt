@@ -1,7 +1,6 @@
 import { hasOwnProperty } from '@antfu/utils'
 import { RoleEnum } from '@/types'
 import type {
-  PaginatedResponse,
   UserType,
 } from '@/types'
 import type { Company } from '~~/store'
@@ -65,21 +64,6 @@ export default function userHook() {
     } else {
       userStore.addOne(user)
     }
-  }
-
-  async function fetchAll(url?: string) {
-    IncLoading()
-    // TODO replace by paginated  request
-    let finalUrl = 'user'
-    if (url) {
-      finalUrl += `${url}`
-    }
-    const { data } = await $api().get<PaginatedResponse<UserType>>(finalUrl)
-
-    if (data && isArrayUserType(data.data)) {
-      userStore.addMany(data.data)
-    }
-    DecLoading()
   }
 
   async function deleteUser(id: number) {
@@ -175,7 +159,6 @@ export default function userHook() {
 
   return {
     deleteUser,
-    fetchAll,
     fetchMany,
     fetchOne,
     getPhotographerUserWorkedWith,
