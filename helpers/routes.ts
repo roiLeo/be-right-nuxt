@@ -18,4 +18,9 @@ export enum RouteNames {
   // AUTH
   FORGOT_PASSWORD = 'mot-de-passe-oublie',
   LOGIN = 'login',
+
+  // ADMIN
+  ADMIN_EVENTS = 'admin-events',
+  ADMIN_EMPLOYEES = 'admin-destinataires',
+  ADMIN_EMPLOYEE_SHOW = 'admin-destinataires-show-id',
 }

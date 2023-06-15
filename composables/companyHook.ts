@@ -1,4 +1,4 @@
-import { hasOwnProperty } from '@antfu/utils'
+import { hasOwnProperty, uniq } from '@antfu/utils'
 import type { Company, CreateNewUserPayload, MissingInfos, UserType } from '~~/store'
 import {
   useAddressStore,
@@ -10,7 +10,7 @@ import {
   useUserStore,
 } from '~~/store'
 
-export default function userHook() {
+export default function companyHook() {
   const { $toast, $api } = useNuxtApp()
 
   const addressStore = useAddressStore()
@@ -85,12 +85,13 @@ export default function userHook() {
     if (company && isCompanyType(company)) {
       storeCompanyEntities(company)
     }
+    DecLoading()
   }
 
   async function fetchMany(userIds: number[]) {
     IncLoading()
     if (userIds.length > 0) {
-      const { data } = await $api().get<Company[]>(`employee/manyByIds?ids=${userIds.join(',')}`)
+      const { data } = await $api().get<Company[]>(`company/manyByIds?ids=${uniq(userIds).join(',')}`)
 
       if (data && data.length > 0 && areCompaniesTypes(data)) {
         const missingCompanies = data.filter(user => !companyStore.isAlreadyInStore(user.id))

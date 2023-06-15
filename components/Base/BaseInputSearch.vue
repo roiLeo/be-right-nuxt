@@ -4,6 +4,7 @@
     v-if="label"
     :for="id"
     class="block font-bold"
+    :class="{ 'sr-only': label }"
   >
     {{ label }}
   </label>

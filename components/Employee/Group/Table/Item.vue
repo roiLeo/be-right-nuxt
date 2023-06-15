@@ -7,34 +7,38 @@
     {{ group.name }}
   </td>
   <td class="relative flex flex-col py-4 pl-3 pr-4 space-y-2 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
-    <BaseButton
-      :disabled="uiStore.getUIIsLoading"
-      :href="{
-        name: 'groupe-show-id',
-        params: {
-          id: group.id,
-        },
-      }"
-    >
-      <template #icon>
-        <EyeIconOutline />
-      </template>
-      Voir le group
-    </BaseButton>
-    <BaseButton
-      :disabled="uiStore.getUIIsLoading"
-      @click="removeRecipients([employeeId], group.id)"
-    >
-      <template #icon>
-        <MinusCircleIconOutline class="text-red-500" />
-      </template>
-      <span class="text-red-800">Retirer du groupe</span>
-    </BaseButton>
+    <div class="flex justify-end space-x-2">
+      <BaseButton
+        :disabled="uiStore.getUIIsLoading"
+        :href="{
+          name: 'groupe-show-id',
+          params: {
+            id: group.id,
+          },
+        }"
+      >
+        <template #icon>
+          <EyeIconOutline />
+        </template>
+        Voir le group
+      </BaseButton>
+      <BaseButton
+        :disabled="uiStore.getUIIsLoading"
+        color="red"
+        @click="removeRecipients([employeeId], group.id)"
+      >
+        <template #icon>
+          <MinusCircleIconOutline />
+        </template>
+        <span>Retirer du groupe</span>
+      </BaseButton>
+    </div>
   </td>
 </tr>
 </template>
 
 <script setup lang="ts">
+import BaseButton from '~/components/Base/BaseButton.vue'
 import type { Group } from '~~/store'
 import { useUiStore } from '~~/store'
 

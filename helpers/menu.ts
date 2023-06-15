@@ -1,6 +1,7 @@
 import {
   ArchiveBoxIcon,
   BellAlertIcon,
+  CalendarDaysIcon,
   ChartPieIcon,
   ExclamationCircleIcon,
   HomeIcon,
@@ -13,8 +14,14 @@ import { RouteNames } from './routes'
 
 export const ADMIN_MENU_ITEMS = [
   {
-    label: 'Tous les événements',
+    label: 'Dashboard',
     icon: HomeIcon,
+    linkName: 'admin',
+    isAdmin: true,
+  },
+  {
+    label: 'Tous les événements',
+    icon: CalendarDaysIcon,
     linkName: 'admin-events',
     isAdmin: true,
   },
@@ -24,12 +31,12 @@ export const ADMIN_MENU_ITEMS = [
     linkName: 'admin-user',
     isAdmin: true,
   },
-  // {
-  //   label: 'Destinataires',
-  //   icon: UsersIcon,
-  //   linkName: 'admin-destinataire',
-  //   isAdmin: true,
-  // },
+  {
+    label: 'Destinataires',
+    icon: UsersIcon,
+    linkName: 'admin-destinataires',
+    isAdmin: true,
+  },
   {
     label: 'Bugs et Problèmes',
     icon: ExclamationCircleIcon,

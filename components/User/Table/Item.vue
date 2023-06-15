@@ -1,21 +1,21 @@
 <template>
 <tr>
-  <td class="py-4 text-sm font-medium text-gray-900 truncate whitespace-nowrap sm:pl-6">
+  <td class="py-2 text-sm font-medium text-gray-900 truncate whitespace-nowrap sm:pl-6">
     {{ user.id }}
   </td>
-  <td class="py-4 pl-4 text-sm font-medium text-gray-900 truncate whitespace-nowrap">
+  <td class="py-2 pl-4 text-sm font-medium text-gray-900 truncate whitespace-nowrap">
     {{ getUserfullName(user) }}
   </td>
-  <td class="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+  <td class="px-3 py-2 text-sm text-gray-500 truncate whitespace-nowrap">
     <UserRoleTag :role="user.roles" />
   </td>
-  <td class="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+  <td class="px-3 py-2 text-sm text-gray-500 truncate whitespace-nowrap">
     {{ user.createdAt ? $toFormat(user.createdAt, 'D/MM/YYYY') : 'Jamais connecté' }}
   </td>
-  <td class="px-3 py-4 text-sm text-gray-500 truncate whitespace-nowrap">
+  <td class="px-3 py-2 text-sm text-gray-500 truncate whitespace-nowrap">
     {{ company?.name }}
   </td>
-  <td class="relative py-4 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
+  <td class="relative py-2 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
     <UserTableAction
       :user="user"
       :disabled="userStore.getAuthUserId === user.id"

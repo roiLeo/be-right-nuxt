@@ -90,7 +90,8 @@ const { storeUsersEntities, getUserfullName } = userHook()
 const { storeCompanyEntities } = companyHook()
 const { jwtDecode } = authHook()
 const { IncLoading, DecLoading } = uiStore
-const { setJWTasUser, setToken } = useAuthStore()
+const authStore = useAuthStore()
+const { setJWTasUser, setToken } = authStore
 const router = useRouter()
 
 const schema = object({
@@ -125,7 +126,7 @@ async function submitLogin(form: VeeValidateValues) {
       }
       $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
       router.replace({
-        name: RouteNames.LIST_EVENT,
+        name: authStore.isAuthUserAdmin ? RouteNames.ADMIN_EVENTS : RouteNames.LIST_EVENT,
       })
     }
   }

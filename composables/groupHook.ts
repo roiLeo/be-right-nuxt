@@ -46,7 +46,8 @@ export default function groupHook() {
 
   async function fetchByEmployeeId(id: number) {
     IncLoading()
-    const { data: groups } = await $api().get<Group[]>(`group/employeeId/${id}`)
+    const { data } = await $api().get<Group[]>(`group/employeeId/${id}`)
+    const groups = data?.filter(group => !groupStore.isAlreadyInStore(group?.id))
     if (groups && groups.length > 0 && areGroupTypes(groups)) {
       addMany(groups)
     }
