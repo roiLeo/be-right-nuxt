@@ -79,7 +79,7 @@
     />
 
     <div
-      v-if="authStore.isAuthUserAdmin && mode !== ModalModeEnum.EDIT"
+      v-if="authStore.isAuthUserAdmin"
       class="space-y-2 md:col-span-2"
     >
       <template v-if="state.isDirty">
@@ -118,7 +118,7 @@
         <template #icon>
           <ArrowDownOnSquareIconOutline />
         </template>
-        {{ mode === ModalModeEnum.CREATE ? 'Créer' : 'Enregistrer' }}
+        Créer
       </BaseButton>
     </div>
   </Form>
@@ -138,7 +138,6 @@ import { useAuthStore, useEmployeeStore, useUiStore, useUserStore } from '~~/sto
 interface Props {
   employee?: EmployeeType | null
   address?: AddressType | null
-  mode?: ModalModeEnum
   eventId?: number
   userId?: number
   isDebug?: boolean
@@ -162,12 +161,10 @@ const uiStore = useUiStore()
 const { IncLoading, DecLoading } = uiStore
 
 const {
-  patchOne,
   postOne: postOneEmployee,
   postManyForEvent,
   postOneAdminForUser,
 } = employeeHook()
-const { patchOne: patchOneAddress } = addressHook()
 
 const {
   state,
@@ -207,15 +204,15 @@ const schema = (authStore.isAuthUserAdmin && props.mode === ModalModeEnum.CREATE
   })
 
 const initialValues = {
-  email: props.employee?.email || '',
-  firstName: props.employee?.firstName || '',
-  lastName: props.employee?.lastName || '',
-  phone: props.employee?.phone || '',
-  addressLine: props.address?.addressLine || '',
-  addressLine2: props.address?.addressLine2 || null,
-  postalCode: props.address?.postalCode || '',
-  city: props.address?.city || '',
-  country: props.address?.country || 'France',
+  email: '',
+  firstName: '',
+  lastName: '',
+  phone: '',
+  addressLine: '',
+  addressLine2: null,
+  postalCode: '',
+  city: '',
+  country: 'France',
   userId: null,
 }
 
@@ -229,40 +226,26 @@ async function submit(form: VeeValidateValues) {
     phone: form.phone,
   } as EmployeeType
 
-  if (props.mode === ModalModeEnum.CREATE) {
-    if (props.eventId && userStore.getAuthUser?.companyId) {
-      await postManyForEvent([employeeToPost],
-        props.eventId, userStore.getAuthUser?.companyId)
-    } else {
-      const address = {
-        addressLine: form.addressLine,
-        addressLine2: form.addressLine2,
-        postalCode: form.postalCode,
-        city: form.city,
-        country: form.country,
-      } as AddressType
+  if (props.eventId && userStore.getAuthUser?.companyId) {
+    await postManyForEvent([employeeToPost],
+      props.eventId, userStore.getAuthUser?.companyId)
+  } else {
+    const address = {
+      addressLine: form.addressLine,
+      addressLine2: form.addressLine2,
+      postalCode: form.postalCode,
+      city: form.city,
+      country: form.country,
+    } as AddressType
 
-      if (authStore.isAuthUserAdmin) {
-        await postOneAdminForUser({
-          employee: employeeToPost,
-          address,
-          userId: form.userId,
-        })
-      } else {
-        await postOneEmployee(employeeToPost, address)
-      }
-    }
-  } else if (props.mode === ModalModeEnum.EDIT && props.employee) {
-    await patchOne(props.employee.id, { ...employeeToPost })
-
-    if (props.address) {
-      await patchOneAddress(props.address.id, {
-        addressLine: form.addressLine,
-        addressLine2: form.addressLine2,
-        postalCode: form.postalCode,
-        city: form.city,
-        country: form.country,
+    if (authStore.isAuthUserAdmin) {
+      await postOneAdminForUser({
+        employee: employeeToPost,
+        address,
+        userId: form.userId,
       })
+    } else {
+      await postOneEmployee(employeeToPost, address)
     }
   }
 

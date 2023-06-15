@@ -7,6 +7,8 @@
 </template>
 
 <script setup lang="ts">
+import EmployeeForm from '~/components/Employee/EmployeeForm.vue'
+
 definePageMeta({
   layout: 'auth',
   isAuth: true,

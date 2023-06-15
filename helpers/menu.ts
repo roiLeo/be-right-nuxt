@@ -55,12 +55,6 @@ export const ADMIN_MENU_ITEMS = [
     linkName: RouteNames.CREATE_EVENT_STEP_1,
     isAdmin: true,
   },
-  {
-    label: 'Créer un destinataire',
-    icon: PlusIcon,
-    linkName: RouteNames.EMPLOYEE_CREATE,
-    isAdmin: true,
-  },
 ]
 
 export const MENU_ITEMS = [

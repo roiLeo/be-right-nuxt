@@ -70,7 +70,6 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  eventId: null,
   address: null,
 })
 
