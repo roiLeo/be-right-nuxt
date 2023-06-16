@@ -3,7 +3,7 @@
   <td class="py-2 text-sm font-medium text-gray-900 truncate whitespace-nowrap sm:pl-6">
     {{ employee.id }}
   </td>
-  <td class="py-2 pl-4 text-sm font-medium text-gray-900 truncate whitespace-nowrap">
+  <td class="py-2 pl-4 text-sm font-medium text-blue-800 truncate whitespace-nowrap">
     {{ getEmployeeFullname(employee) }}
   </td>
   <td class="px-3 py-2 text-sm text-gray-500 truncate whitespace-nowrap">
