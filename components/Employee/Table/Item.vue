@@ -12,16 +12,29 @@
   <td class="px-3 py-2 text-sm text-gray-500 truncate whitespace-nowrap">
     {{ companyStore.getOne(employee?.companyId)?.name || '-' }}
   </td>
-  <td class="relative py-2 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
-    <EmployeeTableAction
-      :employee="employee"
-    />
+  <td class="flex justify-end py-2 pl-3 pr-4 text-sm font-medium sm:pr-6">
+    <NuxtLink
+      class="flex items-center px-3 py-3 text-sm text-purple-800 bg-purple-100 rounded-md group"
+      :data-cy="`employee-${employee.id}-show-link`"
+      :to="{
+        name: RouteNames.ADMIN_EMPLOYEE_SHOW,
+        params: {
+          id: employee.id,
+        },
+      }"
+    >
+      <PencilSquareIconOutline
+        class="w-5 h-5 mr-2 text-violet-800"
+        aria-hidden="true"
+      />
+      Voir
+    </NuxtLink>
   </td>
 </tr>
 </template>
 
 <script setup lang="ts">
-import EmployeeTableAction from './Actions.vue'
+import { RouteNames } from '~/helpers/routes'
 import { useCompanyStore } from '~/store'
 import type { EmployeeType } from '@/types'
 

@@ -16,7 +16,7 @@ export default function tableHook<T>(baseUrl: string, onFetched?: ((items: T[]) 
     search: '',
     timeout: 0,
     items: [],
-    currentPage: 0,
+    currentPage: 1,
     limit: 20,
     total: 0,
     filters: null,
