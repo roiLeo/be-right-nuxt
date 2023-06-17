@@ -157,11 +157,13 @@
     v-if="authStore.isAuthUserAdmin && employeeCreator"
     class="mt-4"
     :employee-creator="employeeCreator"
+    :is-only-for-admin="authStore.isAuthUserAdmin"
   />
 </article>
 </template>
 
 <script setup lang="ts">
+import EmployeeCreator from '../EmployeeCreator.vue'
 import {
   useAddressStore,
   useAuthStore,
@@ -181,7 +183,14 @@ const authStore = useAuthStore()
 const userStore = useUserStore()
 const addressStore = useAddressStore()
 const { setUiModal } = useUiStore()
-const employeeCreator = computed(() => userStore.getOne(userStore.getAuthUserId))
+
+const employeeCreator = computed(() => {
+  if (authStore.isAuthUserAdmin && props.employee?.companyId) {
+    return userStore.getUserByCompanyId(props.employee?.companyId)
+  }
+  return userStore.getOne(userStore.getAuthUserId)
+})
+
 const employeeAddress = computed(() => addressStore.getOne(props.employee?.addressId))
 
 const { getEmployeeFullname } = employeeHook()

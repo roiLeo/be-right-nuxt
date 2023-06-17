@@ -46,7 +46,7 @@
           v-if="filteredEmployee.length === 0 && query !== ''"
           class="relative px-4 py-2 text-gray-700 cursor-default select-none"
         >
-          Aucun trouvé {{ filteredEmployee }}
+          Aucun trouvé
         </div>
         <li
           class="relative py-2 pl-10 pr-4 cursor-pointer select-none hover:bg-teal-600 hover:text-white"
@@ -200,7 +200,7 @@ const filteredEmployee = computed(() => filteredEmployees(props.defaultValues, q
 
 const areAllSelected = computed(() => filteredEmployee.value.length === Object.values(inputValue.value).length)
 const isSelected = (active: boolean, selected: boolean, id: number) => computed(() =>
-  active || selected || Object.values(inputValue).includes(id),
+  active || selected || Object.values(inputValue.value).includes(id),
 )
 
 function onRemoveValue(index: number) {

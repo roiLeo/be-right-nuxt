@@ -1,7 +1,7 @@
 <template>
 <div class="w-full h-full px-4 mt-4">
   <Form
-    v-slot="{ meta, isSubmitting, values, errors }"
+    v-slot="{ meta, isSubmitting, errors }"
     :validation-schema="schema"
     :initial-values="initialValues"
     class="grid grid-cols-2 gap-4"
@@ -79,23 +79,20 @@
     />
 
     <div
-      v-if="authStore.isAuthUserAdmin && mode !== ModalModeEnum.EDIT"
+      v-if="authStore.isAuthUserAdmin"
       class="space-y-2 md:col-span-2"
     >
-      <BaseSelect
-        label="Id de l'utilisateur"
-        name="userId"
-        placeholder="Choisissez un utilisateur"
-        :display-value="getUserfullName(userStore.getOne(values.userId))"
-        is-required
-      >
-        <BaseOption
-          v-for="user in userStore.getAllArray"
-          :key="user.id"
-          :value="user.id"
-          :name="getUserfullName(user)"
+      <template v-if="state.isDirty">
+        <UserCombobox
+          is-required
+          :default-values="state.items"
+          name="userId"
+          label="Id de l'utilisateur"
+          value-key="id"
+          is-multiple
+          @search="setSearchEntity"
         />
-      </BaseSelect>
+      </template>
     </div>
 
     <div
@@ -121,7 +118,7 @@
         <template #icon>
           <ArrowDownOnSquareIconOutline />
         </template>
-        {{ mode === ModalModeEnum.CREATE ? 'Créer' : 'Enregistrer' }}
+        Créer
       </BaseButton>
     </div>
   </Form>
@@ -129,16 +126,18 @@
 </template>
 
 <script setup lang="ts">
-import { object, string } from 'yup'
+import { number, object, string } from 'yup'
 import { Form } from 'vee-validate'
-import type { AddressType, EmployeeType, VeeValidateValues } from '@/types'
+import BaseButton from '../Base/BaseButton.vue'
+import BaseInput from '../Base/BaseInput.vue'
+import UserCombobox from '../User/UserCombobox.vue'
+import type { AddressType, EmployeeType, UserType, VeeValidateValues } from '@/types'
 import { ModalModeEnum } from '@/types'
-import { useAuthStore, useUiStore, useUserStore } from '~~/store'
+import { useAuthStore, useEmployeeStore, useUiStore, useUserStore } from '~~/store'
 
 interface Props {
   employee?: EmployeeType | null
   address?: AddressType | null
-  mode?: ModalModeEnum
   eventId?: number
   userId?: number
   isDebug?: boolean
@@ -157,37 +156,64 @@ const emit = defineEmits<{
 
 const userStore = useUserStore()
 const authStore = useAuthStore()
+const employeeStore = useEmployeeStore()
 const uiStore = useUiStore()
 const { IncLoading, DecLoading } = uiStore
 
-const { patchOne, postOne: postOneEmployee, postManyForEvent } = employeeHook()
-const { patchOne: patchOneAddress } = addressHook()
-const { getUserfullName } = userHook()
+const {
+  postOne: postOneEmployee,
+  postManyForEvent,
+  postOneAdminForUser,
+} = employeeHook()
+
+const {
+  state,
+  searchEntity,
+} = tableHook<UserType>('admin/user')
+
+function setSearchEntity(str: string) {
+  state.search = str
+  searchEntity()
+}
 
 const router = useRouter()
 
-const schema = object({
-  email: string().email('vous devez entrer in email valide').required('L\'adresse email est requise'),
-  firstName: string().required('Le prénom est requis'),
-  lastName: string().required('Le nom est requis'),
-  phone: string().required('Le numéro de téléphone est requis'),
-  addressLine: string().required('L\'adresse est requise'),
-  addressLine2: string().nullable(),
-  postalCode: string().required('Le code postal est requis'),
-  city: string().required('La ville est requise'),
-  country: string().required('Le pays est requis'),
-})
+const schema = (authStore.isAuthUserAdmin && props.mode === ModalModeEnum.CREATE)
+  ? object({
+    email: string().email('vous devez entrer in email valide').required('L\'adresse email est requise'),
+    firstName: string().required('Le prénom est requis'),
+    lastName: string().required('Le nom est requis'),
+    phone: string().required('Le numéro de téléphone est requis'),
+    addressLine: string().required('L\'adresse est requise'),
+    addressLine2: string().nullable(),
+    postalCode: string().required('Le code postal est requis'),
+    city: string().required('La ville est requise'),
+    country: string().required('Le pays est requis'),
+    userId: number().required('L\'identifiant de l\'utilisateur est requis'),
+  })
+  : object({
+    email: string().email('vous devez entrer in email valide').required('L\'adresse email est requise'),
+    firstName: string().required('Le prénom est requis'),
+    lastName: string().required('Le nom est requis'),
+    phone: string().required('Le numéro de téléphone est requis'),
+    addressLine: string().required('L\'adresse est requise'),
+    addressLine2: string().nullable(),
+    postalCode: string().required('Le code postal est requis'),
+    city: string().required('La ville est requise'),
+    country: string().required('Le pays est requis'),
+  })
 
 const initialValues = {
-  email: props.employee?.email || '',
-  firstName: props.employee?.firstName || '',
-  lastName: props.employee?.lastName || '',
-  phone: props.employee?.phone || '',
-  addressLine: props.address?.addressLine || '',
-  addressLine2: props.address?.addressLine2 || null,
-  postalCode: props.address?.postalCode || '',
-  city: props.address?.city || '',
-  country: props.address?.country || 'France',
+  email: '',
+  firstName: '',
+  lastName: '',
+  phone: '',
+  addressLine: '',
+  addressLine2: null,
+  postalCode: '',
+  city: '',
+  country: 'France',
+  userId: null,
 }
 
 async function submit(form: VeeValidateValues) {
@@ -200,38 +226,41 @@ async function submit(form: VeeValidateValues) {
     phone: form.phone,
   } as EmployeeType
 
-  if (props.mode === ModalModeEnum.CREATE) {
-    if (props.eventId && userStore.getAuthUser?.companyId) {
-      await postManyForEvent([employeeToPost],
-        props.eventId, userStore.getAuthUser?.companyId)
-    } else {
-      if (userStore.getAuthUserId) {
-        const address = {
-          addressLine: form.addressLine,
-          addressLine2: form.addressLine2,
-          postalCode: form.postalCode,
-          city: form.city,
-          country: form.country,
-        } as AddressType
+  if (props.eventId && userStore.getAuthUser?.companyId) {
+    await postManyForEvent([employeeToPost],
+      props.eventId, userStore.getAuthUser?.companyId)
+  } else {
+    const address = {
+      addressLine: form.addressLine,
+      addressLine2: form.addressLine2,
+      postalCode: form.postalCode,
+      city: form.city,
+      country: form.country,
+    } as AddressType
 
-        await postOneEmployee(employeeToPost, address)
-      }
-    }
-  } else if (props.mode === ModalModeEnum.EDIT && props.employee) {
-    await patchOne(props.employee.id, { ...employeeToPost })
-
-    if (props.address) {
-      await patchOneAddress(props.address.id, {
-        addressLine: form.addressLine,
-        addressLine2: form.addressLine2,
-        postalCode: form.postalCode,
-        city: form.city,
-        country: form.country,
+    if (authStore.isAuthUserAdmin) {
+      await postOneAdminForUser({
+        employee: employeeToPost,
+        address,
+        userId: form.userId,
       })
+    } else {
+      await postOneEmployee(employeeToPost, address)
     }
   }
+
+  const employee = employeeStore.getWhereArray(emp =>
+    emp.email === employeeToPost.email
+    && emp.firstName === employeeToPost.firstName
+    && emp.lastName === employeeToPost.lastName
+    && emp.phone === employeeToPost.phone,
+  )[0]
+
   router.push({
     name: 'destinataire',
+    query: {
+      id: employee?.id,
+    },
   })
   emit('submit')
   DecLoading()

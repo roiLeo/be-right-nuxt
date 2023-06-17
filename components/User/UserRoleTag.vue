@@ -33,8 +33,7 @@ function getRoleColor() {
       return 'sky'
     case RoleEnum.PHOTOGRAPHER:
       return 'purple'
-    case RoleEnum.CUSTOMER:
-      return 'lime'
+
     default:
       return 'gray'
   }

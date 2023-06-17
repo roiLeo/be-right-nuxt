@@ -86,11 +86,11 @@ const employeeGroups = computed(() =>
   props.employee ? groupStore.getWhereArray(group => group.employeeIds.includes(props.employee!.id)) : [],
 )
 
-const { fetchByEmployeeId } = groupHook()
+const { fetchMany } = groupHook()
 
 onMounted(async () => {
-  if (props.employee) {
-    await fetchByEmployeeId(props.employee.id)
+  if (props.employee && groupStore.getMissingIds(props.employee.groupIds).length > 0) {
+    await fetchMany(groupStore.getMissingIds(props.employee.groupIds))
   }
 })
 </script>

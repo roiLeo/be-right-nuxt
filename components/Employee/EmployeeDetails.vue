@@ -10,6 +10,8 @@
 </template>
 
 <script setup lang="ts">
+import EmployeeDetailTabs from './Detail/Tabs.vue'
+import EmployeeDetailProfile from './Detail/Profile.vue'
 import type { EmployeeType } from '@/types'
 
 interface Props {

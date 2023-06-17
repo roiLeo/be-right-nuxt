@@ -1,12 +1,11 @@
 export enum RoleEnum {
   ADMIN = 'ADMIN',
   SUPER_USER = 'SUPER_USER',
-  OWNER = 'OWNER',
   PHOTOGRAPHER = 'PHOTOGRAPHER',
-  CUSTOMER = 'CUSTOMER',
   EMPLOYEE = 'EMPLOYEE',
-  DEVELOPER = 'DEVELOPER',
+  // DEVELOPER = 'DEVELOPER',
   USER = 'USER',
+  OWNER = 'OWNER',
 }
 
 export const userRolesArray = Object.values(RoleEnum)

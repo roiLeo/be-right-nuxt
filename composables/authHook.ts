@@ -42,6 +42,7 @@ export default function authHook() {
     const cookieToken = useCookie('userToken')
     cookieToken.value = null
     $api().deleteCredentials()
+    router.replace({ name: 'index' })
 
     addressStore.resetState()
     answerStore.resetState()
@@ -59,8 +60,7 @@ export default function authHook() {
 
     resetAuthState()
 
-    router.replace({ name: 'index' })
-    $toast.success('Vous êtes déconnecté')
+    $toast?.success('Vous êtes déconnecté')
   }
 
   async function checkMailIsAlreadyExist(email: string) {

@@ -1,28 +1,41 @@
 <template>
 <PageAuthWrapper>
-  <div class="flex px-4 mx-auto mb-8 lg:px-8">
-    <EmployeeForm
-      v-if="!uiStore.isLoading"
-      :mode="ModalModeEnum.EDIT"
-      :employee="employee"
-      :address="employeeAddress"
-    />
-    <BaseLoader v-else />
+  <div class="max-w-md px-4 py-2 mx-auto mt-4 mb-8 space-y-4 md:max-w-lg lg:max-w-2xl lg:px-8">
+    <h1 class="text-lg font-medium text-center text-gray-800 md:text-2xl">
+      {{ employee ? `Modifier ${getEmployeeFullname(employee)}` : 'Modifier le destinataire' }}
+    </h1>
+    <BaseCard
+      v-if="employee"
+      class="space-y-2"
+      title="Informations personnelles"
+    >
+      <EmployeeEditForm :employee="employee" />
+    </BaseCard>
+
+    <BaseCard
+      v-if="employeeAddress"
+      class="space-y-2"
+      title="Adresse du destinataire"
+    >
+      <AddressForm
+        class="px-4"
+        :address="employeeAddress"
+      />
+    </BaseCard>
   </div>
 </PageAuthWrapper>
 </template>
 
 <script setup lang="ts">
-import { useAddressStore, useAuthStore, useEmployeeStore, useUiStore } from '~~/store'
-import { ModalModeEnum } from '@/types'
+import BaseCard from '~/components/Account/BaseCard.vue'
+import EmployeeEditForm from '~/components/Employee/EmployeeEditForm.vue'
+import AddressForm from '~/components/address/AddressForm.vue'
+import { useAddressStore, useEmployeeStore } from '~~/store'
 
-const authStore = useAuthStore()
-const { fetchAll } = userHook()
 const route = useRoute()
 const employeeStore = useEmployeeStore()
 const addressStore = useAddressStore()
-const uiStore = useUiStore()
-const { fetchOne: fetchOneEvent } = employeeHook()
+const { fetchOne: fetchOneEmployee, getEmployeeFullname } = employeeHook()
 const { fetchOne: fetchOneAddress } = addressHook()
 
 const employeeId = route.name === 'destinataire-edit-id' && parseInt(route.params.id.toString())
@@ -39,16 +52,18 @@ const employeeAddress = computed(() =>
 
 onMounted(async () => {
   if (employeeId && !employeeStore.isAlreadyInStore(employeeId)) {
-    await fetchOneEvent(employeeId)
+    await fetchOneEmployee(employeeId)
   }
 
   if (employee.value?.addressId) {
     await fetchOneAddress(employee.value?.addressId)
   }
+})
 
-  if (authStore.isAuthUserAdmin) {
-    await fetchAll('?limit=9999')
-  }
+useHead({
+  title: employeeStore.isAlreadyInStore(employeeId)
+    ? `Modifier ${getEmployeeFullname(employeeStore.getOne(employeeId))}`
+    : 'Modifier un destinataire',
 })
 
 definePageMeta({

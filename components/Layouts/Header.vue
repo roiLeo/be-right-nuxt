@@ -75,66 +75,57 @@
           </MenuButton>
         </div>
 
-        <transition
-          enter-active-class="transition duration-100 ease-out"
-          enter-from-class="transform scale-95 opacity-0"
-          enter-to-class="transform scale-100 opacity-100"
-          leave-active-class="transition duration-75 ease-in"
-          leave-from-class="transform scale-100 opacity-100"
-          leave-to-class="transform scale-95 opacity-0"
+        <MenuItems
+          class="absolute right-0 w-56 mt-2 bg-white divide-y divide-gray-100 rounded-md shadow-lg dark:bg-blue-dark_bold ring-1 ring-black ring-opacity-5 focus:outline-none"
         >
-          <MenuItems
-            class="absolute right-0 w-56 mt-2 bg-white divide-y divide-gray-100 rounded-md shadow-lg dark:bg-blue-dark_bold ring-1 ring-black ring-opacity-5 focus:outline-none"
-          >
-            <div class="px-1 py-1">
-              <MenuItem
-                as="li"
-                class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
+          <div class="px-1 py-1">
+            <MenuItem
+              as="li"
+              class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
+            >
+              <NuxtLink
+                :to="{ path: '/' }"
+                class="px-3 py-2 text-sm font-medium text-black rounded-md hover:text-white dark:text-white"
               >
-                <NuxtLink
-                  :to="{ path: '/' }"
-                  class="px-3 py-2 text-sm font-medium text-black rounded-md hover:text-white dark:text-white"
-                >
-                  Solutions
-                </NuxtLink>
-              </MenuItem>
-              <MenuItem
-                as="li"
-                class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
+                Solutions
+              </NuxtLink>
+            </MenuItem>
+            <MenuItem
+              as="li"
+              class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
+            >
+              <NuxtLink
+                :to="{ path: '/' }"
+                class="px-3 py-2 text-sm font-medium text-black rounded-md hover:text-white dark:text-white"
               >
-                <NuxtLink
-                  :to="{ path: '/' }"
-                  class="px-3 py-2 text-sm font-medium text-black rounded-md hover:text-white dark:text-white"
-                >
-                  Tarifs
-                </NuxtLink>
-              </MenuItem>
-              <MenuItem
-                as="li"
-                class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
+                Tarifs
+              </NuxtLink>
+            </MenuItem>
+            <MenuItem
+              as="li"
+              class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
+            >
+              <BaseButton
+                :href="getButtonPath"
+                :title="authStore.getIsLoggedIn ? 'Mon compte' : 'Commencer'"
               >
-                <BaseButton
-                  :href="getButtonPath"
-                  :title="authStore.getIsLoggedIn ? 'Mon compte' : 'Commencer'"
-                >
-                  {{ authStore.getIsLoggedIn ? 'Mon compte' : 'Commencer' }}
-                </BaseButton>
-              </MenuItem>
-              <MenuItem
-                v-if="!authStore.getIsLoggedIn"
-                as="li"
-                class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
+                {{ authStore.getIsLoggedIn ? 'Mon compte' : 'Commencer' }}
+              </BaseButton>
+            </MenuItem>
+            <MenuItem
+              v-if="!authStore.getIsLoggedIn"
+              as="li"
+              class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
+            >
+              <NuxtLink
+                :to="{ name: 'login' }"
+                class="px-3 py-2 text-sm font-medium text-black rounded-md hover:text-white dark:text-white"
               >
-                <NuxtLink
-                  :to="{ name: 'login' }"
-                  class="px-3 py-2 text-sm font-medium text-black rounded-md hover:text-white dark:text-white"
-                >
-                  Se connecter
-                </NuxtLink>
-              </MenuItem>
-            </div>
-          </MenuItems>
-        </transition>
+                Se connecter
+              </NuxtLink>
+            </MenuItem>
+          </div>
+        </MenuItems>
       </Menu>
     </div>
   </nav>

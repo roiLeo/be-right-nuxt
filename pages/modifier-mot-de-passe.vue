@@ -110,34 +110,28 @@ onMounted(() => {
 })
 
 async function onSubmit(form: VeeValidateValues) {
-  const { $api, $toast } = useNuxtApp()
+  const { $api } = useNuxtApp()
 
   IncLoading()
   resetState()
-  try {
-    const { data } = await $api().post<ResetPasswordData>('auth/reset-password', {
-      email: query.email,
-      password: form.password,
-      password_confirmation: form.passwordConfirmation,
-      twoFactorRecoveryCode: query.token,
-    })
+  const { data } = await $api().post<ResetPasswordData>('auth/reset-password', {
+    email: query.email,
+    password: form.password,
+    password_confirmation: form.passwordConfirmation,
+    twoFactorRecoveryCode: query.token,
+  })
 
-    if (data) {
-      state.successMessage = data.message
+  if (data) {
+    state.successMessage = data.message
 
-      if (data.isSuccess) {
-        state.isSuccess = true
-        router.replace({
-          name: RouteNames.LOGIN,
-        })
-      }
+    if (data.isSuccess) {
+      state.isSuccess = true
+      router.replace({
+        name: RouteNames.LOGIN,
+      })
     }
-  } catch (error: any) {
-    state.submissionErrors.push(error.response.data.error)
-    $toast.danger('Une erreur est survenue')
-  } finally {
-    DecLoading()
   }
+  DecLoading()
 }
 
 definePageMeta({ layout: 'default' })

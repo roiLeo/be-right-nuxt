@@ -30,41 +30,35 @@
         />
       </span>
     </ListboxButton>
-    <transition
-      leave-active-class="transition duration-100 ease-in"
-      leave-from-class="opacity-100"
-      leave-to-class="opacity-0"
+    <ListboxOptions
+      class="absolute z-10 w-full py-2 mt-2 overflow-auto bg-white border border-gray-500 rounded-md shadow-lg max-h-60 focus:outline-none"
     >
-      <ListboxOptions
-        class="absolute z-10 w-full py-2 mt-2 overflow-auto bg-white border border-gray-500 rounded-md shadow-lg max-h-60 focus:outline-none"
+      <ListboxOption
+        v-if="!isRequired"
+        v-slot="{ active, selected }"
+        value=""
+        as="template"
       >
-        <ListboxOption
-          v-if="!isRequired"
-          v-slot="{ active, selected }"
-          value=""
-          as="template"
+        <li
+          class="relative px-4 py-2 text-gray-900 cursor-default select-none"
+          :class="[
+            active ? 'bg-gray-200' : '',
+          ]"
         >
-          <li
-            class="relative px-4 py-2 text-gray-900 cursor-default select-none"
-            :class="[
-              active ? 'bg-gray-200' : '',
-            ]"
+          <span class="block truncate">{{ placeholder }}</span>
+          <span
+            v-if="selected"
+            class="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-900"
           >
-            <span class="block truncate">{{ placeholder }}</span>
-            <span
-              v-if="selected"
-              class="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-900"
-            >
-              <CheckIconOutline
-                class="w-6 h-6"
-                aria-hidden="true"
-              />
-            </span>
-          </li>
-        </ListboxOption>
-        <slot />
-      </ListboxOptions>
-    </transition>
+            <CheckIconOutline
+              class="w-6 h-6"
+              aria-hidden="true"
+            />
+          </span>
+        </li>
+      </ListboxOption>
+      <slot />
+    </ListboxOptions>
   </div>
   <ErrorMessage
     :name="name"

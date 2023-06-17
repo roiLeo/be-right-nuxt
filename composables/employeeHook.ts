@@ -1,3 +1,4 @@
+import { hasOwnProperty } from '@antfu/utils'
 import type { AddressType, EmployeeType, FileType, PaginatedResponse } from '@/types'
 import { isArrayOfNumbers } from '~~/utils'
 import {
@@ -77,158 +78,126 @@ export default function employeeHook() {
     return []
   }
 
+  function isEmployeeType(arg: unknown): arg is EmployeeType {
+    return hasOwnProperty(arg, 'email')
+      && hasOwnProperty(arg, 'phone')
+      && hasOwnProperty(arg, 'slug')
+      && hasOwnProperty(arg, 'firstName')
+      && hasOwnProperty(arg, 'lastName')
+  }
+
+  function areEmployeeTypes(args: unknown[]): args is EmployeeType[] {
+    return args.every(arg => isEmployeeType(arg))
+  }
+
   async function fetchOne(id: number) {
     IncLoading()
-    try {
-      const { data } = await $api().get<EmployeeType>(`employee/${id}`)
-      if (data) {
-        storeEmployeeRelationsEntities([data])
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    const { data } = await $api().get<EmployeeType>(`employee/${id}`)
+    if (data && isEmployeeType(data)) {
+      storeEmployeeRelationsEntities([data])
     }
     DecLoading()
   }
 
   async function fetchEmployeesByEventId(eventId: number) {
     IncLoading()
-    try {
-      const { data } = await $api().get<EmployeeType[]>(`employee/event/${eventId}`)
+    const { data } = await $api().get<EmployeeType[]>(`employee/event/${eventId}`)
 
-      if (data) {
-        employeeStore.addMany(data)
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    if (data && areEmployeeTypes(data)) {
+      employeeStore.addMany(data)
     }
     DecLoading()
   }
 
   async function fetchMany(employeeIds: number[]) {
     IncLoading()
-    try {
-      if (employeeIds.length > 0) {
-        const { data } = await $api().get<EmployeeType[]>(`employee/manyByIds?ids=${employeeIds.join(',')}`)
+    if (employeeIds.length > 0) {
+      const { data } = await $api().get<EmployeeType[]>(`employee/manyByIds?ids=${employeeIds.join(',')}`)
 
-        if (data && data.length > 0) {
-          const missingsEmployees = data.filter(user => !employeeStore.isAlreadyInStore(user.id))
+      if (data && data.length > 0 && areEmployeeTypes(data)) {
+        const missingsEmployees = data.filter(user => !employeeStore.isAlreadyInStore(user.id))
 
-          if (missingsEmployees.length > 0) {
-            employeeStore.addMany(missingsEmployees)
-          }
+        if (missingsEmployees.length > 0) {
+          employeeStore.addMany(missingsEmployees)
         }
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
     }
     DecLoading()
   }
 
   async function fetchAllByUserId(userId: number) {
     IncLoading()
-    try {
-      const { data } = await $api().get<EmployeeType[]>(`employee/user/${userId}`)
+    const { data } = await $api().get<EmployeeType[]>(`employee/user/${userId}`)
 
-      if (data) {
-        storeEmployeeRelationsEntities(data)
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    if (data && areEmployeeTypes(data)) {
+      storeEmployeeRelationsEntities(data)
     }
     DecLoading()
   }
 
   async function fetchAll(url?: string) {
     IncLoading()
-    try {
-      let finalUrl = 'employee'
-      if (url) {
-        finalUrl += `${url}`
-      }
+    // TODO replace by paginated  request
+    let finalUrl = 'employee'
+    if (url) {
+      finalUrl += `${url}`
+    }
 
-      const { data } = await $api().get<PaginatedResponse<EmployeeType>>(`${finalUrl}`)
-      if (data) {
-        storeEmployeeRelationsEntities(data.data)
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    const { data } = await $api().get<PaginatedResponse<EmployeeType>>(`${finalUrl}`)
+    if (data) {
+      storeEmployeeRelationsEntities(data.data)
     }
     DecLoading()
   }
 
   async function deleteOne(id: number) {
     IncLoading()
-    try {
-      await $api().delete(`employee/${id}`)
-      employeeStore.deleteOneEmployee(id)
-      $toast.success('Destinataire supprimé avec succès')
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
-    }
+    await $api().delete(`employee/${id}`)
+    employeeStore.deleteOneEmployee(id)
+    $toast.success('Destinataire supprimé avec succès')
     DecLoading()
   }
 
   async function patchOne(id: number, payload: EmployeeType) {
     IncLoading()
-    try {
-      const { data } = await $api().patch<EmployeeType>(`employee/${id}`, payload)
-      if (data) {
-        employeeStore.updateOne(id, data)
-        $toast.success('Destinataire modifié avec succès')
-      }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+    const { data } = await $api().patch<EmployeeType>(`employee/${id}`, payload)
+    if (data && isEmployeeType(data)) {
+      employeeStore.updateOne(id, data)
+      $toast.success('Destinataire modifié avec succès')
     }
     DecLoading()
   }
 
   async function postOne(employee: EmployeeType, address: AddressType) {
-    try {
-      const { data } = await $api().post<EmployeeType>('employee', { employee, address })
+    const { data } = await $api().post<EmployeeType>('employee', { employee, address })
 
-      if (data) {
-        const company = companyStore.getAuthCompany
-        if (company) {
-          companyStore.updateOneCompany(company.id, {
-            employeeIds: [...company.employeeIds, data.id],
-          })
-        }
-        employeeStore.addMany([data])
-        $toast.success('Destinataire créé avec succès')
-        return data
+    if (data && isEmployeeType(data)) {
+      const company = companyStore.getAuthCompany
+      if (company) {
+        companyStore.updateOneCompany(company.id, {
+          employeeIds: [...company.employeeIds, data.id],
+        })
       }
-      return null
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+      employeeStore.addMany([data])
+      $toast.success('Destinataire créé avec succès')
+      return data
     }
+    return null
   }
 
   async function postManyForEvent(employees: EmployeeType[], eventId: number, userId: number) {
     IncLoading()
-    try {
-      const { data } = await $api().post<EmployeeType[]>(`employee/manyonevent/${eventId}/${userId}`, employees)
+    const { data } = await $api().post<EmployeeType[]>(`employee/manyonevent/${eventId}/${userId}`, employees)
 
-      if (data) {
-        const company = companyStore.getAuthCompany
-        if (company) {
-          companyStore.updateOneCompany(company.id, {
-            employeeIds: [...company.employeeIds, ...data.map(emp => emp.id)],
-          })
-        }
-        employeeStore.addMany(data)
-        $toast.success('Destinataires créés avec succès')
+    if (data && areEmployeeTypes(data)) {
+      const company = companyStore.getAuthCompany
+      if (company) {
+        companyStore.updateOneCompany(company.id, {
+          employeeIds: [...company.employeeIds, ...data.map(emp => emp.id)],
+        })
       }
-    } catch (error) {
-      console.error(error)
-      $toast.danger('Une erreur est survenue')
+      employeeStore.addMany(data)
+      $toast.success('Destinataires créés avec succès')
     }
     DecLoading()
   }
@@ -257,7 +226,19 @@ export default function employeeHook() {
       )
   }
 
+  async function postOneAdminForUser(
+    { employee, address, userId }: { employee: EmployeeType; address: AddressType; userId: number }) {
+    const { data } = await $api().post<EmployeeType>('admin/employee', { employee, address, userId })
+
+    if (data && isEmployeeType(data)) {
+      employeeStore.addMany([data])
+      $toast.success('Destinataire créé avec succès')
+    }
+    return null
+  }
+
   return {
+    areEmployeeTypes,
     deleteOne,
     fetchAll,
     fetchAllByUserId,
@@ -271,6 +252,7 @@ export default function employeeHook() {
     patchOne,
     postManyForEvent,
     postOne,
+    postOneAdminForUser,
     storeEmployeeRelationsEntities,
   }
 }

@@ -169,33 +169,29 @@ async function submitregister(form: VeeValidateValues) {
   if (isEmailExist && !isEmailExist.success) {
     $toast.danger(isEmailExist.message)
   } else {
-    try {
-      const { data } = await $api().post<{ user: UserType; company: Company }>('auth/signup', form)
+    const { data } = await $api().post<{ user: UserType; company: Company }>('auth/signup', form)
 
-      if (data) {
-        const { user, company } = data
+    if (data) {
+      const { user, company } = data
 
-        if (company) {
-          storeCompanyEntities(company)
-        }
-
-        if (user) {
-          storeUsersEntities(user, false)
-          cookieToken.value = user.token
-          const decode = jwtDecode(ref(user.token))
-          $api().setCredentials(user.token)
-
-          if (decode.value) {
-            setJWTasUser(decode.value)
-          }
-          $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
-          router.replace({
-            name: 'evenement',
-          })
-        }
+      if (company) {
+        storeCompanyEntities(company)
       }
-    } catch (error) {
-      $toast.danger('Une erreur est survenue')
+
+      if (user) {
+        storeUsersEntities(user, false)
+        cookieToken.value = user.token
+        const decode = jwtDecode(ref(user.token))
+        $api().setCredentials(user.token)
+
+        if (decode.value) {
+          setJWTasUser(decode.value)
+        }
+        $toast.success(`Heureux de vous revoir ${getUserfullName(user)}`)
+        router.replace({
+          name: 'evenement',
+        })
+      }
     }
   }
   DecLoading()

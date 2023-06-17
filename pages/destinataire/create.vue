@@ -7,16 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from '~~/store'
-
-const authStore = useAuthStore()
-const { fetchAll } = userHook()
-
-onMounted(async () => {
-  if (authStore.isAuthUserAdmin) {
-    await fetchAll('?limit=9999')
-  }
-})
+import EmployeeForm from '~/components/Employee/EmployeeForm.vue'
 
 definePageMeta({
   layout: 'auth',
