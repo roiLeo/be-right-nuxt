@@ -1,6 +1,9 @@
 <template>
 <PageAuthWrapper>
-  <div class="px-4 py-2 mx-auto mb-8 space-y-1 lg:px-8">
+  <div class="max-w-md px-4 py-2 mx-auto mt-4 mb-8 space-y-4 md:max-w-lg lg:max-w-2xl lg:px-8">
+    <h1 class="text-lg font-medium text-center text-gray-800 md:text-2xl">
+      {{ employee ? `Modifier ${getEmployeeFullname(employee)}` : 'Modifier le destinataire' }}
+    </h1>
     <BaseCard
       v-if="employee"
       class="space-y-2"

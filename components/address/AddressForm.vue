@@ -11,14 +11,14 @@
     name="addressLine"
     autocomplete="addressLine"
     is-required
-    wrapper-classes="col-span-3"
+    wrapper-classes="md:col-span-3"
   />
 
   <BaseInput
     label="Complément d'adresse"
     name="addressLine2"
     autocomplete="addressLine"
-    wrapper-classes="col-span-3"
+    wrapper-classes="md:col-span-3"
   />
 
   <BaseInput
@@ -60,6 +60,8 @@
 import type { InferType } from 'yup'
 import { object, string } from 'yup'
 import { Form } from 'vee-validate'
+import BaseInput from '../Base/BaseInput.vue'
+import BaseButton from '~~/components/Base/BaseButton.vue'
 import type { AddressType, VeeValidateValues } from '@/types'
 import { useUiStore } from '~~/store'
 

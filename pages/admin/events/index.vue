@@ -11,13 +11,19 @@
       <div class="flex items-center justify-between">
         <EventTableFilters @setFilter="setEventStatusFilter" />
 
-        <BaseButton
-          :is-loading="uiStore.getUIIsLoading"
-          :disabled="uiStore.getUIIsLoading"
-          @click="resetFilters"
-        >
-          Reset Filters
-        </BaseButton>
+        <div class="flex items-center space-x-2">
+          <BaseButton
+            :is-loading="uiStore.getUIIsLoading"
+            :disabled="uiStore.getUIIsLoading"
+            @click="resetFilters"
+          >
+            Reset Filters
+          </BaseButton>
+          <BaseLimitSelector
+            :default-limit="state.limit"
+            @update:limit="updateLimit"
+          />
+        </div>
       </div>
     </div>
 
@@ -70,6 +76,7 @@ import BaseLoader from '~/components/Base/BaseLoader.vue'
 import BaseTable from '~/components/Base/BaseTable.vue'
 import EventTableHeader from '~~/components/Event/Table/Header.vue'
 import EventTableFilters from '~~/components/Event/Table/Filters.vue'
+import BaseLimitSelector from '~/components/Base/BaseLimitSelector.vue'
 import { RouteNames } from '~~/helpers/routes'
 import type { EventStatusEnum, EventType } from '~~/store'
 import { useUiStore } from '~~/store'
@@ -84,10 +91,11 @@ async function fetchRelations(items: EventType[]) {
 }
 
 const {
-  state,
   resetFilters,
-  setFilter,
   searchEntity,
+  setFilter,
+  state,
+  updateLimit,
 } = tableHook<EventType>('event', fetchRelations)
 
 function setEventStatusFilter(status: EventStatusEnum | undefined) {

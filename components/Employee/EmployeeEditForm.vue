@@ -42,7 +42,7 @@
 
     <div
       v-if="isDebug"
-      class="flex flex-col space-y-2 md:col-span-2"
+      class="flex flex-col col-span-2 space-y-2"
     >
       <p>is Dirty = {{ meta.dirty }}</p>
       <p>is valid = {{ meta.valid }}</p>
@@ -54,7 +54,7 @@
       </p>
     </div>
 
-    <div class="flex items-center justify-center mt-6 md:col-span-2">
+    <div class="flex items-center justify-center col-span-2 mt-6">
       <BaseButton
         :disabled="!meta.valid || !meta.dirty || isSubmitting"
         :is-loading="isSubmitting"

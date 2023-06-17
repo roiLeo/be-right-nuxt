@@ -11,13 +11,19 @@
       <div class="flex items-center justify-between">
         <UserTableFilters @setFilter="setUserRoleFilter" />
 
-        <BaseButton
-          :is-loading="uiStore.getUIIsLoading"
-          :disabled="uiStore.getUIIsLoading"
-          @click="resetFilters"
-        >
-          Reset Filters
-        </BaseButton>
+        <div class="flex items-center space-x-2">
+          <BaseButton
+            :is-loading="uiStore.getUIIsLoading"
+            :disabled="uiStore.getUIIsLoading"
+            @click="resetFilters"
+          >
+            Reset Filters
+          </BaseButton>
+          <BaseLimitSelector
+            :default-limit="state.limit"
+            @update:limit="updateLimit"
+          />
+        </div>
       </div>
     </div>
 
@@ -64,12 +70,13 @@ import BaseLoader from '~/components/Base/BaseLoader.vue'
 import BaseTable from '~/components/Base/BaseTable.vue'
 import UserTableItem from '~~/components/User/Table/Item.vue'
 import UserTableHeader from '~~/components/User/Table/Header.vue'
+import BaseInputSearch from '~/components/Base/BaseInputSearch.vue'
+import BaseLimitSelector from '~/components/Base/BaseLimitSelector.vue'
+import AddEmployeeToUserModal from '~/components/User/AddEmployeeToUserModal.vue'
 import type { UserType } from '~~/store'
 import { useUiStore, useUserStore } from '~~/store'
 import { ModalNameEnum } from '~/types'
 import type { RoleEnum } from '~/types'
-import BaseInputSearch from '~/components/Base/BaseInputSearch.vue'
-import AddEmployeeToUserModal from '~/components/User/AddEmployeeToUserModal.vue'
 
 const uiStore = useUiStore()
 const userStore = useUserStore()
@@ -84,10 +91,11 @@ async function fetchRelations(items: UserType[]) {
 }
 
 const {
-  state,
   resetFilters,
-  setFilter,
   searchEntity,
+  setFilter,
+  state,
+  updateLimit,
 } = tableHook<UserType>('admin/user', fetchRelations)
 
 watch(() => state.items, () => {
