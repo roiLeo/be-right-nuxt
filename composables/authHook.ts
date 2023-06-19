@@ -21,7 +21,7 @@ import {
 } from '~~/store'
 
 export default function authHook() {
-  const { $toast, $api } = useNuxtApp()
+  const { $toast, $api, $isProductionMode } = useNuxtApp()
 
   const addressStore = useAddressStore()
   const answerStore = useAnswerStore()
@@ -103,8 +103,17 @@ export default function authHook() {
     }
   }
 
+  function getCookie() {
+    console.log($isProductionMode, '<==== $isProductionMode')
+    if ($isProductionMode) {
+      return useCookie('userToken', { sameSite: 'strict', domain: 'be-right.co', secure: true })
+    }
+    return useCookie('userToken')
+  }
+
   return {
     checkMailIsAlreadyExist,
+    getCookie,
     isJWTUserAdmin,
     jwtDecode,
     logout,

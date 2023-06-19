@@ -88,7 +88,7 @@ import { RouteNames } from '~/helpers/routes'
 const uiStore = useUiStore()
 const { storeUsersEntities, getUserfullName } = userHook()
 const { storeCompanyEntities } = companyHook()
-const { jwtDecode } = authHook()
+const { jwtDecode, getCookie } = authHook()
 const { IncLoading, DecLoading } = uiStore
 const authStore = useAuthStore()
 const { setJWTasUser, setToken } = authStore
@@ -107,7 +107,7 @@ const initialValues = {
 const { $toast, $api } = useNuxtApp()
 
 async function submitLogin(form: VeeValidateValues) {
-  const cookieToken = useCookie('userToken', { sameSite: 'strict', domain: 'be-right.co', secure: true })
+  const cookieToken = getCookie()
   IncLoading()
   const { data } = await $api().post<{ user: UserType; company: Company }>('user/login', form as WithoutId<UserType>)
   if (data) {

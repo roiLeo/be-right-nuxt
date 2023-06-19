@@ -129,7 +129,7 @@ import { passwordRegex } from '~/helpers/regex'
 
 const { $toast, $api } = useNuxtApp()
 const router = useRouter()
-const { checkMailIsAlreadyExist, jwtDecode } = authHook()
+const { checkMailIsAlreadyExist, jwtDecode, getCookie } = authHook()
 const { storeUsersEntities, getUserfullName } = userHook()
 const { storeCompanyEntities } = companyHook()
 const { setJWTasUser } = useAuthStore()
@@ -162,7 +162,7 @@ const initialValues = {
 
 async function submitregister(form: VeeValidateValues) {
   IncLoading()
-  const cookieToken = useCookie('userToken', { sameSite: 'none', domain: 'be-right.co', secure: false })
+  const cookieToken = getCookie()
 
   const isEmailExist = await checkMailIsAlreadyExist(form.email)
 
