@@ -58,10 +58,10 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
     'nuxt-headlessui',
-    '@nuxtjs/eslint-module',
+    // '@nuxtjs/eslint-module',
     '@pinia-plugin-persistedstate/nuxt',
     'nuxt-typed-router',
-    '@nuxtjs/html-validator',
+    // '@nuxtjs/html-validator',
     'nuxt-schema-org',
     '@nuxt/image-edge',
     ['nuxt-purgecss', {
@@ -90,7 +90,7 @@ export default defineNuxtConfig({
     ],
   },
 
-  plugins: ['~/plugins/global.ts', '~/plugins/serverInit.server.ts'],
+  plugins: ['~/plugins/global.ts'],
 
   vite: {
     plugins: [
