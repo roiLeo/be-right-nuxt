@@ -80,7 +80,7 @@
         <MenuAdmin v-if="authStore.isAuthUserAdmin" />
         <MenuBasic v-else />
       </div>
-      <!-- <DarkModeToggle /> -->
+
       <UserMenu />
     </div>
   </aside>
@@ -94,6 +94,7 @@ import { useAuthStore, useUiStore } from '~~/store'
 
 const uiStore = useUiStore()
 const authStore = useAuthStore()
+console.log(authStore.isAuthUserAdmin, '<==== authStore.isAuthUserAdmin')
 const { closeDrawer } = uiStore
 </script>
 
