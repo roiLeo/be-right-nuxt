@@ -162,7 +162,7 @@ const initialValues = {
 
 async function submitregister(form: VeeValidateValues) {
   IncLoading()
-  const cookieToken = useCookie('userToken', { sameSite: 'none', domain: 'be-right.co', secure: true })
+  const cookieToken = useCookie('userToken', { sameSite: 'none', domain: 'be-right.co', secure: false })
 
   const isEmailExist = await checkMailIsAlreadyExist(form.email)
 
