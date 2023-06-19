@@ -1,7 +1,7 @@
 <template>
-<main>
+<main class="min-h-screen">
   <LayoutsHeader />
-  <div class="min-h-screen bg-white dark:bg-blue-dark">
+  <div class="bg-white dark:bg-blue-dark">
     <slot />
   </div>
   <LayoutsFooter />
