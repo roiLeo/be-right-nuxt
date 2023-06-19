@@ -106,7 +106,7 @@ export default function authHook() {
   function getCookie() {
     console.log($isProductionMode, '<==== $isProductionMode')
     if ($isProductionMode) {
-      return useCookie('userToken', { sameSite: 'strict', domain: 'be-right.co', secure: true })
+      return useCookie('userToken', { sameSite: 'strict', secure: true })
     }
     return useCookie('userToken')
   }
