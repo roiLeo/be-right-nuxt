@@ -1,4 +1,4 @@
-import { useAuthStore } from '~~/store'
+import { Company, UserType, useAuthStore } from '~~/store'
 
 export default defineNuxtPlugin(async () => {
   let apiUrl: string | null = null
@@ -8,6 +8,8 @@ export default defineNuxtPlugin(async () => {
   const authStore = useAuthStore()
   const { setJWTasUser, setToken } = authStore
 
+  // const { $api } = useNuxtApp()
+
   if (process.env.NODE_ENV === 'development' && process.env.VITE_DEV_API_URL) {
     apiUrl = process.env.VITE_DEV_API_URL
   } else if (process.env.NODE_ENV === 'production' && process.env.VITE_API_URL) {
@@ -16,7 +18,11 @@ export default defineNuxtPlugin(async () => {
 
   const cookieToken = useCookie('userToken')
 
+  console.log(cookieToken.value, '<==== cookieToken.value')
+
   if (cookieToken.value && apiUrl && !authStore.getIsLoggedIn) {
+    // const { data } = await $api().post<{ user: UserType; company: Company }>('user/token', { token: cookieToken.value })
+
     const response = await fetch(`${apiUrl}user/token`, {
       method: 'post',
       headers: {
@@ -26,7 +32,6 @@ export default defineNuxtPlugin(async () => {
       },
       body: JSON.stringify({ token: cookieToken.value }),
     })
-
     const data = await response.json()
 
     if (data) {
@@ -40,7 +45,8 @@ export default defineNuxtPlugin(async () => {
         setToken(user.token)
         storeUsersEntities(user, false)
 
-        const decoded = jwtDecode(user.token)
+        const decoded = jwtDecode(ref(user.token))
+        console.log(decoded.value, '<==== decoded.value')
 
         if (decoded.value) {
           setJWTasUser(decoded.value)

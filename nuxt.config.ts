@@ -90,9 +90,7 @@ export default defineNuxtConfig({
     ],
   },
 
-  plugins: [
-    { src: '~/plugins/serverInit.server.ts', ssr: true, mode: 'server' },
-  ],
+  plugins: ['~/plugins/global.ts', '~/plugins/serverInit.server.ts'],
 
   vite: {
     plugins: [
