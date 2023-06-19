@@ -107,7 +107,7 @@ const initialValues = {
 const { $toast, $api } = useNuxtApp()
 
 async function submitLogin(form: VeeValidateValues) {
-  const cookieToken = useCookie('userToken', { sameSite: 'none', domain: 'be-right.co', secure: false })
+  const cookieToken = useCookie('userToken', { sameSite: 'strict', domain: 'be-right.co', secure: true })
   IncLoading()
   const { data } = await $api().post<{ user: UserType; company: Company }>('user/login', form as WithoutId<UserType>)
   if (data) {
