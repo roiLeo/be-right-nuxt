@@ -3,7 +3,7 @@
   v-slot="{ meta, isSubmitting }"
   :validation-schema="schema"
   :initial-values="initialValues"
-  class="container mx-auto md:grid md:gap-12 md:mt-16 md:grid-cols-2"
+  class="container grid grid-cols-1 gap-12 py-6 mx-auto md:grid-cols-2"
   @submit="submitregister"
 >
   <div class="flex flex-col mx-auto space-y-12 md:max-w-1/2">
