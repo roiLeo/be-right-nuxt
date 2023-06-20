@@ -4,14 +4,16 @@
     <slot />
   </div>
 
-  <template v-if="isDisplayabled">
-    <AnswerDownloadModal
-      :answer-id="uiStore.getUiModalData?.answerId"
-      :is-active="uiStore.getUiModalState?.isActive"
-      :employee="uiStore.getUiModalData?.employee"
-      :ref-html="uiStore.getUiModalData?.templateRef"
-    />
-  </template>
+  <ClientOnly>
+    <template v-if="isDisplayabled">
+      <AnswerDownloadModal
+        :answer-id="uiStore.getUiModalData?.answerId"
+        :is-active="uiStore.getUiModalState?.isActive"
+        :employee="uiStore.getUiModalData?.employee"
+        :ref-html="uiStore.getUiModalData?.templateRef"
+      />
+    </template>
+  </ClientOnly>
 </main>
 </template>
 

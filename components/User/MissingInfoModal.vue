@@ -1,6 +1,6 @@
 <template>
 <BaseModal
-  :is-active="isActive"
+  :is-active="isOpen"
   @close="close"
 >
   <div class="px-4 py-2 sm:flex sm:items-start">
@@ -53,26 +53,17 @@
 
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core'
+import BaseModal from '../Base/BaseModal.vue'
 
 const emit = defineEmits<{
   (e: 'close'): void
+  (e: 'toggleFlag'): void
 }>()
 
 const { getMissingsInfos } = companyHook()
 
 const flag = useStorage('isMissingModalInfoActive', true)
-const isOpen = ref(false)
-
-const isActive = computed(() => {
-  if (isOpen.value)
-    return isOpen.value
-  if (flag.value) {
-    isOpen.value = getMissingsInfos.value.length > 0
-    return isOpen.value
-  }
-  return flag.value
-},
-)
+const isOpen = ref(flag.value ? getMissingsInfos.value.length > 0 : false)
 
 function close() {
   isOpen.value = false
@@ -81,5 +72,6 @@ function close() {
 
 function toggleFlag() {
   flag.value = !flag.value
+  emit('toggleFlag')
 }
 </script>

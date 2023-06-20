@@ -15,14 +15,21 @@
     </PageAuthWrapper>
   </div>
 
-  <AccountCreateUserModal
-    v-if="uiStore.isModalActive(ModalNameEnum.CREATE_USER)"
-    :is-active="uiStore.isModalActive(ModalNameEnum.CREATE_USER)"
-  />
+  <ClientOnly>
+    <AccountCreateUserModal
+      v-if="uiStore.isModalActive(ModalNameEnum.CREATE_USER)"
+      :is-active="uiStore.isModalActive(ModalNameEnum.CREATE_USER)"
+    />
+  </ClientOnly>
 </main>
 </template>
 
 <script setup lang="ts">
+import AccountMenu from '~~/components/Account/Menu.vue'
+import AccountCreateUserModal from '~~/components/Account/CreateUserModal.vue'
+import HeaderDashboard from '~/components/Header/HeaderDashboard.vue'
+import MenuDrawer from '~/components/Menu/MenuDrawer.vue'
+import PageAuthWrapper from '~/components/Page/PageAuthWrapper.vue'
 import { ModalNameEnum } from '~~/types'
 import { useUiStore } from '~~/store'
 

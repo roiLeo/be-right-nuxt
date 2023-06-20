@@ -27,24 +27,32 @@
       <slot />
     </PageAuthWrapper>
 
-    <AddEmployeeModal
-      v-if="uiStore.isModalActive(ModalNameEnum.ADD_RECIPIENT_TO_EVENT)"
-      :is-active="uiStore.isModalActive(ModalNameEnum.ADD_RECIPIENT_TO_EVENT)"
-    />
+    <ClientOnly>
+      <AddEmployeeModal
+        v-if="uiStore.isModalActive(ModalNameEnum.ADD_RECIPIENT_TO_EVENT)"
+        :is-active="uiStore.isModalActive(ModalNameEnum.ADD_RECIPIENT_TO_EVENT)"
+      />
 
-    <PhotographerModal
-      v-if="uiStore.getUiModalState.isActive
-        && uiStore.getUiModalState.modalName === ModalNameEnum.CREATE_PHOTOGRAPHER"
-      :is-active="uiStore.getUiModalState.isActive
-        && uiStore.getUiModalState.modalName === ModalNameEnum.CREATE_PHOTOGRAPHER"
-      @close="resetUiModalState"
-    />
+      <PhotographerModal
+        v-if="uiStore.getUiModalState.isActive
+          && uiStore.getUiModalState.modalName === ModalNameEnum.CREATE_PHOTOGRAPHER"
+        :is-active="uiStore.getUiModalState.isActive
+          && uiStore.getUiModalState.modalName === ModalNameEnum.CREATE_PHOTOGRAPHER"
+        @close="resetUiModalState"
+      />
+    </ClientOnly>
   </div>
 </main>
 </template>
 
 <script setup lang="ts">
 import AddEmployeeModal from '~~/components/Event/Form/AddEmployeeModal.vue'
+import BaseButton from '~/components/Base/BaseButton.vue'
+import BaseMessage from '~/components/Base/BaseMessage.vue'
+import HeaderDashboard from '~/components/Header/HeaderDashboard.vue'
+import MenuDrawer from '~/components/Menu/MenuDrawer.vue'
+import PageAuthWrapper from '~/components/Page/PageAuthWrapper.vue'
+import PhotographerModal from '~/components/Photographer/PhotographerModal.vue'
 import { RouteNames } from '~~/helpers/routes'
 import {
   ModalNameEnum,
