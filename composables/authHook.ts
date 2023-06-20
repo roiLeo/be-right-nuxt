@@ -89,7 +89,7 @@ export default function authHook() {
         storeCompanyEntities(company)
       }
 
-      if (user && user.token && process.env.JWT_SECRET) {
+      if (user && user.token) {
         setToken(user.token)
         storeUsersEntities(user, false)
 
