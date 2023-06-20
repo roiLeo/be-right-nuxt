@@ -27,6 +27,11 @@
 </template>
 
 <script setup lang="ts">
+import PageAuthWrapper from '~/components/Page/PageAuthWrapper.vue'
+import BaseButton from '~/components/Base/BaseButton.vue'
+import BaseMessage from '~/components/Base/BaseMessage.vue'
+import BaseLoader from '~/components/Base/BaseLoader.vue'
+import GroupDetail from '~~/components/Group/Detail/index.vue'
 import { useGroupStore, useUiStore } from '~~/store'
 
 const groupStore = useGroupStore()
