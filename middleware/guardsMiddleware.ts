@@ -7,11 +7,9 @@ export default defineNuxtRouteMiddleware(async to => {
 
   const cookieToken = getCookie()
 
-  console.log(cookieToken.value, '<==== cookieToken.value')
   if (to.meta.isAuth && !authStore.getIsLoggedIn) {
     if (cookieToken.value) {
       const jwt = await logWithToken(cookieToken.value)
-      console.log(jwt, '<==== jwt')
       if (jwt) {
         return
       }
@@ -27,6 +25,7 @@ export default defineNuxtRouteMiddleware(async to => {
 })
 
 function redirectToLogin() {
+  abortNavigation()
   return navigateTo({
     name: 'login',
   }, { replace: true })
