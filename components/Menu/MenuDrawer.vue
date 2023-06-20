@@ -94,7 +94,7 @@ import { useAuthStore, useUiStore } from '~~/store'
 
 const uiStore = useUiStore()
 const authStore = useAuthStore()
-console.log(authStore.user, '<==== authStore.user')
+
 const { closeDrawer } = uiStore
 </script>
 
