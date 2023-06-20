@@ -84,6 +84,13 @@ export default defineNuxtConfig({
     '@tailvue/nuxt',
   ],
 
+  piniaPersistedstate: {
+    cookieOptions: {
+      sameSite: 'strict',
+    },
+    storage: 'localStorage',
+  },
+
   build: {
     transpile: [
       'v-calendar',

@@ -21,7 +21,7 @@ import {
 } from '~~/store'
 
 export default function authHook() {
-  const { $toast, $api, $isProductionMode } = useNuxtApp()
+  const { $toast, $api } = useNuxtApp()
 
   const addressStore = useAddressStore()
   const answerStore = useAnswerStore()
@@ -104,11 +104,7 @@ export default function authHook() {
   }
 
   function getCookie() {
-    console.log($isProductionMode, '<==== $isProductionMode')
-    if ($isProductionMode) {
-      return useCookie('userToken', { sameSite: 'strict', secure: true })
-    }
-    return useCookie('userToken')
+    return useCookie('userToken', { secure: true, sameSite: true, path: '', maxAge: 2592000 })
   }
 
   return {
