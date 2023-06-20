@@ -4,6 +4,9 @@
     <template v-if="groupStore.getAllArray?.length > 0">
       <GroupList :groups="groupStore.getAllArray" />
     </template>
+
+    <BaseLoader v-else-if="uiStore.getUIIsLoading" />
+
     <BaseMessage
       v-else
       class="max-w-md"
@@ -24,10 +27,15 @@
 </template>
 
 <script setup lang="ts">
-import { useGroupStore } from '~~/store'
+import PageAuthWrapper from '~/components/Page/PageAuthWrapper.vue'
+import BaseButton from '~/components/Base/BaseButton.vue'
+import BaseMessage from '~/components/Base/BaseMessage.vue'
+import { useGroupStore, useUiStore } from '~~/store'
+import BaseLoader from '~/components/Base/BaseLoader.vue'
 
 const { fetchUserGroupsAndRelations } = groupHook()
 const groupStore = useGroupStore()
+const uiStore = useUiStore()
 
 onMounted(async () => {
   await fetchUserGroupsAndRelations()

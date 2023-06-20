@@ -58,10 +58,10 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
     'nuxt-headlessui',
-    '@nuxtjs/eslint-module',
+    // '@nuxtjs/eslint-module',
     '@pinia-plugin-persistedstate/nuxt',
     'nuxt-typed-router',
-    '@nuxtjs/html-validator',
+    // '@nuxtjs/html-validator',
     'nuxt-schema-org',
     '@nuxt/image-edge',
     ['nuxt-purgecss', {
@@ -84,15 +84,20 @@ export default defineNuxtConfig({
     '@tailvue/nuxt',
   ],
 
+  piniaPersistedstate: {
+    cookieOptions: {
+      sameSite: 'strict',
+    },
+    storage: 'localStorage',
+  },
+
   build: {
     transpile: [
       'v-calendar',
     ],
   },
 
-  plugins: [
-    { src: '~/plugins/serverInit.server.ts', ssr: true, mode: 'server' },
-  ],
+  plugins: ['~/plugins/global.ts'],
 
   vite: {
     plugins: [

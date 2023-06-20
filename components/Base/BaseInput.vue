@@ -43,7 +43,7 @@
       <button
         v-if="type === 'password'"
         type="button"
-        class="text-gray-600 border-2 border-transparent focus:outline-none focus:border-pink-600"
+        class="text-gray-600 border-2 border-transparent focus:outline-none"
         @click.prevent="onPasswordVisibilityToggle"
       >
         <EyeSlashIconOutline

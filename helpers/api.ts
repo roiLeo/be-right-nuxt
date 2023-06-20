@@ -87,6 +87,7 @@ export class FetchWrapper implements ApiMethods {
       'Accept': 'application/json',
       'Authorization': `Bearer ${this.token ? this.token : ''}`,
       'Content-type': 'application/json; charset=UTF-8',
+      'Access-Control-Allow-Origin': 'https://be-right.co',
     })
   }
 
