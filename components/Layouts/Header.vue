@@ -13,19 +13,19 @@
           </div>
           <div class="ml-auto lg:flex lg:items-stretch lg:justify-end">
             <div class="flex space-x-4">
-              <NuxtLink
-                :to="{ path: '/' }"
+              <a
+                href="#Solution"
                 class="px-3 py-2 text-sm font-medium rounded-md text-blue dark:text-white dark:hover:text-red-light hover:text-red-light"
               >
                 Solutions
-              </NuxtLink>
+              </a>
 
-              <NuxtLink
-                :to="{ path: '/' }"
+              <a
+                href="#Pricings"
                 class="px-3 py-2 text-sm font-medium rounded-md text-blue dark:text-white dark:hover:text-red-light hover:text-red-light"
               >
                 Tarifs
-              </NuxtLink>
+              </a>
 
               <BaseButton
                 :href="getButtonPath"
@@ -83,23 +83,23 @@
               as="li"
               class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
             >
-              <NuxtLink
-                :to="{ path: '/' }"
+              <a
+                href="#Solution"
                 class="px-3 py-2 text-sm font-medium text-black rounded-md hover:text-white dark:text-white"
               >
                 Solutions
-              </NuxtLink>
+              </a>
             </MenuItem>
             <MenuItem
               as="li"
               class="flex items-center w-full px-2 py-2 text-sm rounded-md group"
             >
-              <NuxtLink
-                :to="{ path: '/' }"
+              <a
+                href="#Pricings"
                 class="px-3 py-2 text-sm font-medium text-black rounded-md hover:text-white dark:text-white"
               >
                 Tarifs
-              </NuxtLink>
+              </a>
             </MenuItem>
             <MenuItem
               as="li"
