@@ -1,7 +1,8 @@
 <template>
 <TransitionRoot
-  as="template"
+  appear
   :show="isOpen"
+  as="template"
 >
   <Dialog
     as="div"

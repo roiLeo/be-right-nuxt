@@ -107,6 +107,7 @@ export class FetchWrapper implements ApiMethods {
       })
 
       const response = await fetch(request)
+
       let data = null
 
       if (config.method !== FetchMethods.DELETE) {

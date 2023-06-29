@@ -15,6 +15,9 @@
 </template>
 
 <script setup lang="ts">
+import EmployeeGroupTableHeader from '~~/components/Employee/Group/Table/Header.vue'
+import EmployeeGroupTableItem from '~~/components/Employee/Group/Table/Item.vue'
+import BaseTable from '~/components/Base/BaseTable.vue'
 import type { Group } from '~~/store'
 
 interface Props {

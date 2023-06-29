@@ -6,8 +6,12 @@
       :key="item.name"
       :to="{ name: item.name }"
       class="flex items-center px-3 py-2 text-sm font-medium rounded-md group"
-      :class="[$route.name === item.name ? 'bg-gray-50 text-orange-600 hover:bg-white' : 'text-gray-900 hover:bg-gray-50 hover:text-gray-900']"
+      :class="[
+        $route.name === item.name ? 'bg-gray-50 text-orange-600 hover:bg-white' : 'text-gray-900 hover:bg-gray-50 hover:text-gray-900',
+        { 'cursor-not-allowed opacity-50': item.disabled },
+      ]"
       :aria-current="$route.name === item.name ? 'page' : undefined"
+      :disabled="item.disabled"
     >
       <component
         :is="item.icon"
@@ -33,11 +37,11 @@ import {
 
 const subNavigation = [
 
-  { label: 'Profile', name: 'mon-compte', icon: UserCircleIcon },
-  { label: 'Paramètres', name: 'mon-compte-parametre', icon: CogIcon },
-  { label: 'Utilisateurs', name: 'mon-compte-utilisateurs', icon: UserGroupIcon },
-  { label: 'Notifications', name: 'mon-compte-notifications', icon: BellIcon },
-  { label: 'Plan & Billing', name: 'mon-compte-plan-billing', icon: CreditCardIcon },
-  { label: 'Badges', name: 'mon-compte-badges', icon: TagIcon },
+  { label: 'Profile', name: 'mon-compte', icon: UserCircleIcon, disabled: false },
+  { label: 'Paramètres', name: 'mon-compte-parametre', icon: CogIcon, disabled: true },
+  { label: 'Utilisateurs', name: 'mon-compte-utilisateurs', icon: UserGroupIcon, disabled: false },
+  { label: 'Notifications', name: 'mon-compte-notifications', icon: BellIcon, disabled: false },
+  { label: 'Plan & Billing', name: 'mon-compte-plan-billing', icon: CreditCardIcon, disabled: true },
+  { label: 'Badges', name: 'mon-compte-badges', icon: TagIcon, disabled: true },
 ]
 </script>
