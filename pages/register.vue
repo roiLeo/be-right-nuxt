@@ -126,12 +126,14 @@ import { RoleEnum } from '@/types'
 import type { Company } from '~~/store'
 import { useAuthStore, useUiStore } from '~~/store'
 import { passwordRegex } from '~/helpers/regex'
+import newsletterHook from '~/composables/newsletterHook'
 
 const { $toast, $api } = useNuxtApp()
 const router = useRouter()
 const { checkMailIsAlreadyExist, jwtDecode, getCookie } = authHook()
 const { storeUsersEntities, getUserfullName } = userHook()
 const { storeCompanyEntities } = companyHook()
+const { addToContactList } = newsletterHook()
 const { setJWTasUser } = useAuthStore()
 const uiStore = useUiStore()
 const { IncLoading, DecLoading } = uiStore
@@ -179,10 +181,16 @@ async function submitregister(form: VeeValidateValues) {
       }
 
       if (user) {
+        $api().setCredentials(user.token)
+
+        await addToContactList({
+          email: user.email,
+          name: getUserfullName(user),
+        })
+
         storeUsersEntities(user, false)
         cookieToken.value = user.token
         const decode = jwtDecode(ref(user.token))
-        $api().setCredentials(user.token)
 
         if (decode.value) {
           setJWTasUser(decode.value)

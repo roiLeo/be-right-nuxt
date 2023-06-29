@@ -48,10 +48,11 @@ import BaseButton from '../Base/BaseButton.vue'
 import BaseInput from '../Base/BaseInput.vue'
 import BaseMessage from '../Base/BaseMessage.vue'
 import { useUiStore } from '~~/store'
-import type { MailJetContactResponse } from '~/types/Newsletter'
+import newsletterHook from '~/composables/newsletterHook'
 
 const uiStore = useUiStore()
 const { IncLoading, DecLoading } = uiStore
+const { addToContactList } = newsletterHook()
 
 const isSuccess = ref(false)
 
@@ -62,15 +63,11 @@ const schema = object({
 async function submit(form: any) {
   const { $toast } = useNuxtApp()
   IncLoading()
-  const { data: resDataSuccess } = await useFetch<MailJetContactResponse>('/api/mailjet/addToNewsletter', {
-    method: 'post',
-    body: [{
-      email: form.email,
-      IsExcludedFromCampaigns: false,
-      Name: '',
-    }],
+  const response = await addToContactList({
+    email: form.email,
   })
-  isSuccess.value = resDataSuccess.value?.status === 201
+
+  isSuccess.value = response?.status === 201
   if (isSuccess.value) {
     $toast.success('Merci pour votre inscription!')
   } else {
