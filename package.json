@@ -23,6 +23,7 @@
     "@popperjs/core": "^2.11.6",
     "@vueuse/integrations": "^10.0.2",
     "jwt-decode": "^3.1.2",
+    "node-mailjet": "^6.0.2",
     "pinia": "^2.0.33",
     "rollup-plugin-visualizer": "^5.9.0",
     "tailvue": "^0.1.68",
