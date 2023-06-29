@@ -13,19 +13,19 @@
           </div>
           <div class="ml-auto lg:flex lg:items-stretch lg:justify-end">
             <div class="flex space-x-4">
-              <a
-                href="#Solution"
+              <NuxtLink
+                to="/#Solution"
                 class="px-3 py-2 text-sm font-medium rounded-md text-blue dark:text-white dark:hover:text-red-light hover:text-red-light"
               >
                 Solutions
-              </a>
+              </NuxtLink>
 
-              <a
-                href="#Pricings"
+              <NuxtLink
+                to="/#Pricings"
                 class="px-3 py-2 text-sm font-medium rounded-md text-blue dark:text-white dark:hover:text-red-light hover:text-red-light"
               >
                 Tarifs
-              </a>
+              </NuxtLink>
 
               <BaseButton
                 :href="getButtonPath"
